@@ -1,0 +1,43 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+# app
+/z
+porhacer.txt
+/src/views/plantilla
+/src/assets
+/src/lang/ejemplo.json
+
+
+# api-php
+/api-php/config
+/api-php/php-error.log
+/api-php/.htaccess
+
+
+# api-python
+/api-python/z
+/api-python/own-page-env/
+api.log

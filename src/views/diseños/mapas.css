@@ -1,0 +1,14 @@
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+    background-color: hsl(var(--nextui-content1) / var(--nextui-content1-opacity, var(--tw-bg-opacity))) !important;
+    color: hsl(var(--nextui-foreground) / var(--nextui-foreground-opacity, var(--tw-text-opacity))) !important;
+}
+
+.leaflet-popup.m-0 .leaflet-popup-content {
+    margin: 0 !important;
+}
+
+.leaflet-popup.bg-transparent .leaflet-popup-content-wrapper,
+.leaflet-popup.bg-transparent .leaflet-popup-tip{
+    background-color: transparent !important;
+}

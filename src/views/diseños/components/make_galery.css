@@ -1,0 +1,11 @@
+  .clasificacion {
+    direction: rtl;
+  }
+  .clasificacion label:hover svg,
+  .clasificacion label:hover ~ label svg{
+    color: #f5a524;
+  }
+  .clasificacion label[data-selected="true"] svg,
+  .clasificacion label[data-selected="true"] ~ label svg{
+    color: #f5a524;
+  }

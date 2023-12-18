@@ -1,0 +1,78 @@
+{
+  "es": {
+    "selectsModel": {
+      "none": "Ninguno",
+      "pages": "Páginas",
+      "solicitude": "Solicitud",
+      "infinite": "Infinito"
+    },
+    "selectsColor": {
+      "default": "Ninguno",
+      "primary": "Azul",
+      "secondary": "Morado",
+      "danger": "Rojo",
+      "warning": "Amarillo",
+      "success": "Verde"
+    },
+    "dataLabels": {
+      "id": "ID",
+      "category": "categoría",
+      "name": "nombre",
+      "surname": "apellido",
+      "username": "usuario",
+      "associated": "asociado"
+    },
+    "tablaAria": "Tabla de ejemplo",
+    "prefs": {
+      "model": "Modelo",
+      "color": "Color"
+    },
+    "checks": {
+      "headers": "Mostrar encabezados",
+      "striped": "Rayas",
+      "sort": "Ordenar por Columna",
+      "select": "Filas seleccionables",
+      "fixed": "Tabla Fija",
+      "sticky": "Mantener encabezados"
+    },
+    "loadTable": "Cargar tabla"
+  },
+  "en": {
+    "selectsModel": {
+      "none": "None",
+      "pages": "Pages",
+      "solicitude": "Request",
+      "infinite": "Infinite"
+    },
+    "selectsColor": {
+      "default": "None",
+      "primary": "Blue",
+      "secondary": "Purple",
+      "danger": "Red",
+      "warning": "Yellow",
+      "success": "Green"
+    },
+    "dataLabels": {
+      "id": "ID",
+      "category": "Category",
+      "name": "Name",
+      "surname": "Surname",
+      "username": "Username",
+      "associated": "Associated"
+    },
+    "tablaAria": "Example Table",
+    "prefs": {
+      "model": "Model",
+      "color": "Color"
+    },
+    "checks": {
+      "headers": "Show Headers",
+      "striped": "Striped",
+      "sort": "Sort by Column",
+      "select": "Selectable Rows",
+      "fixed": "Fixed Table",
+      "sticky": "Sticky Headers"
+    },
+    "loadTable": "Load Table"
+  }
+}

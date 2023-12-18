@@ -1,0 +1,62 @@
+{
+    "es": {
+        "title": "Bienvenido",
+        "explore": "Explorar",
+        "articles": {
+            "disenos": {
+                "title": "Diseños web",
+                "subtitle": "Personalizados",
+                "footer_text": "Elementos personalizables",
+                "footer_subtext": "Vea los diseños que puede integrar al diseño web."
+            },
+            "ecommerce": {
+                "title": "Showroom web",
+                "subtitle": "Práctica",
+                "footer_text": "Simple y directo",
+                "footer_subtext": "Vea como puede mostrar u organizar sus articulos."
+            },
+            "analisis": {
+                "title": "Análisis de datos",
+                "subtitle": "Integrales",
+                "footer_text": "Tablas interactivas",
+                "footer_subtext": "Vea como puede manipular y analizar datos."
+            },
+            "databases": {
+                "title": "Bases de datos",
+                "subtitle": "Optimizadas",
+                "footer_text": "Manejo sencillo",
+                "footer_subtext": "Vea como funciona el implemento de una base de datos."
+            }
+        }
+    },
+    "en": {
+        "title": "Welcome",
+        "explore": "Explore",
+        "articles": {
+            "disenos": {
+                "title": "Web Designs",
+                "subtitle": "Customized",
+                "footer_text": "Customizable elements",
+                "footer_subtext": "See designs you can integrate into web design."
+            },
+            "ecommerce": {
+                "title": "Web Showroom",
+                "subtitle": "Practical",
+                "footer_text": "Simple and straightforward",
+                "footer_subtext": "See how you can showcase or organize your items."
+            },
+            "analisis": {
+                "title": "Data Analysis",
+                "subtitle": "Comprehensive",
+                "footer_text": "Interactive tables",
+                "footer_subtext": "See how you can manipulate and analyze data."
+            },
+            "databases": {
+                "title": "Databases",
+                "subtitle": "Optimized",
+                "footer_text": "Simple management",
+                "footer_subtext": "See how the implementation of a database works."
+            }
+        }
+    }
+}

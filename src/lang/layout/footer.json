@@ -1,0 +1,44 @@
+{
+  "es": {
+    "sections": {
+      "sections": {
+        "label": "Secciones",
+        "elements": {
+          "disenos": "Diseños",
+          "databases": "Base de datos",
+          "analisis": "Análisis de datos",
+          "contacto": "Contacto"
+        }
+      },
+      "contact": {
+        "label": "Contacto",
+        "elements": {
+          "email": "Correo",
+          "cel": "Cel.",
+          "direc": "Dirección"
+        }
+      }
+    }
+  },
+  "en": {
+    "sections": {
+      "sections": {
+        "label": "Sections",
+        "elements": {
+          "disenos": "Designs",
+          "databases": "Database",
+          "analisis": "Data Analysis",
+          "contacto": "Contact"
+        }
+      },
+      "contact": {
+        "label": "Contact",
+        "elements": {
+          "email": "Email",
+          "cel": "Mobile",
+          "direc": "Address"
+        }
+      }
+    }
+  }
+}

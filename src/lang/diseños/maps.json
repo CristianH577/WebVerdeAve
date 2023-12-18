@@ -1,0 +1,34 @@
+{
+    "es": {
+        "leafletButtons": {
+            "marks": "Marcadores",
+            "road": "Rutas",
+            "area": "Áreas",
+            "drag": "Marca"
+        },
+        "more": "Mas",
+        "mapSvgButtons": {
+            "labels": "Etiquetas",
+            "legends": "Leyendas",
+            "hover": "Hover",
+            "zoom": "Zoom",
+            "shadow": "Sombra"
+        }
+    },
+    "en": {
+        "leafletButtons": {
+            "marks": "Markers",
+            "road": "Routes",
+            "area": "Areas",
+            "drag": "Mark"
+        },
+        "more": "More",
+        "mapSvgButtons": {
+            "labels": "Labels",
+            "legends": "Legends",
+            "hover": "Hover",
+            "zoom": "Zoom",
+            "shadow": "Shadow"
+        }
+    }
+}

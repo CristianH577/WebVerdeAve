@@ -1,0 +1,126 @@
+{
+    "es": {
+        "menuItems": {
+            "inicio": {
+                "label": "Inicio",
+                "desc": ""
+            },
+            "disenos": {
+                "label": "Diseños",
+                "desc": "Modelos y elementos para su página.",
+                "elements": {
+                    "cartas": {
+                        "label": "Cartas",
+                        "desc": "Contenedor de texto, fotos y acciones."
+                    },
+                    "formularios": {
+                        "label": "Formularios",
+                        "desc": "Ingreso o recopilación de datos."
+                    },
+                    "galerias": {
+                        "label": "Galerías",
+                        "desc": "Galería de imágenes o cartas."
+                    },
+                    "mapas": {
+                        "label": "Mapas",
+                        "desc": "Ubicaciones y locaciones."
+                    },
+                    "presentaciones": {
+                        "label": "Presentaciones",
+                        "desc": "Muestra de fotos y videos."
+                    },
+                    "showroom": {
+                        "label": "Showroom",
+                        "desc": "Muestra y búsqueda de artículos."
+                    },
+                    "tablas": {
+                        "label": "Tablas",
+                        "desc": "Listas ordenadas y dinámicas."
+                    }
+                }
+            },
+            "databases": {
+                "label": "Base de datos",
+                "desc": "Crear y administrar bases de datos."
+            },
+            "analisis": {
+                "label": "Análisis de datos",
+                "desc": "Modificar, analizar y graficar datos."
+            },
+            "contacto": {
+                "label": "Contacto",
+                "desc": "Mensajes o consultas."
+            },
+            "test": {
+                "label": "test",
+                "desc": ""
+            }
+        },
+        "menuModel": {
+            "list": "Lista",
+            "drop": "Drop"
+        }
+    },
+    "en": {
+        "menuItems": {
+            "inicio": {
+                "label": "Home",
+                "desc": ""
+            },
+            "disenos": {
+                "label": "Designs",
+                "desc": "Models and elements for your page.",
+                "elements": {
+                    "cartas": {
+                        "label": "Cards",
+                        "desc": "Container for text, photos, and actions."
+                    },
+                    "formularios": {
+                        "label": "Forms",
+                        "desc": "Input or data collection."
+                    },
+                    "galerias": {
+                        "label": "Galleries",
+                        "desc": "Gallery of images or cards."
+                    },
+                    "mapas": {
+                        "label": "Maps",
+                        "desc": "Locations and places."
+                    },
+                    "presentaciones": {
+                        "label": "Slideshows",
+                        "desc": "Display of photos and videos."
+                    },
+                    "showroom": {
+                        "label": "Showroom",
+                        "desc": "Display and search for items."
+                    },
+                    "tablas": {
+                        "label": "Tables",
+                        "desc": "Ordered and dynamic lists."
+                    }
+                }
+            },
+            "databases": {
+                "label": "Database",
+                "desc": "Create and manage databases."
+            },
+            "analisis": {
+                "label": "Data Analysis",
+                "desc": "Modify, analyze, and graph data."
+            },
+            "contacto": {
+                "label": "Contact",
+                "desc": "Messages or inquiries."
+            },
+            "test": {
+                "label": "Test",
+                "desc": ""
+            }
+        },
+        "menuModel": {
+            "list": "List",
+            "drop": "Drop"
+        }
+    }
+}

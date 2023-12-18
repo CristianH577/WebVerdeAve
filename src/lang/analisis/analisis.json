@@ -1,0 +1,40 @@
+{
+    "es": {
+        "tabs": {
+            "upload": "Cargar datos",
+            "show": "Mostrar datos",
+            "analyze": "Analizar",
+            "changes": "Corregir datos",
+            "graph": "Gráficos"
+        },
+        "notice": [
+            "ATENCIÓN",
+            "Sección en desarrollo",
+            "Actualizaciones próximamente",
+            "Gracias por leer"
+        ],
+        "data": "Datos",
+        "toolTip": "Datos originales editados",
+        "tabsAria": "Pestañas de análisis de datos",
+        "edited": "editado"
+    },
+    "en": {
+        "tabs": {
+            "upload": "Upload Data",
+            "show": "Show Data",
+            "analyze": "Analyze",
+            "changes": "Correct Data",
+            "graph": "Graphs"
+        },
+        "notice": [
+            "ATTENTION",
+            "Section under development",
+            "Updates coming soon",
+            "Thanks for reading"
+        ],
+        "data": "Data",
+        "toolTip": "Original data edited",
+        "tabsAria": "Data analysis tabs",
+        "edited": "edited"
+    }
+}

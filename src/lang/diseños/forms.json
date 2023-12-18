@@ -1,0 +1,148 @@
+{
+    "es": {
+        "formOf": "Formulario de",
+        "tabsForm": {
+            "example": "ejemplo",
+            "music": "música",
+            "paint": "pintura",
+            "literature": "literatura",
+            "cinema": "cine"
+        },
+        "validationSchemaForms": {
+            "dateMin": "Fecha minima ",
+            "dateMax": "Fecha maxima ",
+            "accept": "Lea y acepte el acuerdo",
+            "descShort": "Descripción muy corta"
+        },
+        "designsForm": {
+            "ingreso": {
+                "title": "Ingreso",
+                "emailPH": "ejemplo@hotmail.com",
+                "keep": "Mantener Sesión",
+                "forgot": "Olvido la contraseña",
+                "register": "Registrar",
+                "login": "Ingresar"
+            },
+            "datos": {
+                "title": "Datos",
+                "gender": "Género",
+                "genders": {
+                    "masc": "Masculino",
+                    "fem": "Femenino",
+                    "none": "Sin especificar"
+                },
+                "address": "Dirección",
+                "phoneDesc": "Ingrese número de teléfono sin espacios ni guiones",
+                "day": "Día",
+                "month": "Mes",
+                "year": "año",
+                "accept": "Estoy de acuerdo",
+                "agreement": "Acuerdo"
+            },
+            "ficha": {
+                "title": "Ficha",
+                "fileNum": "N° de ficha",
+                "category": "Categoría",
+                "quantity": "Cantidad",
+                "ammount": "Monto",
+                "add": "Agregar"
+            },
+            "tabs": {
+                "title": "Pestañas",
+                "descExample": "Descripción de Ejemplo",
+                "descPH": "Describa el título para continuar.",
+                "descDesc": "Use al menos 20 caracteres",
+                "prev": "Anterior",
+                "next": "Siguiente",
+                "loading": "Cargando..."
+            },
+            "costs": {
+                "title": "Precio Final",
+                "impN": "Impuestos Nacionales",
+                "impP": "Impuestos Provinciales",
+                "comicion": "Comisión",
+                "comicionF": "Comisión Fija",
+                "envio": "Envío",
+                "costo_base": "Costo Base",
+                "ganancia": "Ganancia",
+                "precio": "Precio",
+                "calculated": "Calcular",
+                "precio_final": "Precio Final",
+                "otros": "Otros Gastos"
+            }
+        }
+    },
+    "en": {
+        "formOf": "Form of",
+        "tabsForm": {
+            "example": "example",
+            "music": "music",
+            "paint": "painting",
+            "literature": "literature",
+            "cinema": "cinema"
+        },
+        "validationSchemaForms": {
+            "dateMin": "Minimum date ",
+            "dateMax": "Maximum date ",
+            "accept": "Read and accept the agreement",
+            "descShort": "Very short description"
+        },
+        "designsForm": {
+            "ingreso": {
+                "title": "Login",
+                "emailPH": "example@hotmail.com",
+                "keep": "Keep Session",
+                "forgot": "Forgot Password",
+                "register": "Register",
+                "login": "Login"
+            },
+            "datos": {
+                "title": "Data",
+                "gender": "Gender",
+                "genders": {
+                    "masc": "Male",
+                    "fem": "Female",
+                    "none": "Not specified"
+                },
+                "address": "Address",
+                "phoneDesc": "Enter phone number without spaces or hyphens",
+                "day": "Day",
+                "month": "Month",
+                "year": "Year",
+                "accept": "I agree",
+                "agreement": "Agreement"
+            },
+            "ficha": {
+                "title": "Record",
+                "fileNum": "File Number",
+                "category": "Category",
+                "quantity": "Quantity",
+                "ammount": "Amount",
+                "add": "Add"
+            },
+            "tabs": {
+                "title": "Tabs",
+                "descExample": "Example Description",
+                "descPH": "Describe the title to continue.",
+                "descDesc": "Use at least 20 characters",
+                "prev": "Previous",
+                "next": "Next",
+                "loading": "Loading..."
+            },
+            "costs": {
+                "title": "Final Price",
+                "impN": "National Taxes",
+                "impP": "Provincial Taxes",
+                "comicion": "Commission",
+                "comicionF": "Fixed Commission",
+                "envio": "Shipping",
+                "costo_base": "Base Cost",
+                "ganancia": "Profit",
+                "precio": "Price",
+                "calculated": "Calculate",
+                "precio_final": "Final Price",
+                "otros": "Other Expenses"
+            }
+        }
+    }
+}

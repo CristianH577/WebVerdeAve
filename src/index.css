@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    scroll-behavior: smooth;
+}
+
+.break-all {
+    word-break: break-all;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* fix */
+.bg-danger-100 {
+    background-color: hsl(var(--nextui-danger-100) / var(--nextui-background-opacity, var(--tw-bg-opacity)));
+}
+
+.bg-danger-200 {
+    background-color: hsl(var(--nextui-danger-200) / var(--nextui-background-opacity, var(--tw-bg-opacity)));
+}
+
+.bg-success-100 {
+    background-color: hsl(var(--nextui-success-100) / var(--nextui-background-opacity, var(--tw-bg-opacity)));
+}
+
+.bg-success-200 {
+    background-color: hsl(var(--nextui-success-200) / var(--nextui-background-opacity, var(--tw-bg-opacity)));
+}
+
+.bg-secondary-100 {
+    background-color: hsl(var(--nextui-secondary-100) / var(--nextui-background-opacity, var(--tw-bg-opacity)));
+}
+
+.bg-secondary-200 {
+    background-color: hsl(var(--nextui-secondary-200) / var(--nextui-background-opacity, var(--tw-bg-opacity)));
+}
+
+/* input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus ,
+input:-webkit-autofill:active
+{
+    box-shadow: 0 0 0px 30px transparent inset !important;
+    -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+} */
+/* .form-input div input:-webkit-autofill,
+.form-input div input:-webkit-autofill:hover,
+.form-input div input:-webkit-autofill:focus ,
+.form-input div input:-webkit-autofill:active
+{
+    box-shadow: 0 0 0px 30px transparent inset !important;
+    -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+} */
+
+/* input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #ffffff;
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px #23232329;
+} */
+/* input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+}
+input[data-autocompleted] {
+    background-color: transparent !important;
+} */
+
+/* @media screen and (min-width: 0px) {}
+
+@media screen and (min-width: 640px) {}
+
+@media screen and (min-width: 768px) {}
+
+@media screen and (min-width: 1024px) {}
+
+@media screen and (min-width: 1280px) {}
+
+@media screen and (min-width: 1536px) {} */
+
+
+
+@media screen and (max-width: 360px) {
+    .form-xs {
+        border-radius: 0;
+        padding-left: 0;
+        padding-right: 0;
+        width: 100%;
+    }
+
+    .form-xs .form-input div {
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+    }
+
+    .form-xs .form-select button {
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+    }
+
+    .form-xs .form-button {
+        border-radius: 0;
+    }
+
+
+    .input-xs div {
+        border-radius: 0;
+    }
+
+    .select-xs button {
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+    }
+
+    .button-xs {
+        width: 100%;
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+        word-break: break-all;
+    }
+
+    .buttongroup-xs {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .buttongroup-xs button,
+    .buttongroup-xs a {
+        width: 100%;
+        border-radius: 0 !important;
+        border-left: 0;
+        border-right: 0;
+        word-break: break-all;
+    }
+}

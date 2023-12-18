@@ -1,0 +1,72 @@
+{
+    "es": {
+        "selectsGalleries": {
+            "design": {
+                "label": "Diseños",
+                "items": {
+                    "none": "Ninguno",
+                    "button": "Botones",
+                    "label": "Con etiquetas",
+                    "card": "Tarjetas",
+                    "table": "Tabla"
+                }
+            },
+            "display": {
+                "label": "Presentación",
+                "items": {
+                    "grid": "Cuadricula",
+                    "list": "Lista",
+                    "slider": "Carrusel"
+                }
+            },
+            "pagination": {
+                "label": "Presentación",
+                "items": {
+                    "none": "Ninguna",
+                    "pages": "Páginas",
+                    "solicitude": "Solicitar",
+                    "infinite": "Infinito"
+                }
+            },
+            "results": {
+                "label": "Resultados"
+            }
+        },
+        "showGalerie": "Mostrar galería"
+    },
+    "en": {
+        "selectsGalleries": {
+            "design": {
+                "label": "Designs",
+                "items": {
+                    "none": "None",
+                    "button": "Buttons",
+                    "label": "With labels",
+                    "card": "Cards",
+                    "table": "Table"
+                }
+            },
+            "display": {
+                "label": "Presentation",
+                "items": {
+                    "grid": "Grid",
+                    "list": "List",
+                    "slider": "Carousel"
+                }
+            },
+            "pagination": {
+                "label": "Pagination",
+                "items": {
+                    "none": "None",
+                    "pages": "Pages",
+                    "solicitude": "Request",
+                    "infinite": "Infinite"
+                }
+            },
+            "results": {
+                "label": "Results"
+            }
+        },
+        "showGalerie": "Show gallery"
+    }
+}

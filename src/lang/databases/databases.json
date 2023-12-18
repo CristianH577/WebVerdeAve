@@ -1,0 +1,28 @@
+{
+    "es": {
+        "tableAria": "Tabla de bases de datos",
+        "createTable": "Crear tabla",
+        "nameOfTable": "Nombre de la tabla",
+        "addToTable": "Agregar a la tabla",
+        "editRow": "Editar fila",
+        "databasesLabels": {
+            "col1": "Columna 1",
+            "col2": "Columna 2",
+            "col3": "Columna 3",
+            "col4": "Columna 4"
+        }
+    },
+    "en": {
+        "tableAria": "Database table",
+        "createTable": "Create table",
+        "nameOfTable": "Table name",
+        "addToTable": "Add to table",
+        "editRow": "Edit row",
+        "databasesLabels": {
+            "col1": "Column 1",
+            "col2": "Column 2",
+            "col3": "Column 3",
+            "col4": "Column 4"
+        }
+    }
+}

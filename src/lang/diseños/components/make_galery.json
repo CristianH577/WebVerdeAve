@@ -1,0 +1,24 @@
+{
+    "es": {
+        "cols": {
+            "img": "",
+            "title": "Titulo",
+            "text": "Texto",
+            "label": "Etiqueta",
+            "actions": "Acciones"
+        },
+        "loadMore": "Cargar Mas",
+        "totalE": "Elementos totales"
+    },
+    "en": {
+        "cols": {
+            "img": "",
+            "title": "Title",
+            "text": "Text",
+            "label": "Label",
+            "actions": "Actions"
+        },
+        "loadMore": "Load More",
+        "totalE": "Total Elements"
+    }
+}

@@ -1,0 +1,55 @@
+
+.dropdown-buttongroup button.min-w-unit-24,
+.dropdown-buttongroup button.min-w-unit-12 {
+    min-width: 0;
+}
+
+.dropdown-buttongroup button.w-unit-12 {
+    width: var(--nextui-spacing-unit-8);;
+}
+
+
+
+.css-menu-enter {
+    max-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    opacity: 0;
+}
+
+.css-menu-enter-active {
+    transition: 1s;
+    max-width: 100vw;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    opacity: 1;
+}
+
+.css-menu-enter-done {
+    max-width: 100vw;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    opacity: 1;
+}
+
+.css-menu-exit {
+    max-width: 100vw;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    opacity: 1;
+}
+
+.css-menu-exit-active {
+    transition: 1s;
+    max-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    opacity: 0;
+}
+
+.css-menu-exit-done {
+    max-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    opacity: 0;
+}

@@ -1,0 +1,14 @@
+{
+    "es": {
+        "fixed": "Haga click para fijarme",
+        "move": "Haga click para moverme",
+        "long": "Longitud",
+        "lat": "Latitud"
+    },
+    "en": {
+        "fixed": "Click to fix",
+        "move": "Click to move",
+        "long": "Longitude",
+        "lat": "Latitude"
+    }
+}

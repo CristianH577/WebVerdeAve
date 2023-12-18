@@ -1,0 +1,16 @@
+{
+    "es":{
+        "progress": "Progreso",
+        "start": "Inicio",
+        "final": "Final",
+        "active": "Activo",
+        "inactive": "Inactivo"
+    },
+    "en":{
+        "progress": "Progress",
+        "start": "Start",
+        "final": "End",
+        "active": "Active",
+        "inactive": "Inactive"
+    }
+}

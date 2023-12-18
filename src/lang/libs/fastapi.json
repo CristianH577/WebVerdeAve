@@ -1,0 +1,74 @@
+{
+    "es": {
+        "errors_server": {
+            "": {
+                "title": "Indefinido",
+                "content": "Error desconocido"
+            },
+            "fapi": {
+                "title": "FastAPI",
+                "content": "Error de código"
+            },
+            "server": {
+                "title": "Servidor",
+                "content": "Problema en el servidor"
+            },
+            "execute": {
+                "title": "Ejecutar",
+                "content": "Problema en el servidor"
+            },
+            "response": {
+                "title": "Respuesta",
+                "content": "Problema al recibir respuesta del servidor"
+            },
+            "form": {
+                "title": "Formulario",
+                "content": "Faltan datos en la solicitud"
+            },
+            "handle": {
+                "title": "Servidor",
+                "content": ""
+            },
+            "format": {
+                "title": "Formato",
+                "content": "Formato de archivo inválido"
+            }
+        }
+    },
+    "en": {
+        "errors_server": {
+            "": {
+                "title": "Undefined",
+                "content": "Unknown error"
+            },
+            "fapi": {
+                "title": "FastAPI",
+                "content": "Code error"
+            },
+            "server": {
+                "title": "Server",
+                "content": "Problem on the server"
+            },
+            "execute": {
+                "title": "Execute",
+                "content": "Problem on the server"
+            },
+            "response": {
+                "title": "Response",
+                "content": "Issue receiving server response"
+            },
+            "form": {
+                "title": "Form",
+                "content": "Missing data in the request"
+            },
+            "handle": {
+                "title": "Server",
+                "content": ""
+            },
+            "format": {
+                "title": "Format",
+                "content": "Invalid file format"
+            }
+        }
+    }
+}
