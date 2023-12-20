@@ -2,6 +2,7 @@
     "es": {
         "analyze": "análisis de Datos",
         "contact": "contacto",
+        "mas": "más",
         "databases": "base de datos",
         "cartas": "cartas",
         "galerias": "galerías",
@@ -91,6 +92,7 @@
     "en": {
         "analyze": "Data Analysis",
         "contact": "Contact",
+        "mas": "more",
         "databases": "Database",
         "cartas": "Cards",
         "galerias": "Galleries",

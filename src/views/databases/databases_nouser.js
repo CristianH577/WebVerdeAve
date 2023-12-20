@@ -6,17 +6,19 @@ import { useOutletContext } from 'react-router-dom';
 import { Button, ButtonGroup, Divider, Link } from "@nextui-org/react";
 import { Input, Tooltip } from "@nextui-org/react";
 
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import CustomTable from '../../components/custom_table'
 
 import { name, surname, username, fullname } from 'react-lorem-ipsum';
 
-
 import { Delete, Check, Edit, Reset } from '../../assets/icons.js';
 
+import { getAPI } from '../../../src/libs/api';
 
-function DatabasesNoUser() {
+
+function DatabasesNoUser({ user, setUser }) {
     const context = useOutletContext()
     const langText = {
         ...context.langText[context.lang],
@@ -302,6 +304,35 @@ function DatabasesNoUser() {
         // eslint-disable-next-line
     }, [edit])
 
+    useEffect(() => {
+        // eslint-disable-next-line
+        async function getUser() {
+            if (!user) {
+                for (let i = 0; i < 3; i++) {
+                    const newId = Math.floor(Math.random() * (1000 - 1 + 1) + 1)
+
+                    const validateIdUser = await getAPI('es/Databases_Controller/validateIdUser?idUser=' + newId, false)
+
+                    if (typeof validateIdUser.value === 'object') {
+                        i = 3
+                    } else {
+                        if (!validateIdUser.value) {
+                            i = 3
+                            setUser({
+                                id: newId
+                            })
+                        }
+                    }
+                }
+            }
+        }
+
+        // window.addEventListener("load", getUser)
+
+        getUser()
+        // eslint-disable-next-line
+    },[])
+
 
     return (
         <main className={context.mainClass}>
@@ -584,6 +615,19 @@ function DatabasesNoUser() {
                     </section>
                 )
             )}
+
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme={context.dark ? 'dark' : 'light'}
+            />
 
         </main >
     );

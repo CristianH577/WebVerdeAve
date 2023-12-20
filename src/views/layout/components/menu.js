@@ -14,7 +14,7 @@ import { CSSTransition } from 'react-transition-group'
 import ave from '../../../assets/imgs/ave.png'
 import buho from '../../../assets/imgs/buho.png'
 import { ChevronDown, MoonIcon, SunIcon, ChevronRight, ChevronLeft } from '../../../assets/icons.js';
-import { Cards, Forms, Galleries, Maps, Sliders, Bag, Tables } from '../../../assets/icons.js';
+import { Cards, Forms, Galleries, Maps, Sliders, Bag, Tables, More } from '../../../assets/icons.js';
 
 
 function Menu({ darkMode, lang }) {
@@ -44,7 +44,7 @@ function Menu({ darkMode, lang }) {
     presentaciones: <Sliders />,
     showroom: <Bag />,
     tablas: <Tables />,
-
+    mas: <More />,
   }
 
   const menuItems = ['inicio', 'disenos', 'databases', 'analisis']
@@ -56,7 +56,8 @@ function Menu({ darkMode, lang }) {
       "mapas",
       "presentaciones",
       "showroom",
-      "tablas"
+      "tablas",
+      "mas"
     ]
   }
 

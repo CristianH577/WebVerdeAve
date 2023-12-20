@@ -14,7 +14,6 @@ import CustomTable from '../../components/custom_table'
 import { postAPI, getAPI } from '../../libs/api';
 import { name, surname, username, fullname } from 'react-lorem-ipsum';
 
-
 import { Delete, Check, Edit, Reset } from '../../assets/icons.js';
 
 

@@ -14,6 +14,7 @@ import Formularios from "./views/diseños/formularios";
 import Showroom from "./views/diseños/showroom";
 import Tablas from "./views/diseños/tablas";
 import Mapas from "./views/diseños/mapas";
+import Mas from "./views/diseños/mas";
 
 import Analisis from "./views/analisis/analisis";
 
@@ -24,7 +25,7 @@ import Test from "./views/plantilla/test";
 
 
 // usuario----------------------------------------------------------------------
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getAPI } from '../src/libs/api';
 import { useBeforeUnload } from "react-router-dom";
 // ----------------------------------------------------------------------
@@ -41,34 +42,6 @@ function App() {
     }
   }
   useBeforeUnload(deleteUser)
-
-
-  useEffect(() => {
-    // eslint-disable-next-line
-    async function getUser() {
-      if (!user) {
-        for (let i = 0; i < 3; i++) {
-          const newId = Math.floor(Math.random() * (1000 - 1 + 1) + 1)
-
-          const validateIdUser = await getAPI('es/Databases_Controller/validateIdUser?idUser=' + newId, false)
-
-          if (typeof validateIdUser.value === 'object') {
-            i = 3
-          } else {
-            if (!validateIdUser.value) {
-              i = 3
-              setUser({
-                id: newId
-              })
-            }
-          }
-        }
-      }
-    }
-
-    getUser()
-    // eslint-disable-next-line
-  })
   // ----------------------------------------------------------------------
 
 
@@ -110,6 +83,10 @@ function App() {
       path: 'disenos/mapas',
       content: <Mapas />,
     },
+    {
+      path: 'disenos/mas',
+      content: <Mas />,
+    },
 
     {
       path: 'analisis',
@@ -118,7 +95,7 @@ function App() {
 
     {
       path: 'databases',
-      content: user ? <Databases user={user} setUser={setUser} /> : <DatabasesNoUser />,
+      content: user ? <Databases user={user} setUser={setUser} /> : <DatabasesNoUser user={user} setUser={setUser} />,
     },
 
     {

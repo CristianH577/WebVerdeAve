@@ -41,6 +41,13 @@ html {
     background-color: hsl(var(--nextui-secondary-200) / var(--nextui-background-opacity, var(--tw-bg-opacity)));
 }
 
+
+body.dark-mode div[data-open=true]{
+    background-color: rgba(24,25,26,255);
+    color: white;
+}
+
+
 /* input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus ,

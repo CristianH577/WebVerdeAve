@@ -36,6 +36,10 @@
                     "tablas": {
                         "label": "Tablas",
                         "desc": "Listas ordenadas y dinámicas."
+                    },
+                    "mas": {
+                        "label": "Más",
+                        "desc": "Otros."
                     }
                 }
             },
@@ -98,6 +102,10 @@
                     "tablas": {
                         "label": "Tables",
                         "desc": "Ordered and dynamic lists."
+                    },
+                    "mas": {
+                        "label": "More",
+                        "desc": "Others."
                     }
                 }
             },

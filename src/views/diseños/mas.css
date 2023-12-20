@@ -1,0 +1,23 @@
+
+#graph.rounded-lg svg{
+    border-radius: 0.5rem;
+}
+
+#graph svg g g text {
+    fill: hsl(var(--nextui-foreground) / var(--nextui-foreground-opacity, var(--tw-text-opacity)));
+}
+
+#graph .google-visualization-tooltip path{
+    fill: hsl(var(--nextui-content1) / var(--nextui-content1-opacity, var(--tw-bg-opacity)));
+}
+
+#graph svg>rect {
+    fill: hsl(var(--nextui-content1) / var(--nextui-content1-opacity, var(--tw-bg-opacity)));
+}
+
+
+@media screen and (min-width: 360px) {
+    #graph.xs\:rounded-lg svg{
+        border-radius: 0.5rem;
+    }
+}
