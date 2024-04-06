@@ -1,0 +1,42 @@
+{
+    "es": {
+        "new_char": "Nuevo Personaje",
+        "stats_points": {
+            "title": "Puntos de estadísticas",
+            "hp_max": "HP",
+            "damage": "Daño",
+            "defence": "Defensa"
+        },
+        "select_clase": {
+            "title": "Seleccione una clase",
+            "mage": "Mago",
+            "tank": "Tanque",
+            "warrior": "Guerrero"
+        },
+        "validation": {
+            "add": "Debe usar todos los puntos",
+            "clase": "Elija una clase"
+        },
+        "create": "Crear"
+    },
+    "en": {
+        "new_char": "New Character",
+        "stats_points": {
+            "title": "Statistics Points",
+            "hp_max": "HP",
+            "damage": "Damage",
+            "defence": "Defense"
+        },
+        "select_clase": {
+            "title": "Select a Class",
+            "mage": "Mage",
+            "tank": "Tank",
+            "warrior": "Warrior"
+        },
+        "validation": {
+            "add": "You must use all points",
+            "clase": "Choose a class"
+        },
+        "create": "Create"
+    }
+}

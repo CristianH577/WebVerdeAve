@@ -1,0 +1,13 @@
+#graph svg g g text{
+    fill: hsl(var(--nextui-foreground) / var(--nextui-foreground-opacity, var(--tw-text-opacity)));
+}
+#graph svg > rect{
+    /* fill: hsl(var(--nextui-background) / var(--nextui-background-opacity, var(--tw-bg-opacity))); */
+    fill: hsl(var(--nextui-content1) / var(--nextui-content1-opacity, var(--tw-bg-opacity)));
+}
+/* g g 2do g */
+/* #graph svg g g g g{
+    fill: red;
+    stroke: red;
+    color: red;
+} */

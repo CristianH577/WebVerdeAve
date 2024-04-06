@@ -1,0 +1,50 @@
+{
+    "es": {
+        "filters": {
+            "remove": "quitar",
+            "results": {
+                "label": "Resultados"
+            },
+            "category": {
+                "label": "Categoria",
+                "items": {
+                    "fruta": "fruta",
+                    "bebida": "bebida",
+                    "higiene": "higiene",
+                    "despensa": "despensa",
+                    "misc": "misc"
+                }
+            },
+            "marca": {
+                "label": "Marca"
+            },
+            "rank": {
+                "label": "Clasificacion"
+            }
+        }
+    },
+    "en": {
+        "filters": {
+            "remove": "remove",
+            "results": {
+                "label": "Results"
+            },
+            "category": {
+                "label": "Category",
+                "items": {
+                    "fruta": "fruit",
+                    "bebida": "beverage",
+                    "higiene": "hygiene",
+                    "despensa": "pantry",
+                    "misc": "miscellaneous"
+                }
+            },
+            "marca": {
+                "label": "Brand"
+            },
+            "rank": {
+                "label": "Rank"
+            }
+        }
+    }
+}

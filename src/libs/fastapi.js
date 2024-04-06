@@ -9,74 +9,103 @@ const client = axios.create({
     baseURL: baseURL
 })
 
-var lang = 'es'
 const langText = addLangText
+
+var config = {
+    lang: 'es',
+    dark: false,
+    toastId: 'toast_server'
+}
 
 const defaultAlert = {
     bool: false,
     variant: 'warning',
-    msg: langText[lang].errors_server.fapi,
+    msg: langText[config.lang].errors_server.fapi,
     value: false,
+    status: false,
 }
 var alert = { ...defaultAlert }
 
 
 const analyzeResponse = (response) => {
-    // console.log(response)
     alert.variant = 'danger'
 
-    if (typeof response.data === 'object') {
-        const error = response.data.error
-        const answer = response.data.answer
+    alert.status = response.status
 
-        if (error) {
-            alert.msg = langText[lang].errors_server[error] ? langText[lang].errors_server[error] : langText[lang].errors_server['']
-            if (error === 'handle') {
-                alert.msg.content = response.data.errorValue
-            }
-        }
-        else if (answer || answer === '' || answer.length === 0 || answer === 0 || answer === false) {
-            alert.bool = true
-            alert.variant = "success"
-            alert.value = answer
-        }
+    if (response.status < 200 || response.status > 299) {
+        alert.msg = response.detail
     }
     else {
-        alert.msg = langText[lang].errors_server.response
+        alert.bool = true
+        alert.variant = "success"
+        alert.value = response.data
     }
 
 }
 const showAlert = (alertToShow) => {
     const msg = <div>
         <div className='font-semibold'>{alertToShow.msg.title}:</div>
-        <div className=''>{alertToShow.msg.content}.</div>
+        <div >{alertToShow.msg.content}.</div>
     </div>
 
+    var type = toast.TYPE.DEFAULT
     switch (alertToShow.variant) {
         case 'info':
-            toast.info(msg)
+            type = toast.TYPE.INFO
             break;
         case 'success':
-            toast.success(msg)
+            type = toast.TYPE.SUCCESS
             break;
         case 'warning':
-            toast.warning(msg)
+            type = toast.TYPE.WARNING
             break;
         case 'danger':
-            toast.error(msg)
+            type = toast.TYPE.ERROR
             break;
 
         default:
-            toast(msg)
             break;
     }
+
+    toast(msg, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        newestOnTop: false,
+        closeOnClick: true,
+        rtl: false,
+        pauseOnFocusLoss: true,
+        draggable: true,
+        pauseOnHover: true,
+        type: type,
+        theme: config.dark ? 'dark' : 'light',
+    })
+
 }
 
 
-export async function postFAPI(action, values, currentLang) {
+export async function getFAPI(action, newConfig) {
     alert = { ...defaultAlert }
 
-    currentLang && (lang = currentLang)
+    newConfig && (config = { ...config, ...newConfig })
+
+    await client.get(action)
+        .then(response => analyzeResponse(response))
+        .catch(e => {
+            alert.msg = langText[config.lang].errors_server.server
+        })
+
+    if (!alert.bool) {
+        showAlert(alert)
+    }
+
+    return alert
+}
+
+export async function postFAPI(action, values, newConfig) {
+    alert = { ...defaultAlert }
+
+    newConfig && (config = { ...config, ...newConfig })
 
     const formData = new FormData()
 
@@ -85,11 +114,10 @@ export async function postFAPI(action, values, currentLang) {
         formData.append(entries[i][0], entries[i][1])
     }
 
-    await client.post(action + "/", formData)
+    await client.post(action, formData)
         .then(response => analyzeResponse(response))
         .catch(e => {
-            // console.log(e)
-            alert.msg = langText[lang].errors_server.server
+            alert.msg = langText[config.lang].errors_server.server
         })
 
     if (!alert.bool) {
@@ -99,29 +127,10 @@ export async function postFAPI(action, values, currentLang) {
     return alert
 }
 
-export async function getFAPI(action, currentLang) {
+export async function postFAPIgraph(action, values, newConfig) {
     alert = { ...defaultAlert }
 
-    currentLang && (lang = currentLang)
-
-    await client.get(action + "/")
-        .then(response => analyzeResponse(response))
-        .catch(e => {
-            // console.log(e)
-            alert.msg = langText[lang].errors_server.server
-        })
-
-    if (!alert.bool) {
-        showAlert(alert)
-    }
-
-    return alert
-}
-
-export async function postFAPIgraph(action, values, currentLang) {
-    alert = { ...defaultAlert }
-
-    currentLang && (lang = currentLang)
+    newConfig && (config = { ...config, ...newConfig })
 
     const formData = new FormData()
 
@@ -132,11 +141,11 @@ export async function postFAPIgraph(action, values, currentLang) {
 
     var blob = false
 
-    const config = {
+    const config_post = {
         responseType: "blob",
     }
 
-    await client.post(action + "/", formData, config)
+    await client.post(action + "/", formData, config_post)
         .then(async (response) => {
             const isJsonBlob = (data) => data instanceof Blob && data.type === "application/json"
             const responseData = isJsonBlob(response?.data)
@@ -154,16 +163,34 @@ export async function postFAPIgraph(action, values, currentLang) {
             }
         })
         .catch(e => {
-            console.log(e)
-            alert.msg = langText[lang].errors_server.server
+            alert.msg = langText[config.lang].errors_server.server
         })
 
     if (!blob) {
-        alert.msg = langText[lang].errors_server.response
+        alert.msg = langText[config.lang].errors_server.response
     }
     if (!alert.bool) {
         showAlert(alert)
     }
 
     return blob
+}
+
+
+export async function deleteFAPI(action, newConfig) {
+    alert = { ...defaultAlert }
+
+    newConfig && (config = { ...config, ...newConfig })
+
+    await client.delete(action)
+        .then(response => analyzeResponse(response))
+        .catch(e => {
+            alert.msg = langText[config.lang].errors_server.server
+        })
+
+    if (!alert.bool) {
+        showAlert(alert)
+    }
+
+    return alert
 }

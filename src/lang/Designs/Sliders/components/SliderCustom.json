@@ -1,0 +1,66 @@
+{
+    "es": {
+        "title": "Personalizables",
+        "preferences": {
+            "label": "Preferencias",
+            "checks": {
+                "pagination": "paginación",
+                "loop": "bucle",
+                "autoplay": "autoplay",
+                "zoom": "zoom",
+                "vertical": "vertical"
+            }
+        },
+        "controls": {
+            "label": "Controles",
+            "checks": {
+                "buttons": "buttons",
+                "scroll": "rueda",
+                "keyboard": "teclado",
+                "mouse": "ratón"
+            }
+        },
+        "pagination": {
+            "label": "Paginación",
+            "checks": {
+                "bullets": "puntos",
+                "bar": "barra",
+                "fraction": "fracción",
+                "progressbar": "progreso",
+                "preview": "Vista"
+            }
+        }
+    },
+    "en": {
+        "title": "Customizable",
+        "preferences": {
+            "label": "Preferences",
+            "checks": {
+                "pagination": "pagination",
+                "loop": "loop",
+                "autoplay": "autoplay",
+                "zoom": "zoom",
+                "vertical": "vertical"
+            }
+        },
+        "controls": {
+            "label": "Controls",
+            "checks": {
+                "buttons": "buttons",
+                "scroll": "wheel",
+                "keyboard": "keyboard",
+                "mouse": "mouse"
+            }
+        },
+        "pagination": {
+            "label": "Pagination",
+            "checks": {
+                "bullets": "dots",
+                "bar": "bar",
+                "fraction": "fraction",
+                "progressbar": "progress",
+                "preview": "Preview"
+            }
+        }
+    }
+}

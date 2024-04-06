@@ -1,6 +1,6 @@
 import React from 'react';
 
-import addLangText from '../../lang/notfound/notfound.json'
+import addLangText from '../../lang/NotFound/NotFound.json'
 import { useOutletContext } from 'react-router-dom';
 
 

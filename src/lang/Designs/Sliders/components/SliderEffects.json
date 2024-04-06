@@ -1,0 +1,22 @@
+{
+    "es": {
+        "title": "Efectos",
+        "checks": {
+            "cube": "cubo",
+            "flip": "voltear",
+            "coverflow": "fluido",
+            "cards": "cartas",
+            "creative": "tirar atrás"
+        }
+    },
+    "en": {
+        "title": "Effects",
+        "checks": {
+            "cube": "cube",
+            "flip": "flip",
+            "coverflow": "flow",
+            "cards": "cards",
+            "creative": "pull back"
+        }
+    }
+}

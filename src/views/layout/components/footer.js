@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import addLangText from '../../../lang/layout/footer.json'
+import addLangText from '../../../lang/Layout/Footer.json'
 
 import { Button, ButtonGroup, Divider, Tooltip, Link } from "@nextui-org/react";
 
 import { useNavigate } from "react-router-dom";
 
-import { ArrowDownUp, WhatsApp, Youtube, Linkedin, GitHub, Discord } from '../../../assets/icons.js';
+import { ArrowDownUp, WhatsApp, Youtube, Linkedin, GitHub, Discord, Instagram } from '../../../assets/icons.js';
 
 
 function Footer({ dark, lang }) {
@@ -25,9 +25,10 @@ function Footer({ dark, lang }) {
         {
             key: 'sections',
             elements: [
-                'disenos',
-                'databases',
-                'analisis',
+                'home',
+                'designs',
+                'apis',
+                'prices',
             ],
         },
         {
@@ -40,7 +41,6 @@ function Footer({ dark, lang }) {
         },
     ]
     const contact = {
-        // email: 'cristian.herrera07@hotmail.com',
         email: <a href='mailto:cristian.herrera07@hotmail.com'>cristian.herrera07@hotmail.com</a>,
         cel: '+54 381 315 6907',
         direc: 'S.M. de Tucumán (Capital), Tucumán, Argentina',
@@ -83,6 +83,13 @@ function Footer({ dark, lang }) {
             color: 'FF0000',
             className: 'hover:text-[#FF0000]',
         },
+        {
+            key: 'Instagram',
+            icon: <Instagram size={size} />,
+            link: 'https://www.instagram.com/verde_ave/',
+            color: 'e1306c',
+            className: 'hover:text-[#e1306c]',
+        },
     ]
 
 
@@ -106,6 +113,8 @@ function Footer({ dark, lang }) {
 
     return (
         <footer className='mt-auto bg-content1 shadow-inner'>
+
+            {/* socials */}
             {!loading &&
                 <div className={'flex justify-center py-6 mb-2 shadow-lg ' + (dark ? 'border-b border-neutral-600' : '')}>
                     <div className='flex justify-evenly flex-wrap w-full max-w-[800px]'>
@@ -113,10 +122,10 @@ function Footer({ dark, lang }) {
                             <Tooltip
                                 key={e.key}
                                 content={e.key} size='lg'
-                                offset={-6}
-                                className={dark ? 'text-white' : ''}
+                                offset={0}
+                                className={dark ? 'dark text-foreground ' : ''}
                                 classNames={{
-                                    base: 'shadow-none bg-transparent'
+                                    base: 'shadow-transparent bg-transparent',
                                 }}
                             >
                                 <Button
@@ -127,6 +136,7 @@ function Footer({ dark, lang }) {
                                     color='transparent'
                                     as={Link}
                                     isExternal
+                                    id={e.key}
                                 >
                                     {e.icon}
                                 </Button>
@@ -136,39 +146,42 @@ function Footer({ dark, lang }) {
                 </div>
             }
 
-            <div className='flex flex-col justify-evenly sm:flex-row px-6 sm:px-none sm:py-3'>
-                {sections.map((section, i) =>
-                    <div key={section.key} className='flex flex-col sm:flex-row'>
-                        {i !== 0 &&
-                            <>
-                                <Divider className='w-auto mx-1' />
-                                <Divider orientation="vertical" className='h-auto' />
-                            </>
-                        }
-                        <div className='py-3 text-center sm:text-start sm:ps-4'>
-                            <div className='font-semibold'>
-                                {langText.sections[section.key].label}:
+            <div className='center items-center'>
+                <div className='flex flex-col justify-evenly sm:flex-row sm:px-none sm:py-3 max-w-[1500px]'>
+                    {sections.map((section, i) =>
+                        <div key={section.key} className='flex flex-col sm:flex-row'>
+                            {i !== 0 &&
+                                <>
+                                    <Divider className='w-auto ' />
+                                    <Divider orientation="vertical" className='h-auto mx-4' />
+                                </>
+                            }
+
+                            <div className='py-3 text-center sm:text-start '>
+                                <div className='font-semibold'>
+                                    {langText[section.key].label}:
+                                </div>
+
+                                {section.elements.map((e, i) => {
+                                    switch (section.key) {
+                                        case 'sections':
+                                            return <div key={e} onClick={() => navigate('/' + e)} className='cursor-pointer hover:text-primary sm:ps-3 break-all'>
+                                                {langText[section.key].elements[e]}
+                                            </div>
+                                        case 'contact':
+                                            return <div key={e} className='sm:ps-3 max-[250px]:break-all'>
+                                                {langText[section.key].elements[e]}: {contact[e]}
+                                            </div>
+
+                                        default:
+                                            return null
+                                    }
+
+                                })}
                             </div>
-
-                            {section.elements.map((e, i) => {
-                                switch (section.key) {
-                                    case 'sections':
-                                        return <div key={e} onClick={() => navigate('/' + e)} className='cursor-pointer hover:text-primary sm:ps-3 break-all'>
-                                            {langText.sections[section.key].elements[e]}
-                                        </div>
-                                    case 'contact':
-                                        return <div key={e} className='sm:ps-3 break-all'>
-                                            {langText.sections[section.key].elements[e]}: {contact[e]}
-                                        </div>
-
-                                    default:
-                                        return null
-                                }
-
-                            })}
                         </div>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
 
             <div className='flex justify-center py-1 text-neutral-500 gap-2'>

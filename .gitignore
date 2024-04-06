@@ -24,7 +24,7 @@ yarn-error.log*
 
 
 # app
-/z
+/src/z
 porhacer.txt
 /src/views/plantilla
 /src/assets

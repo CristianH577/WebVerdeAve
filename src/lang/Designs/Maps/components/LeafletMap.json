@@ -1,0 +1,16 @@
+{
+    "es": {
+        "marks": "Marcadores",
+        "road": "Rutas",
+        "area": "Área",
+        "drag": "Marca",
+        "more": "Más"
+    },
+    "en": {
+        "marks": "Markers",
+        "road": "Routes",
+        "area": "Area",
+        "drag": "Mark",
+        "more": "More"
+    }
+}

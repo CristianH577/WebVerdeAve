@@ -1,0 +1,199 @@
+
+    // const makeCell = (x, y) => {
+    //     const value = coords[x][y]
+    //     var content = <></>
+    //     var clase = ''
+
+    //     switch (value) {
+    //         case 'wall':
+    //             clase = 'bg-secondary'
+    //             break;
+    //         case 'monster':
+    //             clase = 'center items-center'
+    //             content = <div className='bg-danger w-[20px] h-[20px]'></div>
+    //             break;
+    //         case 'chest':
+    //             clase = 'center items-center'
+    //             content = <div className='bg-success w-[20px] h-[20px]'></div>
+    //             break;
+    //         case 'trap':
+    //             clase = 'center items-center'
+    //             content = <div className='bg-primary w-[20px] h-[20px]'></div>
+    //             break;
+    //         case 'door':
+    //             var size = ''
+    //             switch (doors[x][y].side) {
+    //                 case 't':
+    //                     size = 'w-full h-[15px]'
+    //                     break;
+    //                 case 'b':
+    //                     size = 'w-full h-[15px] '
+    //                     clase = 'flex items-end'
+    //                     break;
+    //                 case 's':
+    //                     size = 'w-[15px] h-full'
+    //                     break;
+    //                 case 'e':
+    //                     size = 'w-[15px] h-full '
+    //                     clase = 'flex justify-end'
+    //                     break;
+
+    //                 default:
+    //                     break;
+    //             }
+    //             content = <div className={'bg-warning ' + size}></div>
+    //             break;
+
+    //         default:
+    //             break;
+    //     }
+
+    //     const mark = (value !== 'wall' && char && x === char.currentLoc.x && y === char.currentLoc.y) ? ' bg-success' : ''
+    //     return <div className={'min-w-[50px] h-[50px] ' + clase + mark}>
+    //         {content}
+    //     </div>
+    // }
+
+
+
+    const handleCellAction = e => {
+        const xy=e.target.getAttribute('data-xy')
+        const x = xy[0]
+        const y = parseInt(xy[1])
+        console.log(xy)
+        // const xy = e.split(',')
+        // const x = xy[0]
+        // const y = parseInt(xy[1])
+        // if (!e.includes('key')) {
+        //     if (checkMove(x, y)) {
+        //         setCurretCoords({ x: x, y: y })
+        //         handleInteraction(x, y)
+        //     }
+        // }
+    }
+
+  // const handleEvent = op => {
+    //     console.log(op)
+    //     switch (op) {
+    //         case 'n':
+    //             toast.dismiss(toastId.current)
+    //             toastId.current = null
+    //             break;
+
+    //         default:
+    //             break;
+    //     }
+    // }
+
+    // eslint-disable-next-line
+    // const checkHasMore = (x, y, i) => {
+    //     const new_msg = interactions[x][y][i + 1]
+    //     if (new_msg) {
+    //         var content = <></>
+    //         if (typeof (new_msg) === 'string') {
+    //             content = <div>
+    //                 <div className='pb-2'>
+    //                     {new_msg}.
+    //                 </div>
+    //                 <div className='text-sm text-neutral-500 text-end'>
+    //                     Click para continuar
+    //                 </div>
+    //             </div>
+
+    //             toast.update(toastId.current, {
+    //                 render: content,
+    //                 className: '!cursor-pointer rotateY animated',
+    //                 onClick: () => checkHasMore(x, y, i + 1)
+    //             })
+    //         }
+    //         else if (typeof (new_msg) === 'object') {
+    //             content = <div>
+    //                 <div>
+    //                     {new_msg.msg}.
+    //                 </div>
+    //                 <div className='center ps-2'>
+    //                     {new_msg.options.map(op =>
+    //                         <span
+    //                             key={op}
+    //                             className='italic hover:text-warning cursor-pointer'
+    //                             onClick={() => handleEvent(op)}
+    //                         >
+    //                             {'--> ' + op}
+    //                         </span>
+    //                     )}
+    //                 </div>
+    //             </div>
+
+    //             toast.update(toastId.current, {
+    //                 render: content,
+    //                 className: 'rotateY animated',
+    //             })
+    //         }
+    //     }
+    //     else {
+    //         toast.dismiss(toastId.current)
+    //     }
+    // }
+
+    // const handleInteraction = async (x, y) => {
+    //     if (interactions[x]) {
+    //         const interaction = interactions[x][y]
+    //         if (interaction) {
+    //             if (!toast.isActive(toastId.current)) {
+    //                 toastId.current = toast("")
+    //                 checkHasMore(x, y, -1)
+    //             }
+    //         }
+    //     }
+
+    //     // eslint-disable-next-line
+    //     // const r = await getFAPI("/checkMove?x=" + curretCoords.x + "&y=" + curretCoords.y, server_notify_config)
+    // }
+    // eslint-disable-next-line
+    // useEffect(handleInteraction, [curretCoords])
+
+    
+    
+
+<Table
+                id='map'
+                aria-label="Example static collection table"
+                classNames={{
+                    td: 'p-0 text-center border'
+                }}
+
+            // onCellAction={handleCellAction}
+            >
+                <TableHeader>
+                    {cols.map(x =>
+                        <TableColumn key={x}>{x}</TableColumn>
+                    )}
+                </TableHeader>
+
+                <TableBody>
+                    {[...Array(21)].map((y, i) =>
+                        <TableRow key={'row' + i}>
+                            {cols.map(x =>
+                                ['keys', 'keye'].includes(x)
+                                    ?
+                                    <TableCell
+                                        key={x + ',' + (i + 1)}
+                                    >
+                                        {i + 1}
+                                    </TableCell>
+                                    : <TableCell
+                                        key={x + ',' + (i + 1)}
+                                        data-hover={false}
+                                        className='data-[hover="true"]:cursor-pointer data-[hover="true"]:bg-danger'
+                                        onMouseEnter={e => {
+                                            if (checkAllowMove(x, i + 1)) e.currentTarget.setAttribute('data-hover', true)
+                                        }}
+                                        onMouseLeave={e => e.currentTarget.setAttribute('data-hover', false)}
+                                    >
+                                        {makeCell(x, i + 1)}
+                                    </TableCell>
+                            )}
+                        </TableRow>
+                    )}
+                </TableBody>
+            </Table>

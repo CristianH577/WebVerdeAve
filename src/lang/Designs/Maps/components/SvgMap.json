@@ -1,0 +1,16 @@
+{
+    "es": {
+        "labels": "Etiquetas",
+        "legends": "Leyendas",
+        "hover": "Hover",
+        "zoom": "Zoom",
+        "shadow": "Sombra"
+    },
+    "en": {
+        "labels": "Labels",
+        "legends": "Legends",
+        "hover": "Hover",
+        "zoom": "Zoom",
+        "shadow": "Shadow"
+    }
+}

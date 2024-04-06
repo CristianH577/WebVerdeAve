@@ -2,8 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    @font-face {
+        font-family: 'campana script';
+        src: url('./assets/fonts/campana_script/CampanaScript_PERSONAL_USE_ONLY.otf') format('truetype');
+    }
+
+    @font-face {
+        font-family: 'gobold';
+        src: url('./assets/fonts/gobold/Gobold\ Extra1.otf') format('truetype');
+    }
+
+    @font-face {
+        font-family: 'comfortaa';
+        src: url('./assets/fonts/comfortaa/Comfortaa-Regular.ttf') format('truetype');
+    }
+    @font-face {
+        font-family: 'champagne_limousines';
+        src: url('./assets/fonts/champagne_limousines/Champagne\ &\ Limousines.ttf') format('truetype');
+    }
+
+    @font-face {
+        font-family: 'calinastiya';
+        src: url('./assets/fonts/calinastiya/Calinastiya\ demo.ttf') format('truetype');
+    }
+
+
+}
+
 html {
     scroll-behavior: smooth;
+    font-family: cursive;
 }
 
 .break-all {
@@ -15,6 +44,31 @@ html {
     flex-direction: column;
     justify-content: center;
 }
+
+.custom-title {
+    font-family: 'campana script', 'helvetica';
+    font-style: italic;
+    text-shadow:
+        1px 1px 2px hsl(var(--nextui-background) / var(--nextui-background-opacity, var(--tw-bg-opacity))),
+        0 0 1em green,
+        0 0 0.2em green;
+    transition: all .4s;
+}
+
+body.dark-mode .custom-title {
+    text-shadow:
+        1px 1px 2px hsl(var(--nextui-background) / var(--nextui-background-opacity, var(--tw-bg-opacity))),
+        0 0 1em palegreen,
+        0 0 0.2em palegreen;
+}
+
+.border-custom {
+    /* border-image-source: url("./assets/borders/borde.png"); */
+    border-image-width: 50px;
+    border-image-slice: 70;
+    border-image-repeat: round;
+}
+
 
 /* fix */
 .bg-danger-100 {
@@ -42,45 +96,6 @@ html {
 }
 
 
-body.dark-mode div[data-open=true]{
-    background-color: rgba(24,25,26,255);
-    color: white;
-}
-
-
-/* input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus ,
-input:-webkit-autofill:active
-{
-    box-shadow: 0 0 0px 30px transparent inset !important;
-    -webkit-box-shadow: 0 0 0 30px transparent inset !important;
-} */
-/* .form-input div input:-webkit-autofill,
-.form-input div input:-webkit-autofill:hover,
-.form-input div input:-webkit-autofill:focus ,
-.form-input div input:-webkit-autofill:active
-{
-    box-shadow: 0 0 0px 30px transparent inset !important;
-    -webkit-box-shadow: 0 0 0 30px transparent inset !important;
-} */
-
-/* input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: #ffffff;
-    transition: background-color 5000s ease-in-out 0s;
-    box-shadow: inset 0 0 20px 20px #23232329;
-} */
-/* input:-webkit-autofill,
-input:-webkit-autofill:focus {
-    transition: background-color 600000s 0s, color 600000s 0s;
-}
-input[data-autocompleted] {
-    background-color: transparent !important;
-} */
 
 /* @media screen and (min-width: 0px) {}
 
@@ -97,11 +112,17 @@ input[data-autocompleted] {
 
 
 @media screen and (max-width: 360px) {
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
     .form-xs {
         border-radius: 0;
         padding-left: 0;
         padding-right: 0;
         width: 100%;
+        border-left: 0;
+        border-right: 0;
     }
 
     .form-xs .form-input div {

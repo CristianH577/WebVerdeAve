@@ -1,31 +1,31 @@
 {
     "es": {
-        "menuItems": {
-            "inicio": {
+        "menu_items": {
+            "home": {
                 "label": "Inicio",
                 "desc": ""
             },
-            "disenos": {
+            "designs": {
                 "label": "Diseños",
                 "desc": "Modelos y elementos para su página.",
-                "elements": {
-                    "cartas": {
+                "sub_items": {
+                    "cards": {
                         "label": "Cartas",
                         "desc": "Contenedor de texto, fotos y acciones."
                     },
-                    "formularios": {
+                    "forms": {
                         "label": "Formularios",
                         "desc": "Ingreso o recopilación de datos."
                     },
-                    "galerias": {
+                    "galeries": {
                         "label": "Galerías",
                         "desc": "Galería de imágenes o cartas."
                     },
-                    "mapas": {
+                    "maps": {
                         "label": "Mapas",
                         "desc": "Ubicaciones y locaciones."
                     },
-                    "presentaciones": {
+                    "sliders": {
                         "label": "Presentaciones",
                         "desc": "Muestra de fotos y videos."
                     },
@@ -33,30 +33,36 @@
                         "label": "Showroom",
                         "desc": "Muestra y búsqueda de artículos."
                     },
-                    "tablas": {
+                    "tables": {
                         "label": "Tablas",
                         "desc": "Listas ordenadas y dinámicas."
                     },
-                    "mas": {
+                    "more": {
                         "label": "Más",
                         "desc": "Otros."
                     }
                 }
             },
-            "databases": {
-                "label": "Base de datos",
-                "desc": "Crear y administrar bases de datos."
+            "apis": {
+                "label": "APIs",
+                "desc": "Métodos y procesamientos para servidores.",
+                "sub_items": {
+                    "databases": {
+                        "label": "Base de datos",
+                        "desc": "Crear y administrar bases de datos."
+                    },
+                    "analyze": {
+                        "label": "Análisis de datos",
+                        "desc": "Modificar, analizar y graficar datos."
+                    },
+                    "game": {
+                        "label": "Juego",
+                        "desc": "Juego de rol sencillo en tablero ."
+                    }
+                }
             },
-            "analisis": {
-                "label": "Análisis de datos",
-                "desc": "Modificar, analizar y graficar datos."
-            },
-            "contacto": {
-                "label": "Contacto",
-                "desc": "Mensajes o consultas."
-            },
-            "test": {
-                "label": "test",
+            "prices": {
+                "label": "Precios",
                 "desc": ""
             }
         },
@@ -66,63 +72,69 @@
         }
     },
     "en": {
-        "menuItems": {
-            "inicio": {
+        "menu_items": {
+            "home": {
                 "label": "Home",
                 "desc": ""
             },
-            "disenos": {
+            "designs": {
                 "label": "Designs",
-                "desc": "Models and elements for your page.",
-                "elements": {
-                    "cartas": {
+                "desc": "Models and sub_items for your page.",
+                "sub_items": {
+                    "cards": {
                         "label": "Cards",
                         "desc": "Container for text, photos, and actions."
                     },
-                    "formularios": {
+                    "forms": {
                         "label": "Forms",
-                        "desc": "Input or data collection."
+                        "desc": "Data entry or collection."
                     },
-                    "galerias": {
+                    "galeries": {
                         "label": "Galleries",
-                        "desc": "Gallery of images or cards."
+                        "desc": "Image or card gallery."
                     },
-                    "mapas": {
+                    "maps": {
                         "label": "Maps",
                         "desc": "Locations and places."
                     },
-                    "presentaciones": {
-                        "label": "Slideshows",
+                    "sliders": {
+                        "label": "Sliders",
                         "desc": "Display of photos and videos."
                     },
                     "showroom": {
                         "label": "Showroom",
                         "desc": "Display and search for items."
                     },
-                    "tablas": {
+                    "tables": {
                         "label": "Tables",
                         "desc": "Ordered and dynamic lists."
                     },
-                    "mas": {
+                    "more": {
                         "label": "More",
                         "desc": "Others."
                     }
                 }
             },
-            "databases": {
-                "label": "Database",
-                "desc": "Create and manage databases."
+            "apis": {
+                "label": "APIs",
+                "desc": "Methods and processing for servers.",
+                "sub_items": {
+                    "databases": {
+                        "label": "Database",
+                        "desc": "Create and manage databases."
+                    },
+                    "analyze": {
+                        "label": "Data Analysis",
+                        "desc": "Modify, analyze, and graph data."
+                    },
+                    "game": {
+                        "label": "Game",
+                        "desc": "Simple role-playing game on board."
+                    }
+                }
             },
-            "analisis": {
-                "label": "Data Analysis",
-                "desc": "Modify, analyze, and graph data."
-            },
-            "contacto": {
-                "label": "Contact",
-                "desc": "Messages or inquiries."
-            },
-            "test": {
-                "label": "Test",
+            "prices": {
+                "label": "Prices",
                 "desc": ""
             }
         },

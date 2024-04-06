@@ -6,8 +6,8 @@ import useDarkMode from "use-dark-mode";
 
 import { Skeleton } from "@nextui-org/react";
 
-import Menu from './components/menu.js';
-import Footer from './components/footer';
+import Menu from './components/Menu.js';
+import Footer from './components/Footer.js';
 
 
 function Layout() {
@@ -45,8 +45,8 @@ function Layout() {
             dark: darkMode.value,
             lang: lang,
             langText: langText,
-            mainClass: 'sm:mx-8 my-8 flex flex-col items-center min-[360px]:px-2',
-            titleClass: 'font-bold text-7xl mb-8 break-words w-full text-center capitalize',
+            mainClass: 'sm:mx-8 my-8 flex flex-col items-center xs:px-2',
+            titleClass: 'custom-title text-9xl mb-8 break-all text-center capitalize',
           }}
         />
         : <Skeleton className={titleClass + ' mt-4'}>Cargando...</Skeleton>

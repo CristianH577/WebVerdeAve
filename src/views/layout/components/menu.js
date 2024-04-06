@@ -1,6 +1,6 @@
 import React, { createRef, useEffect, useState } from 'react';
-import './menu.css'
-import addLangText from '../../../lang/layout/menu.json'
+import './Menu.css'
+import addLangText from '../../../lang/Layout/Menu.json'
 
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -15,6 +15,8 @@ import ave from '../../../assets/imgs/ave.png'
 import buho from '../../../assets/imgs/buho.png'
 import { ChevronDown, MoonIcon, SunIcon, ChevronRight, ChevronLeft } from '../../../assets/icons.js';
 import { Cards, Forms, Galleries, Maps, Sliders, Bag, Tables, More } from '../../../assets/icons.js';
+import { Game, Analyze, Databases } from '../../../assets/icons.js';
+
 
 
 function Menu({ darkMode, lang }) {
@@ -30,44 +32,52 @@ function Menu({ darkMode, lang }) {
   const refCss = createRef()
 
   const icons = {
-    ChevronDown: <ChevronDown size={20} />,
+    open_menu: <ChevronDown size={25} />,
     ChevronRight: <ChevronRight size={20} />,
     ChevronLeft: <ChevronLeft size={20} />,
 
     moon: <MoonIcon className='text-[#eae4d9]' />,
     sun: <SunIcon className='text-warning' />,
 
-    cartas: <Cards />,
-    formularios: <Forms />,
-    galerias: <Galleries />,
-    mapas: <Maps />,
-    presentaciones: <Sliders />,
+    cards: <Cards />,
+    forms: <Forms />,
+    galeries: <Galleries />,
+    maps: <Maps />,
+    sliders: <Sliders />,
     showroom: <Bag />,
-    tablas: <Tables />,
-    mas: <More />,
+    tables: <Tables />,
+    more: <More />,
+
+    analyze: <Analyze />,
+    databases: <Databases />,
+    game: <Game />,
   }
 
-  const menuItems = ['inicio', 'disenos', 'databases', 'analisis']
-  const subMenus = {
-    disenos: [
-      "cartas",
-      "formularios",
-      "galerias",
-      "mapas",
-      "presentaciones",
+  const menu_items = ['home', 'designs', 'apis', 'prices']
+  const sub_menus = {
+    designs: [
+      "cards",
+      "forms",
+      "galeries",
+      "maps",
+      "sliders",
       "showroom",
-      "tablas",
-      "mas"
-    ]
+      "tables",
+      "more"
+    ],
+    apis: [
+      'databases',
+      'analyze',
+      'game'
+    ],
   }
 
   const hoverCustom = darkMode.value ? 'hover:bg-[#eae4d9]' : 'hover:bg-[#92c5fc]'
 
 
   const menuDrop = <>
-    {menuItems.map(item => subMenus[item] === undefined
-      ?
-      <NavbarMenuItem
+    {menu_items.map(item => sub_menus[item] === undefined
+      ? <NavbarMenuItem
         key={item}
         data-active={[item].includes(location.pathname.split('/')[1])}
         className='data-[active=true]:font-semibold border-y border-neutral-300 hover:border-transparent'
@@ -78,12 +88,11 @@ function Menu({ darkMode, lang }) {
           size="lg"
           onClick={() => navigate("/" + item)}
         >
-          {langText.menuItems[item].label}
+          {langText.menu_items[item].label}
         </LinkNextUI>
       </NavbarMenuItem>
 
-      :
-      <Accordion
+      : <Accordion
         key={item}
         variant="splitted"
         className=' px-0 border-y border-neutral-300 hover:border-transparent'
@@ -95,8 +104,8 @@ function Menu({ darkMode, lang }) {
         }}
       >
         <AccordionItem
-          aria-label={langText.menuItems[item].label}
-          title={langText.menuItems[item].label}
+          aria-label={langText.menu_items[item].label}
+          title={langText.menu_items[item].label}
           className={(darkMode.value ? 'data-[open=true]:bg-[#eae4d9]' : 'data-[open=true]:bg-[#92c5fc]')}
         >
           <LinkNextUI
@@ -106,9 +115,9 @@ function Menu({ darkMode, lang }) {
             onClick={() => navigate('/' + item)}
             data-active={[item].includes(location.pathname.split('/')[1]) && !location.pathname.split('/')[2]}
           >
-            {langText.menuItems[item].label}
+            {langText.menu_items[item].label}
           </LinkNextUI>
-          {subMenus[item].map(sub =>
+          {sub_menus[item].map(sub =>
             <LinkNextUI
               key={sub}
               color='foreground'
@@ -117,7 +126,7 @@ function Menu({ darkMode, lang }) {
               onClick={() => navigate('/' + item + '/' + sub)}
               data-active={location.pathname.includes(sub)}
             >
-              {langText.menuItems[item].elements[sub].label}
+              {langText.menu_items[item].sub_items[sub].label}
             </LinkNextUI>
           )}
         </AccordionItem>
@@ -131,10 +140,10 @@ function Menu({ darkMode, lang }) {
       variant='faded'
       className={'max-xs:!px-0 transition ease-in !duration-1000 ' + (showSubmenu ? 'opacity-0' : '')}
     >
-      {menuItems.map((item) =>
+      {menu_items.map((item) =>
         <ListboxItem
           key={item}
-          endContent={subMenus[item] &&
+          endContent={sub_menus[item] &&
             <Button
               isIconOnly
               onClick={() => setShowSubmenu(item)}
@@ -144,7 +153,7 @@ function Menu({ darkMode, lang }) {
               {icons.ChevronRight}
             </Button>
           }
-          description={langText.menuItems[item].desc}
+          description={langText.menu_items[item].desc}
           onClick={() => navigate("/" + item)}
 
           className='max-xs:rounded-none max-xs:border-x-0 max-xs:w-full'
@@ -152,12 +161,12 @@ function Menu({ darkMode, lang }) {
             title: 'text-lg ' + (location.pathname.includes(item) && 'font-semibold')
           }}
         >
-          {langText.menuItems[item].label}
+          {langText.menu_items[item].label}
         </ListboxItem>
       )}
     </Listbox>
 
-    {menuItems.map((item) => subMenus[item] && (
+    {menu_items.map((item) => sub_menus[item] && (
       <CSSTransition
         key={'submenu' + item}
         nodeRef={refCss}
@@ -167,7 +176,7 @@ function Menu({ darkMode, lang }) {
         classNames={"css-menu"}
       >
         < Listbox
-          aria-label={"Submenu de " + langText.menuItems[item].label}
+          aria-label={"Submenu de " + langText.menu_items[item].label}
           ref={refCss}
           variant='faded'
           className='absolute top-0 left-0 max-w-0 px-0 py-2 opacity-0 max-xs:!px-0 '
@@ -185,10 +194,10 @@ function Menu({ darkMode, lang }) {
               {icons.ChevronLeft}
             </Button>
           </ListboxItem>
-          {subMenus[item].map(sub =>
+          {sub_menus[item].map(sub =>
             <ListboxItem
               key={sub}
-              description={langText.menuItems[item].elements[sub].desc}
+              description={langText.menu_items[item].sub_items[sub].desc}
               onClick={() => navigate('/' + item + '/' + sub)}
               className='max-xs:rounded-none max-xs:border-x-0 max-xs:w-full '
               classNames={{
@@ -196,7 +205,7 @@ function Menu({ darkMode, lang }) {
               }}
               startContent={icons[sub]}
             >
-              {langText.menuItems[item].elements[sub].label}
+              {langText.menu_items[item].sub_items[sub].label}
             </ListboxItem>
           )}
         </Listbox>
@@ -230,7 +239,7 @@ function Menu({ darkMode, lang }) {
     <Navbar
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={() => setShowSubmenu(false)}
-      className='bg-content1 shadow'
+      className='bg-content1 shadow transition-all'
       classNames={{
         item: [
           "flex",
@@ -256,12 +265,19 @@ function Menu({ darkMode, lang }) {
           className="sm:hidden "
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         />
-        <NavbarBrand>
+        <NavbarBrand className='sm:justify-center '>
           <Image
-            src={darkMode.value ? buho : ave}
+            src={ave}
             alt='logo'
             width={50}
-            className='cursor-pointer hover:scale-110 rounded-full bg-custom'
+            className={'cursor-pointer hover:scale-110 rounded-full bg-custom ' + (darkMode.value ? '!opacity-0  w-0' : 'opacity-100')}
+            onClick={() => navigate('/')}
+          />
+          <Image
+            src={buho}
+            alt='logo'
+            width={50}
+            className={'cursor-pointer hover:scale-110 rounded-full bg-custom ' + (darkMode.value ? 'opacity-100' : '!opacity-0 w-0')}
             onClick={() => navigate('/')}
           />
         </NavbarBrand>
@@ -270,25 +286,23 @@ function Menu({ darkMode, lang }) {
 
       {/* menu */}
       <NavbarContent className="hidden items-center sm:flex gap-4 " justify="center">
-        {menuItems.map(item => subMenus[item] === undefined
-          ?
-          <NavbarItem
+        {menu_items.map(item => sub_menus[item] === undefined
+          ? <NavbarItem
             key={item}
             isActive={location.pathname.includes(item)}
           >
             <LinkNextUI color="foreground" className='gap-1 cursor-pointer flex hover:text-warning' onClick={() => navigate('/' + item)} >
-              {langText.menuItems[item].label}
+              {langText.menu_items[item].label}
             </LinkNextUI>
           </NavbarItem>
 
-          :
-          <ButtonGroup key={item} className='dropdown-buttongroup h-full' >
+          : <ButtonGroup key={item} className='dropdown-buttongroup h-full' >
             <NavbarItem
               key={item}
               isActive={location.pathname.includes(item)}
             >
               <LinkNextUI color="foreground" className='gap-1 cursor-pointer flex hover:text-warning' onClick={() => navigate('/' + item)} >
-                {langText.menuItems[item].label}
+                {langText.menu_items[item].label}
               </LinkNextUI>
             </NavbarItem>
 
@@ -306,7 +320,7 @@ function Menu({ darkMode, lang }) {
                     color='foreground'
                     isIconOnly
                   >
-                    {icons.ChevronDown}
+                    {icons.open_menu}
                   </Button>
                 </DropdownTrigger>
               </NavbarItem>
@@ -318,15 +332,15 @@ function Menu({ darkMode, lang }) {
                   base: "gap-4"
                 }}
               >
-                {subMenus[item].map((sub) =>
+                {sub_menus[item].map((sub) =>
                   <DropdownItem
                     key={sub}
-                    description={langText.menuItems[item].elements[sub].desc}
+                    description={langText.menu_items[item].sub_items[sub].desc}
                     onClick={() => navigate('/' + item + '/' + sub)}
                     className={location.pathname.includes(sub) ? 'bg-primary-100' : ''}
                     startContent={icons[sub]}
                   >
-                    {langText.menuItems[item].elements[sub].label}
+                    {langText.menu_items[item].sub_items[sub].label}
                   </DropdownItem>
                 )}
               </DropdownMenu>
@@ -337,7 +351,7 @@ function Menu({ darkMode, lang }) {
 
 
       {/* configuraciones */}
-      <NavbarContent justify="end" className='caca gap-0'>
+      <NavbarContent justify="end" className='sm:!justify-center gap-0 '>
         <NavbarItem>
           <Button
             isIconOnly
@@ -358,8 +372,7 @@ function Menu({ darkMode, lang }) {
             variant='light'
             aria-label="Lenguage"
             size='sm'
-            color='default'
-            className='rounded-full uppercase '
+            className='rounded-full uppercase text-foreground'
             onClick={() => lang.value === 'es' ? lang.set('en') : lang.set('es')}
           >
             {lang.value}

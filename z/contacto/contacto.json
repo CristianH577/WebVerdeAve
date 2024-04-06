@@ -1,0 +1,30 @@
+{
+    "es": {
+        "formContact": {
+            "phone":{
+                "desc": "Ingrese número de teléfono sin espacios ni guiones."
+            },
+            "message":{
+                "placeholder": "Cuentenos su problema o consulta...",
+                "desc": "Use al menos 20 caracteres."
+            },
+            "email":{
+                "placeholder": "ejemplo@hotmail.com"
+            }
+        }
+    },
+    "en": {
+        "formContact": {
+          "phone": {
+            "desc": "Enter phone number without spaces or hyphens."
+          },
+          "message": {
+            "placeholder": "Tell us about your issue or inquiry...",
+            "desc": "Use at least 20 characters."
+          },
+          "email": {
+            "placeholder": "example@hotmail.com"
+          }
+        }
+      }
+}

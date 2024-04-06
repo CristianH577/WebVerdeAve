@@ -1,0 +1,24 @@
+
+  // const menuItems = [
+  //   { key: 'inicio', title: 'Inicio', elements: [] },
+
+  //   {
+  //     key: 'designs', title: 'Diseños', elements: [
+  //       { key: 'cartas', title: 'Cartas', desc: 'Contenedor de texto, fotos y acciones.' },
+  //       { key: 'formularios', title: 'Formularios', desc: 'Ingreso o recopilacion de datos.' },
+  //       { key: 'galerias', title: 'Galerias', desc: 'Galeria de imagenes o cartas.' },
+  //       { key: 'mapas', title: 'Mapas', desc: 'Ubicaciones y locaciones.' },
+  //       { key: 'presentaciones', title: 'Presentaciones', desc: 'Muestra de fotos y videos.' },
+  //       { key: 'showroom', title: 'Showroom', desc: 'Muestra y busqueda de articulos.' },
+  //       { key: 'tables', title: 'Tablas', desc: 'Listas ordenadas y dinamicas.' },
+  //     ]
+  //   },
+
+  //   { key: 'databases', title: 'Base de datos', elements: [] },
+
+  //   { key: 'analyze', title: 'Análisis', elements: [] },
+
+  //   { key: 'contacto', title: 'Contacto', elements: [] },
+
+  //   { key: 'test', title: 'test', elements: [] }
+  // ]

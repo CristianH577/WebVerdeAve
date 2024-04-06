@@ -2,26 +2,29 @@ import { NextUIProvider } from "@nextui-org/react";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Layout from "./views/layout/layout";
-import Home from "./views/home/home";
-import NotFound from "./views/notfound/notfound";
+import Layout from "./views/Layout/Layout";
+import Home from "./views/Home/Home";
+import NotFound from "./views/NotFound/NotFound";
 
-import Diseños from "./views/diseños/diseños";
-import Cartas from "./views/diseños/cartas";
-import Galerias from "./views/diseños/galerias";
-import Presentaciones from "./views/diseños/presentaciones";
-import Formularios from "./views/diseños/formularios";
-import Showroom from "./views/diseños/showroom";
-import Tablas from "./views/diseños/tablas";
-import Mapas from "./views/diseños/mapas";
-import Mas from "./views/diseños/mas";
+import Designs from "./views/Designs/Designs";
+import Cards from "./views/Designs/Cards/Cards";
+import Sliders from "./views/Designs/Sliders/Sliders";
+import Forms from "./views/Designs/Forms";
+import Galeries from "./views/Designs/Galeries/Galeries";
+import Showroom from "./views/Designs/Showroom";
+import Tables from "./views/Designs/Tables";
+import Maps from "./views/Designs/Maps/Maps";
+import More from "./views/Designs/More/More";
 
-import Analisis from "./views/analisis/analisis";
+import APIs from "./views/Apis/Apis";
+import Analyze from "./views/Apis/Analyze/Analyze";
+import Databases from "./views/Apis/Databases/Databases";
+import DatabasesNoUser from "./views/Apis/Databases/DatabasesNoUser";
+import Game from "./views/Apis/Game/Game";
 
-import Databases from "./views/databases/databases";
-import DatabasesNoUser from "./views/databases/databases_nouser";
+import Prices from "./views/Prices/Prices"
 
-import Test from "./views/plantilla/test";
+import Test from "./views/Plantilla/Test";
 
 
 // usuario----------------------------------------------------------------------
@@ -47,55 +50,69 @@ function App() {
 
   const routes = [
     {
-      path: 'inicio',
+      path: 'home',
       content: <Home />,
     },
 
     {
-      path: 'disenos',
-      content: <Diseños />,
+      path: 'designs',
+      content: <Designs />,
     },
     {
-      path: 'disenos/cartas',
-      content: <Cartas />,
+      path: 'designs/cards',
+      content: <Cards />,
     },
     {
-      path: 'disenos/galerias',
-      content: <Galerias />,
+      path: 'designs/galeries',
+      content: <Galeries />,
     },
     {
-      path: 'disenos/presentaciones',
-      content: <Presentaciones />,
+      path: 'designs/sliders',
+      content: <Sliders />,
     },
     {
-      path: 'disenos/formularios',
-      content: <Formularios />,
+      path: 'designs/forms',
+      content: <Forms />,
     },
     {
-      path: 'disenos/showroom',
+      path: 'designs/showroom',
       content: <Showroom />,
     },
     {
-      path: 'disenos/tablas',
-      content: <Tablas />,
+      path: 'designs/tables',
+      content: <Tables />,
     },
     {
-      path: 'disenos/mapas',
-      content: <Mapas />,
+      path: 'designs/maps',
+      content: <Maps />,
     },
     {
-      path: 'disenos/mas',
-      content: <Mas />,
-    },
-
-    {
-      path: 'analisis',
-      content: <Analisis />,
+      path: 'designs/more',
+      content: <More />,
     },
 
     {
-      path: 'databases',
+      path: 'apis',
+      content: <APIs />,
+    },
+    {
+      path: 'apis/analyze',
+      content: <Analyze />,
+    },
+
+    {
+      path: 'apis/databases',
       content: user ? <Databases user={user} setUser={setUser} /> : <DatabasesNoUser user={user} setUser={setUser} />,
+    },
+
+    {
+      path: 'apis/game',
+      content: <Game />,
+    },
+
+    {
+      path: 'prices',
+      content: <Prices />,
     },
 
     {
