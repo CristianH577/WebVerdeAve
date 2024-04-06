@@ -24,20 +24,9 @@ yarn-error.log*
 
 
 # app
-/src/z
+/z
 porhacer.txt
-/src/views/plantilla
+/src/views/Plantilla
 /src/assets
-/src/lang/ejemplo.json
+/src/lang
 
-
-# api-php
-/api-php/config
-/api-php/php-error.log
-/api-php/.htaccess
-
-
-# api-python
-/api-python/z
-/api-python/own-page-env/
-api.log
