@@ -1,10 +1,6 @@
 {
     "es": {
-        "success_server": {
-            "": {
-                "title": "Indefinido",
-                "content": ""
-            },
+        "success": {
             "added": {
                 "title": "Agregado",
                 "content": "Registro exitoso"
@@ -18,11 +14,7 @@
                 "content": "Registro modificado"
             }
         },
-        "errors_server": {
-            "": {
-                "title": "Indefinido",
-                "content": "Error desconocido"
-            },
+        "errors": {
             "api": {
                 "title": "API",
                 "content": "Problema en el código"
@@ -70,11 +62,7 @@
         }
     },
     "en": {
-        "success_server": {
-            "": {
-                "title": "Undefined",
-                "content": ""
-            },
+        "success": {
             "added": {
                 "title": "Added",
                 "content": "Successful record addition"
@@ -88,11 +76,7 @@
                 "content": "Record modified"
             }
         },
-        "errors_server": {
-            "": {
-                "title": "Undefined",
-                "content": "Unknown error"
-            },
+        "errors": {
             "api": {
                 "title": "API",
                 "content": "Issue in the code"

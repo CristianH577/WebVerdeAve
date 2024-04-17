@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import addLangText from '../../../lang/Apis/Analyze/UploadSection.json'
 import { useOutletContext } from 'react-router-dom';
 
-import { Button, Input } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 
 import { postFAPI } from '../../../libs/fastapi';
 
@@ -37,21 +37,20 @@ function UploadSection({ setData }) {
     const handleFile = async (file) => {
         setIsLoading(true)
 
-        const values = { file: file }
-        const response = await postFAPI('file_to_df', values, lang)
+        const formData = new FormData()
+        formData.append('file', file)
+        const response = await postFAPI('fileToDf', formData, lang)
 
         if (response.bool) {
-            if (response.status === 200) {
-                const val = response.value
+            const val = response.value
 
-                const newData = {
-                    name: file.name,
-                    cols: val.cols,
-                    rows: JSON.parse(val.rows),
-                }
-
-                setData(newData)
+            const newData = {
+                name: file.name,
+                cols: val.cols,
+                rows: JSON.parse(val.rows),
             }
+
+            setData(newData)
         }
 
         setIsLoading(false)
@@ -106,7 +105,7 @@ function UploadSection({ setData }) {
             <div className=' center gap-4 sm:flex-row items-center'>
                 <div className='max-xs:w-full center items-center'>
                     <form id='upload_file_form'>
-                        <Input
+                        <input
                             type='file'
                             onChange={handleOnChangeFileInput}
                             className='hidden'

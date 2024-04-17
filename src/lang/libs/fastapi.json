@@ -1,10 +1,6 @@
 {
     "es": {
-        "errors_server": {
-            "": {
-                "title": "Indefinido",
-                "content": "Error desconocido"
-            },
+        "errors": {
             "fapi": {
                 "title": "FastAPI",
                 "content": "Error de código"
@@ -23,11 +19,7 @@
             },
             "form": {
                 "title": "Formulario",
-                "content": "Faltan datos en la solicitud"
-            },
-            "handle": {
-                "title": "Servidor",
-                "content": ""
+                "content": "Error de formulario"
             },
             "format": {
                 "title": "Formato",
@@ -37,10 +29,6 @@
     },
     "en": {
         "errors_server": {
-            "": {
-                "title": "Undefined",
-                "content": "Unknown error"
-            },
             "fapi": {
                 "title": "FastAPI",
                 "content": "Code error"
@@ -59,11 +47,7 @@
             },
             "form": {
                 "title": "Form",
-                "content": "Missing data in the request"
-            },
-            "handle": {
-                "title": "Server",
-                "content": ""
+                "content": "Form error"
             },
             "format": {
                 "title": "Format",

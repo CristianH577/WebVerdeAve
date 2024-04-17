@@ -4,9 +4,8 @@ import addLangText from '../lang/libs/api.json'
 import { toast } from 'react-toastify';
 
 
-const baseURL = 'http://localhost:50/own-page-api/'
 const client = axios.create({
-  baseURL: baseURL
+  baseURL: 'http://localhost:50/api-php-bd/'
 })
 
 var lang = 'es'
@@ -14,39 +13,65 @@ const langText = addLangText
 var alert = {
   bool: false,
   variant: 'warning',
-  msg: langText[lang].errors_server.api,
+  msg: langText[lang].errors.api,
 }
 
 
 const analyzeResponse = (response) => {
   // console.log(response)
-  alert.variant = 'danger'
-
-  if (typeof response.data === 'object') {
-    const error = response.data.error
-    const answer = response.data.answer
+  if (response) {
+    const error = response.data?.error
+    const answer = response.data?.answer
 
     if (error) {
-      alert.msg = langText[lang].errors_server[error] ? langText[lang].errors_server[error] : langText[lang].errors_server['']
-    }
-    else if (answer || answer === '' || answer.length === 0 || answer === 0 || answer === false) {
+      alert.variant = 'danger'
+      const msg = langText[lang].errors[error]
+      alert.msg = msg ? msg : error
+    } else if (answer) {
       alert.bool = true
-      alert.variant = "success"
-      alert.value = answer
-      if (typeof answer === 'string') alert.msg = langText[lang].success_server[answer] ? langText[lang].success_server[answer] : langText[lang].success_server['']
+      alert.variant = 'success'
+      alert.value = answer?.value
+
+      const detail = answer?.detail
+      const msg = langText[lang].success[detail]
+      alert.msg = msg ? msg : detail
+    }
+
+    if (alert.msg) showAlert()
+  }
+
+}
+
+const analyzeError = (e) => {
+  // console.log(e)
+  if (e.code === "ERR_NETWORK") {
+    alert.status = 500
+    alert.msg = langText[lang].errors.server
+  } else if (e.code === "ERR_BAD_REQUEST") {
+    alert.status = e.response.request.status
+  }
+
+  if (alert.status) {
+    alert.variant = 'danger'
+    if (alert.status < 500) {
+      const detail = e?.response?.data?.detail
+      const msg = langText[lang].errors[detail]
+      alert.msg = msg ? msg : detail
     }
   }
-  else {
-    alert.msg = langText[lang].errors_server.response
-  }
-}
-const showAlert = (alertToShow) => {
-  const msg = <div>
-    <div className='font-semibold'>{alertToShow.msg.title}:</div>
-    <div className=''>{alertToShow.msg.content}.</div>
-  </div>
 
-  switch (alertToShow.variant) {
+  if (alert.msg) showAlert()
+}
+
+const showAlert = () => {
+  const msg = alert.msg.title
+    ? <div>
+      <div className='font-semibold'>{alert.msg.title}:</div>
+      <div >{alert.msg.content}.</div>
+    </div>
+    : alert.msg
+
+  switch (alert.variant) {
     case 'info':
       toast.info(msg)
       break;
@@ -67,45 +92,22 @@ const showAlert = (alertToShow) => {
 }
 
 
-export async function postAPI(values, action, currentLang) {
+export async function postAPI(action, data, currentLang) {
   currentLang && (lang = currentLang)
-  alert.title = 'postAPI'
 
-  const formData = new FormData()
-
-  const entries = Object.entries(values)
-  for (let i = 0; i < entries.length; i++) {
-    formData.append(entries[i][0], entries[i][1])
-  }
-
-  await client.post(action, formData)
+  await client.post(action, data)
     .then(response => analyzeResponse(response))
-    .catch(e => {
-      alert.msg = langText[lang].errors_server.connection
-      alert.value = e
-    })
-
-  if (!alert.bool || typeof alert.value === 'string') {
-    showAlert(alert)
-  }
+    .catch(e => analyzeError(e))
 
   return alert
 }
 
 export async function getAPI(action, currentLang) {
   currentLang && (lang = currentLang)
-  alert.title = 'getAPI'
 
   await client.get(action)
     .then(response => analyzeResponse(response))
-    .catch(e => {
-      alert.msg = langText[lang].errors_server.connection
-      alert.value = e
-    })
-
-  if (!alert.bool || typeof alert.value === 'string') {
-    showAlert(alert)
-  }
+    .catch(e => analyzeError(e))
 
   return alert
 }

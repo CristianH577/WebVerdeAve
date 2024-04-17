@@ -4,20 +4,23 @@ import './Game.css'
 import addLangText from '../../../lang/Apis/Game/Game.json'
 import { useOutletContext } from 'react-router-dom';
 
-import { Button, Progress, Tooltip, ButtonGroup } from "@nextui-org/react";
-import { Modal, ModalContent, ModalBody, ModalFooter } from "@nextui-org/react";
 
-import CreateChar from './components/CreateChar';
+import { Button, Tooltip, ButtonGroup } from "@nextui-org/react";
+import { Modal, ModalContent, ModalBody } from "@nextui-org/react";
 
 import { ToastContainer, toast } from 'react-toastify';
 
+import CreateChar from './components/CreateChar';
+import Map from './components/Map';
+import CharInfo from './components/CharInfo';
+import ModalFight from './components/ModalFight';
+
 import { getFAPI, postFAPI, deleteFAPI } from '../../../libs/fastapi';
 
-import { LuSword, LuShield, LuHeart, LuSwords, LuSkull } from "react-icons/lu";
-import { GiBackpack, GiChest, GiOpenChest, GiGoblinHead, GiOrcHead, GiMimicChest, GiArrowFlights, GiMantrap, GiLever, GiAbdominalArmor, GiTorch, GiBossKey, GiHealthPotion, GiMagicPotion, GiWizardStaff, GiLeatherArmor, GiRobe, GiLindenLeaf, GiPiercingSword, GiTribalMask, GiPoisonGas, GiFishMonster } from "react-icons/gi";
-import { FaRunning, FaRegHandRock } from "react-icons/fa";
-import { CgGhostCharacter } from "react-icons/cg";
-import { AiOutlineThunderbolt } from "react-icons/ai";
+
+import { LuSword, LuSwords, LuSkull } from "react-icons/lu";
+import { GiAbdominalArmor, GiTorch, GiBossKey, GiHealthPotion, GiMagicPotion, GiWizardStaff, GiLeatherArmor, GiRobe, GiLindenLeaf, GiPiercingSword, GiTribalMask } from "react-icons/gi";
+import { FaRunning } from "react-icons/fa";
 import { TfiKey } from "react-icons/tfi";
 import { RiCoinLine } from "react-icons/ri";
 import { LiaPoopSolid } from "react-icons/lia";
@@ -39,36 +42,10 @@ function Game() {
     }
 
     const icons = {
-        char: <CgGhostCharacter className='w-full h-full' />,
-
-        chest: <GiChest className='w-3/4 h-3/4' />,
-        chest_open: <GiOpenChest className='w-3/4 h-3/4' />,
-
-        hp: <LuHeart size={30} className='text-danger' />,
-        hp_max: <LuHeart size={25} className='text-danger' />,
-        damage: <FaRegHandRock size={25} color='gray' />,
-        defence: <LuShield size={25} color='gold' />,
-
         options: {
             fight: <LuSwords />,
             leave: <FaRunning />,
         },
-        inventory: <GiBackpack size={30} />,
-        effects: <AiOutlineThunderbolt size={30} className='' />,
-
-        mobs: {
-            0: <GiGoblinHead className='w-full h-full text-lime-500 ' />,
-            1: <GiOrcHead className='w-full h-full text-green-600' />,
-            2: <GiFishMonster className='w-full h-full text-green-800' />,
-        },
-        traps: {
-            arrow: <GiArrowFlights className='w-full h-full text-amber-400' />,
-            mimic: <GiMimicChest size={50} color='gold' />,
-            gas: <GiPoisonGas size={50} className='text-lime-400' />,
-            floor: <GiMantrap className='w-full h-full text-stone-200' />,
-            lever: <GiLever className='w-1/2 h-full' color='firebrick' style={{ transform: 'rotateZ(90deg)' }} />,
-        },
-        lever: <GiLever className='w-1/2 h-full' color='firebrick' style={{ transform: 'rotateX(180deg) rotateZ(90deg)' }} />,
 
         items: {
             0: <RiCoinLine size={30} />,
@@ -90,13 +67,6 @@ function Game() {
 
         death: <LuSkull size={100} />,
 
-        fight: {
-            mobs: {
-                0: <GiGoblinHead className='w-full h-full' />,
-                1: <GiOrcHead className='w-full h-full' />,
-                2: <GiFishMonster className='w-full h-full' />,
-            },
-        }
     }
 
 
@@ -109,9 +79,7 @@ function Game() {
         if (typeof char === 'number' || char.id) {
             const id = char.id || char
             const char_data = await getFAPI("/chars/getElementById/" + id, server_notify_config)
-            if (char_data.bool) {
-                setChar(char_data.value)
-            }
+            if (char_data.bool) setChar(char_data.value)
         }
 
         setIsLoading(false)
@@ -119,183 +87,21 @@ function Game() {
 
     const createChar = async values => {
         setIsLoading(true)
-        const data = { data: JSON.stringify(values) }
-        const create = await postFAPI("/chars/add", data, server_notify_config)
+        const form_data = new FormData()
+        form_data.append('data', JSON.stringify(values))
+        const create = await postFAPI("/chars/add", form_data, server_notify_config)
         if (create.bool) setChar(create.value)
         setIsLoading(false)
         return create.bool
     }
 
     // map ------------------------------------
-    const baseCols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u']
-    const baseRows = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
+    const base_cols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u']
     const toastId = useRef(null)
-    const [showCoords] = useState(false)
     const [zoom, setZoom] = useState(1)
     const [move, setMove] = useState([0, 0])
 
 
-    const makeCell = (x, y) => {
-        var data = ''
-        if (char && char.map[x] && char.map[x][y]) {
-            data = char.map[x][y]
-        }
-
-        var content = ''
-        var clase = ''
-        var bg = 'bg-piso'
-
-        switch (data.kind) {
-            case 'wall':
-                bg = 'bg-ladrillo'
-                break;
-            case 'empty':
-                break;
-
-            default:
-                clase = 'bg-content1'
-                bg = 'bg-background'
-                break;
-        }
-
-        switch (data.layer) {
-            case 'door':
-                var top = 0
-                var left = 0
-                var rotate = 0
-                bg = data.door.show_inside === undefined ? 'bg-background' : 'bg-piso'
-                switch (data.door.side) {
-                    case 't':
-                        left = 64 * zoom
-                        if (data.door.status) {
-                            rotate = -270
-                        } else {
-                            rotate = -180
-                            top = 3 * zoom
-                        }
-                        break;
-                    case 'b':
-                        if (data.door.status) {
-                            rotate = -90
-                            top = 64 * zoom
-                        } else {
-                            rotate = 0
-                            top = 61 * zoom
-                        }
-                        break;
-                    case 's':
-                        if (data.door.status) {
-                        } else {
-                            rotate = 90
-                            left = 3 * zoom
-                        }
-                        break;
-                    case 'e':
-                        top = 64 * zoom
-                        if (data.door.status) {
-                            rotate = -180
-                            left = 64 * zoom
-                        } else {
-                            rotate = -90
-                            left = 61 * zoom
-                        }
-                        break;
-
-                    default:
-                        break;
-                }
-                content = <span
-                    className=' bg-puerta bg-contain bg-no-repeat absolute transition-all ease origin-top-left '
-                    style={{
-                        zIndex: 1,
-                        width: (64 * zoom) + 'px',
-                        height: (16 * zoom) + 'px',
-                        top: top + 'px',
-                        left: left + 'px',
-                        rotate: rotate + 'deg',
-                    }}
-                ></span>
-                break;
-            case "chest":
-                clase = 'center items-center'
-                content = <span className='w-full h-full center items-center bg-black/60 p-1 rounded-md text-[gold]'>
-                    {data.interacted === "end" ? icons.chest_open : icons.chest}
-                </span>
-                break;
-            case 'lever':
-                content = <span className='w-full h-full flex bg-black/60 p-1 rounded-md '>
-                    {icons.lever}
-                </span>
-                break;
-            case 'mob':
-                clase = 'center items-center'
-                content = <span className='w-full h-full center items-center bg-black/60 p-1 rounded-md '>
-                    {icons.mobs[data.mob]}
-                </span>
-                break;
-            case 'trap':
-                clase = 'center items-center'
-
-                content = <span className={'w-full h-full bg-black/60 p-1 rounded-md' + (data.trap === 'lever' ? ' flex' : 'center items-center')}>
-                    {icons.traps[data.trap]}
-                </span>
-                break;
-
-            default:
-                break;
-        }
-
-
-        return <div
-            key={[x, y]}
-            className={
-                ' relative bg-cover '
-                + bg
-            }
-            style={{
-                width: (64 * zoom) + 'px',
-                height: (64 * zoom) + 'px',
-            }}
-        >
-            {content && (
-                <span
-                    className={'w-full h-full absolute ' + clase}
-                >
-                    {content}
-                </span>
-            )}
-
-            {(showCoords && (
-                <span className='w-full h-full center items-center absolute' >
-                    {[x, y]}
-                </span>
-            ))}
-
-            <span
-                className='w-full h-full absolute z.10 bg-cover opacity-50 data-[show="1"]:cursor-pointer data-[show="2"]:cursor-pointer data-[show="1"]:bg-char '
-                data-xy={[x, y]}
-                onClick={handleCellAction}
-
-                data-show={false}
-                onMouseEnter={e => {
-                    if (data.kind === 'empty') {
-                        if (checkAllowMove(x, y)) {
-                            if (data.layer === undefined) {
-                                e.currentTarget.setAttribute('data-show', 1)
-                            } else {
-                                e.currentTarget.setAttribute('data-show', 2)
-                            }
-                        }
-                    }
-                }}
-                onMouseLeave={e => {
-                    if (data.kind === 'empty') {
-                        e.currentTarget.setAttribute('data-show', false)
-                    }
-                }}
-            ></span>
-        </div>
-    }
     const checkAllowMove = (x, y) => {
         if (char.id === 1) return true
 
@@ -304,7 +110,7 @@ function Game() {
             if (x in char.map) {
                 if (y in char.map[x]) {
 
-                    const distX = Math.abs(baseCols.indexOf(x) - baseCols.indexOf(char.loc[0]))
+                    const distX = Math.abs(base_cols.indexOf(x) - base_cols.indexOf(char.loc[0]))
                     const distY = Math.abs(y - char.loc[1])
                     const checkX = distX === 1 && distY === 0
                     const checkY = distY === 1 && distX === 0
@@ -313,8 +119,12 @@ function Game() {
                     if (bool) {
                         if (char.map[x][y].kind === "empty") {
                             bool = true
-                            if (["chest", "mob"].includes(char.map[x][y].layer)) {
+                            const layer = char.map[x][y]?.layer
+
+                            if (layer === 'mob') {
                                 bool = false
+                            } else if (layer === 'chest') {
+                                if (char.map[x][y]?.interacted === 'end') bool = false
                             }
                         } else {
                             bool = false
@@ -327,45 +137,14 @@ function Game() {
         return bool
     }
 
-    const generateMap = () => {
-        return <section
-            id='map'
-            className='flex overflow-hidden w-full bg-neutral-400 relative max-w-fit'
-            style={{
-                height: (64 * zoom * 7) + "px"
-            }}
-        >
-            {baseCols.map(x =>
-                <div key={x} className='flex flex-col h-fit'>
-                    {baseRows.map(y =>
-                        makeCell(x, y)
-                    )}
-                </div>
-            )}
-
-            <CgGhostCharacter
-                className=' absolute transition-all ease-in '
-                hidden={move[0] === 0 && move[1] === 0}
-                style={{
-                    left: move[0] + 'px',
-                    top: move[1] + 'px',
-                    zIndex: 10,
-                    width: (64 * zoom) + 'px',
-                    height: (64 * zoom) + 'px',
-                }}
-                color='black'
-            />
-        </section>
-    }
-
 
     // actions ------------------------------------
     const handleMove = async (x, y) => {
-        const url = "/chars/checkMove?x=" + x + "&y=" + y + "&id_char=" + char.id
+        const url = "/chars/checkMove?x=" + x + "&y=" + y + "&id=" + char.id
         const interaction = await getFAPI(url, server_notify_config)
 
         if (interaction.bool) {
-            if (interaction.status === 200) {
+            if (interaction.value) {
                 handleInteraction(interaction.value, -1)
             }
         }
@@ -376,7 +155,7 @@ function Game() {
         if (char.loc) {
             const x_str = char.loc[0]
             const y = char.loc[1] - 1
-            const x = baseCols.indexOf(x_str)
+            const x = base_cols.indexOf(x_str)
             setMove([64 * zoom * x, 64 * zoom * y])
 
             document.querySelector('#map').scroll(64 * zoom * (x - 2), 64 * zoom * (y - 2))
@@ -390,9 +169,7 @@ function Game() {
         const y = parseInt(xy[1])
         char.interacting = [x, y]
 
-        if (checkAllowMove(x, y)) {
-            await handleMove(x, y)
-        }
+        if (checkAllowMove(x, y)) await handleMove(x, y)
 
         setIsLoading(false)
     }
@@ -466,7 +243,7 @@ function Game() {
     }
 
     const handleEvent = async op => {
-        const url = "/chars/handleOption?x=" + char.interacting[0] + "&y=" + char.interacting[1] + "&op=" + op + "&id_char=" + char.id
+        const url = "/chars/handleOption?x=" + char.interacting[0] + "&y=" + char.interacting[1] + "&op=" + op + "&id=" + char.id
 
         const event = await getFAPI(url, server_notify_config)
         if (event.bool) {
@@ -517,9 +294,11 @@ function Game() {
         }
         switch (action) {
             case 'attack':
-                const url = "/chars/handleFight"
-                const data = { turn: JSON.stringify(new_turn), id_char: char.id }
-                const response = await postFAPI(url, data, server_notify_config)
+                const form_data = new FormData()
+                form_data.append('turn', JSON.stringify(new_turn))
+                form_data.append('id', char.id)
+
+                const response = await postFAPI("/chars/handleFight", form_data, server_notify_config)
                 if (response.bool) new_turn = response.value
                 break;
             case 'defence':
@@ -532,9 +311,11 @@ function Game() {
 
             default:
                 if (typeof action === 'number') {
-                    const url = "/chars/handleFight"
-                    const data = { turn: JSON.stringify(new_turn), id_char: char.id }
-                    const response = await postFAPI(url, data, server_notify_config)
+                    const form_data = new FormData()
+                    form_data.append('turn', JSON.stringify(new_turn))
+                    form_data.append('id', char.id)
+
+                    const response = await postFAPI("/chars/handleFight", form_data, server_notify_config)
                     if (response.bool) new_turn = response.value
                 }
                 break;
@@ -580,9 +361,11 @@ function Game() {
                 new_turn.state = 'results'
 
                 if (turn.mob === 'attack') {
-                    const url = "/chars/handleFight"
-                    const data = { turn: JSON.stringify(new_turn), id_char: char.id }
-                    const response = await postFAPI(url, data, server_notify_config)
+                    const form_data = new FormData()
+                    form_data.append('turn', JSON.stringify(new_turn))
+                    form_data.append('id', char.id)
+
+                    const response = await postFAPI("/chars/handleFight", form_data, server_notify_config)
                     if (response.bool) {
                         new_turn = response.value
                     }
@@ -719,7 +502,6 @@ function Game() {
         setIsLoading(false)
     }
     const openInventory = () => {
-        console.log('openInventory')
         const item_file = item => {
             return <div className='text-center'>
                 {['kind', 'name', 'quantity', 'desc'].map((i, k) =>
@@ -875,17 +657,40 @@ function Game() {
                 {langText.sections_titles.game}
             </div>
 
-            {/* <div className='flex flex-wrap gap-4 mb-4 border-y'>
-                <Button onClick={getAdminChar} color='primary'>admin char</Button>
-                <Button onClick={() => {
-                    setChar(2)
-                    cleanToast()
-                }} color='primary'>test char</Button>
-                <Button onClick={() => {
-                    setChar(false)
-                    cleanToast()
-                    setTurn(default_turn)
-                }} color='primary'>false char</Button>
+            {/* admin section */}
+            {/* <div>
+                <div className='flex flex-wrap gap-4 mb-4 border-y'>
+                    <Button onClick={getAdminChar} color='primary'>admin char</Button>
+                    <Button onClick={() => {
+                        setChar(2)
+                        cleanToast()
+                    }} color='primary'>test char</Button>
+                    <Button onClick={() => {
+                        setChar(false)
+                        cleanToast()
+                        setTurn(default_turn)
+                    }} color='primary'>false char</Button>
+                </div>
+
+                {typeof char === 'object' && (
+                    <div className='flex flex-wrap gap-4 mb-4 max-xs:flex-col max-xs:w-full'>
+                        <Button
+                            onClick={() => console.log(char)}
+                        >
+                            front
+                        </Button>
+                        <Button
+                            onClick={() => console.log(char.interacting)}
+                        >
+                            interacting
+                        </Button>
+                        <Button
+                            onClick={getAllItems}
+                        >
+                            getAllItems
+                        </Button>
+                    </div>
+                )}
             </div> */}
 
             {char === false && (
@@ -907,23 +712,6 @@ function Game() {
 
             {typeof char === 'object' && (
                 <>
-                    {/* <div className='flex flex-wrap gap-4 mb-4 max-xs:flex-col max-xs:w-full'>
-                        <Button
-                            onClick={() => console.log(char)}
-                        >
-                            front
-                        </Button>
-                        <Button
-                            onClick={() => console.log(char.interacting)}
-                        >
-                            interacting
-                        </Button>
-                        <Button
-                            onClick={getAllItems}
-                        >
-                            getAllItems
-                        </Button>
-                    </div> */}
 
                     {/* menu */}
                     <div className='flex flex-wrap gap-4 mb-4 max-xs:flex-col max-xs:w-full'>
@@ -970,221 +758,37 @@ function Game() {
                     </div>
 
                     {/* char info */}
-                    <section
-                        className={'flex gap-2 mb-4 items-center style-game xs:rounded-lg py-2 xs:px-6 max-xs:w-full max-xs:flex-col'}>
-                        <div className='flex flex-col'>
-                            <div className='capitalize text-xl mb-1 text-center'>
-                                {char.name} - {langText.clase[char.clase]} {langText.level}{char.level}
-                            </div>
-                            <div className='flex items-center gap-2 group'>
-                                {icons.hp}
-                                <Progress
-                                    color="danger"
-                                    aria-label='hp'
-                                    classNames={{
-                                        track: 'bg-game_s2'
-                                    }}
-                                    value={char.stats.hp * 100 / char.stats.hp_max}
-                                />
-                                <span className='hidden group-hover:block'>
-                                    {char.stats.hp}/{char.stats.hp_max}
-                                </span>
-                            </div>
-                            <div className='flex justify-evenly'>
-                                <div className='flex gap-2 items-center text-xl'>{icons.damage} {char.stats.damage}</div>
-                                <div className='flex gap-2 items-center text-xl'>{icons.defence} {char.stats.defence}</div>
-                            </div>
-                        </div>
-
-                        <div className='flex flex-col gap-2 justify-evenly max-xs:w-full'>
-                            <Tooltip
-                                content={langText.action.inventory}
-                                placement='bottom'
-                                className={
-                                    'rounded-medium bg-game_s2 text-game_s1'
-                                    + (context.dark ? ' dark' : '')
-                                }
-                                classNames={{
-                                    base: 'rounded-medium',
-                                }}
-                            >
-                                <Button
-                                    isIconOnly
-                                    className='button-game button-xs'
-                                    onClick={openInventory}
-                                    disabled={toast.isActive(toastId.current)}
-                                >
-                                    {icons.inventory}
-                                </Button>
-                            </Tooltip>
-                            <Tooltip
-                                content={
-                                    <div>
-                                        <div className='text-center'>{langText.effects}</div>
-                                        {Object.entries(char.effects).map(e =>
-                                            <div key={e}>
-                                                {langText.effects_list[e[0]]}
-                                                {e[1] >= 0 ? "+" : ""}
-                                                {e[1]}
-                                            </div>
-                                        )}
-                                    </div>
-                                }
-                                placement='bottom'
-                                className={
-                                    'rounded-medium bg-game_s2 text-game_s1'
-                                    + (context.dark ? ' dark' : '')
-                                }
-                                classNames={{
-                                    base: 'rounded-medium',
-                                }}
-                            >
-                                <Button
-                                    isIconOnly
-                                    className='button-game button-xs'
-                                    disabled
-                                >
-                                    {icons.effects}
-                                </Button>
-                            </Tooltip>
-                        </div>
-                    </section>
+                    <CharInfo
+                        char={char}
+                        langText={langText}
+                        dark={context.dark}
+                        toastId={toastId}
+                        openInventory={openInventory}
+                    />
 
                     {/* map */}
-                    {generateMap()}
+                    <Map
+                        base_cols={base_cols}
+                        char={char}
+                        zoom={zoom}
+                        move={move}
+                        checkAllowMove={checkAllowMove}
+                        handleCellAction={handleCellAction}
+                    />
 
 
                     {/* fight */}
-                    <Modal
-                        isOpen={Boolean(char.mob.data)}
-                        className={
-                            'max-xs:rounded-none max-xs:w-full max-xs:m-0 max-xs:h-full '
-                            + (context.dark ? 'dark ' : null)
-                        }
-                        placement='center'
-                        hideCloseButton
-                    >
-                        <ModalContent className='font-bold'>
-                            <ModalBody className='bg-game_p text-game_s2 max-xs:h-1/2 flex justify-evenly items-center gap-8 xs:flex-row'>
-                                <div className='center w-1/2 max-xs:w-full text-center'>
-                                    <div>
-                                        {char.name}
-                                    </div>
-
-                                    <div className='flex justify-center'>
-                                        <span className='w-[150px]'>
-                                            {icons.char}
-                                        </span>
-                                    </div>
-
-                                    <div className='flex items-center gap-2 group'>
-                                        {icons.hp}
-                                        <Progress
-                                            color="danger"
-                                            value={char.stats.hp * 100 / char.stats.hp_max}
-                                            aria-label='hp'
-                                            classNames={{
-                                                track: 'bg-game_s1'
-                                            }}
-                                        />
-                                        <span className='hidden group-hover:block'>
-                                            {char.stats.hp}/{char.stats.hp_max}
-                                        </span>
-                                    </div>
-
-                                    <div className='flex justify-evenly'>
-                                        <div className='flex gap-2 items-center text-xl'>{icons.damage} {char.stats.damage}</div>
-                                        <div className='flex gap-2 items-center text-xl'>{icons.defence} {char.stats.defence}</div>
-                                    </div>
-                                </div>
-
-                                {Boolean(char.mob.data) && (
-                                    <div className='center w-1/2 max-xs:w-full text-center '>
-                                        <div>
-                                            {char.mob.data.name}
-                                        </div>
-
-                                        <div className='flex justify-center'>
-                                            <span className='w-[150px]'>
-                                                {icons.fight.mobs[char.map[char.mob.loc[0]][char.mob.loc[1]].mob]}
-                                            </span>
-                                        </div>
-
-                                        <div className='flex items-center gap-2 group'>
-                                            {icons.hp}
-                                            <Progress
-                                                color="danger"
-                                                aria-label='hp'
-                                                classNames={{
-                                                    track: 'bg-game_s1'
-                                                }}
-                                                value={char.mob.data.stats.hp * 100 / char.mob.data.stats.hp_max}
-                                            />
-                                            <span className='hidden group-hover:block'>
-                                                {char.mob.data.stats.hp}/{char.mob.data.stats.hp_max}
-                                            </span>
-                                        </div>
-
-                                        <div className='flex justify-evenly'>
-                                            <div className='flex gap-2 items-center text-xl'>{icons.damage} {char.mob.data.stats.damage}</div>
-                                            <div className='flex gap-2 items-center text-xl'>{icons.defence} {char.mob.data.stats.defence}</div>
-                                        </div>
-                                    </div>
-                                )}
-                            </ModalBody>
-
-                            <ModalFooter className='bg-game_s2 text-game_s1 flex-col text-center'>
-                                <div
-                                    onClick={['continue', 'results'].includes(turn.state) ? handleFightContinue : null}
-                                    className={['continue', 'results'].includes(turn.state) ? 'cursor-pointer' : null}
-                                >
-                                    <div className='text-center mb-2' >
-                                        {turn.msg}
-                                    </div>
-
-                                    {['continue', 'results'].includes(turn.state) && (
-                                        <div className='text-sm text-game_p'>
-                                            {langText.toast.to_continue}
-                                        </div>
-                                    )}
-                                </div>
-
-                                {turn.state === 'decide' && (
-                                    <div className='flex justify-center gap-4' >
-                                        {['attack', 'defence'].map(action =>
-                                            <Button
-                                                key={action}
-                                                className='bg-game_p text-game_s2'
-                                                name={action}
-                                                onClick={handleFightDecide}
-                                                disabled={isLoading}
-                                            >
-                                                {langText.action[action]}
-                                            </Button>
-                                        )}
-                                        <Button
-                                            isIconOnly
-                                            className='bg-game_p text-game_s2'
-                                            onClick={openInventory}
-                                        >
-                                            {icons.inventory}
-                                        </Button>
-                                    </div>
-                                )}
-
-                                {['win', 'lost'].includes(turn.state) && (
-                                    <div className='flex justify-center gap-4' >
-                                        <Button
-                                            className='bg-game_p text-game_s2'
-                                            onClick={handleFightEnd}
-                                        >
-                                            Salir
-                                        </Button>
-                                    </div>
-                                )}
-                            </ModalFooter>
-                        </ModalContent>
-                    </Modal>
+                    <ModalFight
+                        char={char}
+                        dark={context.dark}
+                        langText={langText}
+                        isLoading={isLoading}
+                        turn={turn}
+                        openInventory={openInventory}
+                        handleFightDecide={handleFightDecide}
+                        handleFightContinue={handleFightContinue}
+                        handleFightEnd={handleFightEnd}
+                    />
                 </>
             )}
 

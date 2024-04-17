@@ -1,5 +1,7 @@
 {
     "es": {
+        "table_name":"Tabla",
+        "asociated": "Asociado",
         "tableAria": "Tabla de bases de datos",
         "createTable": "Crear tabla",
         "nameOfTable": "Nombre de la tabla",
@@ -13,6 +15,8 @@
         }
     },
     "en": {
+        "table_name":"Table",
+        "asociated": "Asociated",
         "tableAria": "Database table",
         "createTable": "Create table",
         "nameOfTable": "Table name",

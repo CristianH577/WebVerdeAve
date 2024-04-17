@@ -62,14 +62,14 @@ function Databases({ user, setUser }) {
         },
     ]
 
-    const cleanValuesTable = {
+    const clean_values_table = {
         name: '',
         col1: '',
         col2: '',
         col3: '',
         col4: '',
     }
-    const [defaultValuesTable, setDefaultValuesTable] = useState(cleanValuesTable)
+    const [defaultValuesTable, setDefaultValuesTable] = useState(clean_values_table)
 
 
     const handleAddTable = (e) => {
@@ -95,7 +95,6 @@ function Databases({ user, setUser }) {
             rows: [],
             labels: {},
             name: "Tabla " + table,
-            // idUser: user.id
         }
 
         for (const entry of formData.entries()) {
@@ -136,13 +135,13 @@ function Databases({ user, setUser }) {
         setEdit(false)
         setIsLoading(false)
     }
-    const handleResetTables = () => {
+    const handleResetTables = async () => {
         setEdit(false)
         setTable1({ enabled: false })
         setTable2({ enabled: false })
         setTable3({ enabled: false })
         setUser({ id: user.id })
-        getAPI('es/Databases_Controller/deleteUser?idUser=' + user.id, false)
+        await getAPI('es/Databases_Controller/deleteUser?id=' + user.id, false)
     }
     const makeCell = (row, col) => {
         var cellContent = <></>
@@ -187,11 +186,11 @@ function Databases({ user, setUser }) {
     const updateTable = async (table) => {
         setIsLoading(table)
 
-        const getData = await getAPI('es/Databases_Controller/getRows?table=' + table + '&idUser=' + user.id, lang)
+        const get_data = await getAPI('es/Databases_Controller/getRows?table=' + table + '&id=' + user.id, lang)
 
-        if (getData.bool) {
+        if (get_data.bool) {
             var newTable = {}
-            const newRows = getData.value.map(row => {
+            const newRows = get_data.value.map(row => {
                 row.key = row['id_' + table]
                 return row
             })
@@ -236,20 +235,14 @@ function Databases({ user, setUser }) {
 
         setIsLoading(true)
 
-        const formData = new FormData(e.target)
+        const form_values = new FormData(e.target)
 
-        const newRow = {}
-        for (const entry of formData.entries()) {
-            const [key, val] = entry
-            newRow[key] = val
-        }
-        newRow.table = edit.table.key
-        newRow.idUser = user.id
-        const addRow = await postAPI(newRow, 'es/Databases_Controller/addRow', lang)
+        form_values.append('table', edit.table.key)
+        form_values.append('id_user', user.id)
 
-        if (addRow.bool) {
-            updateTable(edit.table.key)
-        }
+        const response = await postAPI('es/Databases_Controller/addRow', form_values, lang)
+
+        if (response.bool) updateTable(edit.table.key)
 
         setEdit(false)
         setIsLoading(false)
@@ -259,9 +252,7 @@ function Databases({ user, setUser }) {
 
         const deleteRow = await getAPI('es/Databases_Controller/deleteRow?table=' + edit.table + '&id=' + edit.id, lang)
 
-        if (deleteRow.bool) {
-            updateTable(edit.table)
-        }
+        if (deleteRow.bool) updateTable(edit.table)
 
         setEdit(false)
         setIsLoading(false)
@@ -272,22 +263,19 @@ function Databases({ user, setUser }) {
 
         setIsLoading(true)
 
-        const formData = new FormData(e.target)
+        const form_data = new FormData(e.target)
 
-        const newRow = { ...edit.row }
         var table = 0
-        for (const entry of formData.entries()) {
-            const [key, val] = entry
-            newRow[key] = val
+        for (const key of form_data.keys()) {
             table = parseInt(key.split('_')[1])
         }
-        newRow.table = table
+        form_data.append('table', table)
+        form_data.append('id_user', user.id)
+        form_data.append('id_' + table, edit.row['id_' + table])
 
-        const update = await postAPI(newRow, 'es/Databases_Controller/updateRow', lang)
+        const response = await postAPI('es/Databases_Controller/updateRow', form_data, lang)
 
-        if (update.bool) {
-            updateTable(table)
-        }
+        if (response.bool) updateTable(table)
 
         setEdit(false)
         setIsLoading(false)
@@ -296,7 +284,7 @@ function Databases({ user, setUser }) {
 
     useEffect(() => {
         if (edit && edit.key.includes('delete')) handleDeleteRow()
-        setDefaultValuesTable(cleanValuesTable)
+        setDefaultValuesTable(clean_values_table)
         setDefaultValuesRow(cleanValuesRow)
         // eslint-disable-next-line
     }, [edit])
@@ -392,7 +380,7 @@ function Databases({ user, setUser }) {
                             isIconOnly
                             isDisabled={isLoading}
                             className='button-xs max-sm:w-full'
-                            onClick={() => setDefaultValuesTable(cleanValuesTable)}
+                            onClick={() => setDefaultValuesTable(clean_values_table)}
                         >
                             {icons.Reset}
                         </Button>
@@ -411,11 +399,11 @@ function Databases({ user, setUser }) {
                             isDisabled={isLoading}
                             className='button-xs text-white'
                             onClick={() => setDefaultValuesTable({
-                                name: '',
+                                name: langText.table_name,
                                 col1: langText.form.name,
                                 col2: langText.form.surname,
                                 col3: langText.form.user,
-                                col4: langText.form.asociated,
+                                col4: langText.asociated,
                             })}
                         >
                             {langText.actions.autocomplete}

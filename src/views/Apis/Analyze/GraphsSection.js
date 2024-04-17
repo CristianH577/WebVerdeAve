@@ -30,14 +30,12 @@ function GraphsSection({ data }) {
 
     const makeGraph = async () => {
         setIsLoading(true)
-        console.log(preferences)
 
-        const values = {
-            rows: JSON.stringify(data.rows),
-            preferences: JSON.stringify(preferences),
-        }
+        const form_data = new FormData()
+        form_data.append('rows',JSON.stringify(data.rows))
+        form_data.append('preferences',JSON.stringify(preferences))
 
-        await postFAPIgraph('createImgPost', values, lang)
+        await postFAPIgraph('createImgPost', form_data, lang)
             .then(blob => {
                 if (blob) {
                     const reader = new FileReader()
@@ -47,6 +45,11 @@ function GraphsSection({ data }) {
                     reader.readAsDataURL(blob)
                 }
             })
+
+        // const response = await postFAPIgraph('createImgPost', form_data, lang)
+        // if (response.bool) {
+        //     setSrc(response.value)
+        // }
 
         setIsLoading(false)
     }

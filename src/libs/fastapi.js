@@ -19,8 +19,8 @@ var config = {
 
 const defaultAlert = {
     bool: false,
-    variant: 'warning',
-    msg: langText[config.lang].errors_server.fapi,
+    variant: 'info',
+    msg: langText[config.lang].errors.fapi,
     value: false,
     status: false,
 }
@@ -28,28 +28,50 @@ var alert = { ...defaultAlert }
 
 
 const analyzeResponse = (response) => {
-    alert.variant = 'danger'
+    // console.log(response)
+    if (response) {
+        alert.status = response.status
 
-    alert.status = response.status
+        if (alert.status >= 200 && alert.status < 300) alert.bool = true
 
-    if (response.status < 200 || response.status > 299) {
-        alert.msg = response.detail
+        alert.msg = response.data?.detail
+        alert.value = response.data?.value
+
+        if (alert.msg) alert.variant = 'success'
+
+        if (alert.msg) showAlert()
     }
-    else {
-        alert.bool = true
-        alert.variant = "success"
-        alert.value = response.data
-    }
-
 }
-const showAlert = (alertToShow) => {
-    const msg = <div>
-        <div className='font-semibold'>{alertToShow.msg.title}:</div>
-        <div >{alertToShow.msg.content}.</div>
-    </div>
+const analyzeError = (e) => {
+    // console.log(e)
+    if (e.code === "ERR_NETWORK") {
+        alert.status = 500
+        alert.msg = langText[config.lang].errors.server
+    } else if (e.code === "ERR_BAD_REQUEST") {
+        alert.status = e.response.request.status
+    }
+
+    if (alert.status) {
+        alert.variant = 'danger'
+        if (alert.status < 500) {
+            const detail = e?.response?.data?.detail
+            const msg = langText[config.lang].errors[detail]
+            alert.msg = msg ? msg : detail
+        }
+    }
+
+    if (alert.msg) showAlert()
+}
+const showAlert = () => {
+    const msg = alert.msg.title
+        ? <div>
+            <div className='font-semibold'>{alert.msg.title}:</div>
+            <div >{alert.msg.content}.</div>
+        </div>
+        : alert.msg
 
     var type = toast.TYPE.DEFAULT
-    switch (alertToShow.variant) {
+    switch (alert.variant) {
         case 'info':
             type = toast.TYPE.INFO
             break;
@@ -91,53 +113,50 @@ export async function getFAPI(action, newConfig) {
 
     await client.get(action)
         .then(response => analyzeResponse(response))
-        .catch(e => {
-            alert.msg = langText[config.lang].errors_server.server
-        })
-
-    if (!alert.bool) {
-        showAlert(alert)
-    }
+        .catch(e => analyzeError(e))
 
     return alert
 }
 
-export async function postFAPI(action, values, newConfig) {
+export async function postFAPI(action, data, newConfig) {
     alert = { ...defaultAlert }
 
     newConfig && (config = { ...config, ...newConfig })
 
-    const formData = new FormData()
-
-    const entries = Object.entries(values)
-    for (let i = 0; i < entries.length; i++) {
-        formData.append(entries[i][0], entries[i][1])
-    }
-
-    await client.post(action, formData)
+    await client.post(action, data)
         .then(response => analyzeResponse(response))
-        .catch(e => {
-            alert.msg = langText[config.lang].errors_server.server
-        })
-
-    if (!alert.bool) {
-        showAlert(alert)
-    }
+        .catch(e => analyzeError(e))
 
     return alert
 }
 
-export async function postFAPIgraph(action, values, newConfig) {
+
+export async function deleteFAPI(action) {
+    alert = { ...defaultAlert }
+
+    await client.delete(action)
+        .then(response => analyzeResponse(response))
+        .catch(e => analyzeError(e))
+
+    return alert
+}
+
+
+export async function putFAPI(action, data) {
+    alert = { ...defaultAlert }
+
+    await client.put(action, data)
+        .then(response => analyzeResponse(response))
+        .catch(e => analyzeError(e))
+
+    return alert
+}
+
+
+export async function postFAPIgraph(action, data, newConfig) {
     alert = { ...defaultAlert }
 
     newConfig && (config = { ...config, ...newConfig })
-
-    const formData = new FormData()
-
-    const entries = Object.entries(values)
-    for (let i = 0; i < entries.length; i++) {
-        formData.append(entries[i][0], entries[i][1])
-    }
 
     var blob = false
 
@@ -145,7 +164,7 @@ export async function postFAPIgraph(action, values, newConfig) {
         responseType: "blob",
     }
 
-    await client.post(action + "/", formData, config_post)
+    await client.post(action + "/", data, config_post)
         .then(async (response) => {
             const isJsonBlob = (data) => data instanceof Blob && data.type === "application/json"
             const responseData = isJsonBlob(response?.data)
@@ -162,35 +181,16 @@ export async function postFAPIgraph(action, values, newConfig) {
                 alert.bool = true
             }
         })
-        .catch(e => {
-            alert.msg = langText[config.lang].errors_server.server
-        })
+        // .then( blob => {
+        //     if (blob) {
+        //         const reader = new FileReader()
+        //         alert.value = reader.readAsDataURL(blob)
+        //     }
+        // })
+        .catch(e => analyzeError(e))
 
-    if (!blob) {
-        alert.msg = langText[config.lang].errors_server.response
-    }
-    if (!alert.bool) {
-        showAlert(alert)
-    }
+    // if (!blob) alert.msg = langText[config.lang].errors_server.response
+    if (!alert.bool) showAlert(alert)
 
     return blob
-}
-
-
-export async function deleteFAPI(action, newConfig) {
-    alert = { ...defaultAlert }
-
-    newConfig && (config = { ...config, ...newConfig })
-
-    await client.delete(action)
-        .then(response => analyzeResponse(response))
-        .catch(e => {
-            alert.msg = langText[config.lang].errors_server.server
-        })
-
-    if (!alert.bool) {
-        showAlert(alert)
-    }
-
-    return alert
 }

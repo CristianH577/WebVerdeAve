@@ -41,7 +41,7 @@ function App() {
   const deleteUser = () => {
     if (user) {
       setUser(false)
-      getAPI('es/Databases_Controller/deleteUser?idUser=' + user.id, false)
+      getAPI('es/Databases_Controller/deleteUser?id=' + user.id, false)
     }
   }
   useBeforeUnload(deleteUser)

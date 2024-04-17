@@ -44,18 +44,18 @@ function ChangesSection({ data, setData }) {
 
         setIsLoading(true)
 
-        const formData = new FormData(e.target)
-        const newCols = Array.from(formData.values())
+        const form_values = new FormData(e.target)
+        const new_cols = Array.from(form_values.values())
 
         var error = false
-        if (newCols.includes('')) {
+        if (new_cols.includes('')) {
             error = { editHeaders: langText.form.nullVals }
         } else {
-            const duplicated = new Set(newCols)
-            if (duplicated.size !== newCols.length) {
+            const duplicated = new Set(new_cols)
+            if (duplicated.size !== new_cols.length) {
                 error = { editHeaders: langText.form.duplicateVals }
             } else {
-                if (JSON.stringify(dataEdited.cols) === JSON.stringify(newCols)) error = true
+                if (JSON.stringify(dataEdited.cols) === JSON.stringify(new_cols)) error = true
             }
         }
 
@@ -66,18 +66,16 @@ function ChangesSection({ data, setData }) {
         } else {
             setErrors({})
 
-            const newKeys = {}
-            for (const entry of formData.entries()) {
+            const new_keys = {}
+            for (const entry of form_values.entries()) {
                 const [key, val] = entry
-                if (val !== key) newKeys[key] = val
+                if (val !== key) new_keys[key] = val
             }
 
-            const values = {
-                rows: JSON.stringify(dataEdited.rows),
-                newKeys: JSON.stringify(newKeys)
-            }
-            const response = await postFAPI('editHeaders', values, lang)
-            console.log(response)
+            const form_data = new FormData()
+            form_data.append('rows', JSON.stringify(dataEdited.rows))
+            form_data.append('new_keys', JSON.stringify(new_keys))
+            const response = await postFAPI('editHeaders', form_data, lang)
 
             if (response.bool) {
                 var val = response.value
@@ -102,10 +100,9 @@ function ChangesSection({ data, setData }) {
         setIsLoading(true)
         setEdit('dtype')
 
-        const values = {
-            rows: JSON.stringify(dataEdited.rows),
-        }
-        const response = await postFAPI('getDtype', values, lang)
+        const form_data = new FormData()
+        form_data.append('rows', JSON.stringify(dataEdited.rows))
+        const response = await postFAPI('getDtype', form_data, lang)
 
         if (response.bool) {
             const val = response.value
@@ -128,23 +125,22 @@ function ChangesSection({ data, setData }) {
 
         setIsLoading(true)
 
-        const formData = new FormData(e.target)
+        const form_values = new FormData(e.target)
 
-        var newDtypes = false
-        for (const entry of formData.entries()) {
+        var new_Dtypes = false
+        for (const entry of form_values.entries()) {
             const [key, val] = entry
             if (val !== dataEdited.dtypes[key]) {
-                if (newDtypes === false) newDtypes = {}
-                newDtypes[key] = val
+                if (new_Dtypes === false) new_Dtypes = {}
+                new_Dtypes[key] = val
             }
         }
 
-        if (!!newDtypes) {
-            const values = {
-                rows: JSON.stringify(dataEdited.rows),
-                dtypes: JSON.stringify(newDtypes),
-            }
-            const response = await postFAPI('changeDtype', values, lang)
+        if (!!new_Dtypes) {
+            const form_data = new FormData()
+            form_data.append('rows', JSON.stringify(dataEdited.rows))
+            form_data.append('dtypes', JSON.stringify(new_Dtypes))
+            const response = await postFAPI('changeDtype', form_data, lang)
 
             if (response.bool) {
                 const val = response.value
@@ -196,11 +192,10 @@ function ChangesSection({ data, setData }) {
         setIsLoading(true)
 
         if (Object.keys(newRowsValues).length !== 0) {
-            const values = {
-                rows: JSON.stringify(dataEdited.rows),
-                newValues: JSON.stringify(newRowsValues),
-            }
-            const response = await postFAPI('editRows', values, lang)
+            const form_data = new FormData()
+            form_data.append('rows', JSON.stringify(dataEdited.rows))
+            form_data.append('new_values', JSON.stringify(newRowsValues))
+            const response = await postFAPI('editRows', form_data, lang)
 
             if (response.bool) {
                 const val = response.value
@@ -258,13 +253,12 @@ function ChangesSection({ data, setData }) {
         setIsLoading(true)
         setSelectedRows([])
 
-        if (filters.text === '' || filters.num === '') {
+        if (filters.text !== '' || filters.num !== '') {
 
-            const values = {
-                rows: JSON.stringify(dataEdited.rows),
-                filters: JSON.stringify(filters)
-            }
-            const response = await postFAPI('filter', values, lang)
+            const form_data = new FormData()
+            form_data.append('rows', JSON.stringify(dataEdited.rows))
+            form_data.append('filters', JSON.stringify(filters))
+            const response = await postFAPI('filter', form_data, lang)
 
             if (response.bool) {
                 const val = response.value

@@ -32,22 +32,22 @@ function Procesamiento({ data }) {
         {
             id: 'info',
             color: 'primary',
-            Blabel: langText.info,
+            b_label: langText.info,
         },
         {
             id: 'describe',
             color: 'secondary',
-            Blabel: langText.desc,
+            b_label: langText.desc,
         },
         {
             id: 'isnull',
             color: 'danger',
-            Blabel: langText.headersInfo.Count,
+            b_label: langText.headersInfo.Count,
         },
         {
             id: 'notnull',
             color: 'success',
-            Blabel: langText.headersInfo['Non-Null'],
+            b_label: langText.headersInfo['Non-Null'],
         },
     ]
 
@@ -55,8 +55,11 @@ function Procesamiento({ data }) {
     const getData = async (action) => {
         setIsLoading(action)
 
-        const values = { rows: JSON.stringify(data.rows) }
-        const response = await postFAPI(action, values, lang)
+        const formData = new FormData()
+        formData.append('rows', JSON.stringify(data.rows))
+
+        const response = await postFAPI(action, formData, lang)
+        console.log(response)
 
         if (response.bool) {
             var val = response.value
@@ -78,17 +81,17 @@ function Procesamiento({ data }) {
         <section className='mx-auto my-4 flex flex-col items-center'>
 
             <ButtonGroup variant='shadow' className='buttongroup-xs' isDisabled={Boolean(isLoading)}>
-                {sections.map(s =>
+                {sections.map(e =>
                     <Button
-                        key={s.id}
-                        color={s.color}
+                        key={e.id}
+                        color={e.color}
                         className='text-white'
-                        onClick={() => getData(s.id)}
-                        isLoading={isLoading === s.id}
+                        onClick={() => getData(e.id)}
+                        isLoading={isLoading === e.id}
                         as={Link}
-                        href={'#' + s.id}
+                        href={'#' + e.id}
                     >
-                        {s.Blabel}
+                        {e.b_label}
                     </Button>
                 )}
                 <Button
@@ -99,28 +102,28 @@ function Procesamiento({ data }) {
                 </Button>
             </ButtonGroup>
 
-            {sections.map(s =>
+            {sections.map(e =>
                 <section
-                    key={s.id}
+                    key={e.id}
                     className='max-xs:w-full mt-4'
-                    id={s.id}
+                    id={e.id}
                 >
-                    {content[s.id] && (
+                    {content[e.id] && (
                         <>
-                            {s.id === 'info' && (
+                            {e.id === 'info' && (
                                 <div className='font-semibold mb-2 flex flex-row gap-4 me-6 justify-end max-sm:justify-center' >
                                     <div>{langText.table.cells}: {(data.cols.length) * (data.rows.length)}</div>
                                 </div>
 
                             )}
                             <CustomTable
-                                data={content[s.id]}
+                                data={content[e.id]}
                                 preferences={{
-                                    model: ['info', 'describe'].includes(s.id) ? ['none'] : ['pages'],
+                                    model: ['info', 'describe'].includes(e.id) ? ['none'] : ['pages'],
                                     checks: ['headers'],
                                 }}
-                                ariaLabel={langText.tableAria[s.id]}
-                                color={s.color}
+                                ariaLabel={langText.tableAria[e.id]}
+                                color={e.color}
                             />
                         </>
                     )}
