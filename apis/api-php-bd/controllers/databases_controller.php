@@ -54,7 +54,8 @@ class Databases_Controller extends Controller
                 $add = $model->ModelAdd();
 
                 if ($add) {
-                    $answer['answer'] = 'added';
+                    $answer['answer'] = [];
+                    $answer['answer']["detail"]='added';
                 } else {
                     $answer['error'] = "database_modify";
                 }
@@ -63,7 +64,7 @@ class Databases_Controller extends Controller
             }
 
         } else {
-            $answer['error'] = "form";
+            $answer['error'] = "table";
         }
 
         $this->echo($answer);
@@ -74,11 +75,11 @@ class Databases_Controller extends Controller
         error_log("DatabasesController::getRows -> Ejecuta");
         $answer = [];
 
-        $check = ['table', 'idUser'];
+        $check = ['table', 'id'];
 
         if ($this->existGET($check)) {
             $table = $this->getGet('table');
-            $idUser = $this->getGet('idUser');
+            $id = $this->getGet('id');
 
             $select = "*";
             if ($this->existGET(['select'])) {
@@ -96,11 +97,12 @@ class Databases_Controller extends Controller
             }
 
             if ($model) {
-                $model->Set('idUser', $idUser);
+                $model->Set('id', $id);
                 $select = $model->ModelSelect($select);
 
                 if ($select || $select == []) {
-                    $answer['answer'] = $select;
+                    $answer['answer'] = [];
+                    $answer['answer']["value"]=$select;
                 } else {
                     $answer['error'] = "database_consult";
                 }
@@ -141,7 +143,8 @@ class Databases_Controller extends Controller
                 $delete = $model->ModalDelete();
 
                 if ($delete) {
-                    $answer['answer'] = 'deleted';
+                    $answer['answer'] = [];
+                    $answer['answer']["detail"]="deleted";
                 } else {
                     $answer['error'] = "database_modify";
                 }
@@ -184,7 +187,8 @@ class Databases_Controller extends Controller
                 $update = $model->ModelUpdate();
 
                 if ($update) {
-                    $answer['answer'] = 'updated';
+                    $answer['answer'] = [];
+                    $answer['answer']["detail"]="updated";
                 } else {
                     $answer['error'] = "database_consult";
                 }
@@ -199,16 +203,15 @@ class Databases_Controller extends Controller
         $this->echo($answer);
     }
 
-    public function validateIdUser()
+    public function validateid()
     {
-        error_log("DatabasesController::validateIdUser -> Ejecuta");
+        error_log("DatabasesController::validateid -> Ejecuta");
         $answer = [];
 
-        $check = ['idUser'];
+        $check = ['id'];
 
         if ($this->existGET($check)) {
-            $idUser = $this->getGet('idUser');
-            error_log("DatabasesController::validateIdUser -> idUser $idUser");
+            $id = $this->getGet('id');
 
             $models = [
                 1 => new Table1Model(),
@@ -220,15 +223,15 @@ class Databases_Controller extends Controller
             $error = false;
             for ($i = 1; $i < 4; $i++) {
                 $model = $models[$i];
-                $model->Set('idUser', $idUser);
+                $model->Set('id', $id);
                 $count = $model->ModelCount("*");
 
                 if ($count) {
-                    error_log("DatabasesController::validateIdUser -> Existe el ID");
+                    error_log("DatabasesController::validateid -> Existe el ID");
                     $bool = true;
                     break;
                 } else if ($count === 0) {
-                    error_log("DatabasesController::validateIdUser -> No existe el ID");
+                    error_log("DatabasesController::validateid -> No existe el ID");
 
                 } else {
                     $error = true;
@@ -239,7 +242,8 @@ class Databases_Controller extends Controller
             if ($error) {
                 $answer['error'] = "database_consult";
             } else {
-                $answer['answer'] = $bool;
+                $answer['answer'] = [];
+                $answer['answer']['value'] = $bool;
             }
 
         } else {
@@ -254,11 +258,11 @@ class Databases_Controller extends Controller
         error_log("DatabasesController::deleteUser -> Ejecuta");
         $answer = [];
 
-        $check = ['idUser'];
+        $check = ['id'];
 
         if ($this->existGET($check)) {
-            $idUser = $this->getGet('idUser');
-            error_log("DatabasesController::deleteUser -> idUser $idUser");
+            $id = $this->getGet('id');
+            error_log("DatabasesController::deleteUser -> id $id");
 
             $models = [
                 1 => new Table1Model(),
@@ -268,7 +272,7 @@ class Databases_Controller extends Controller
 
             for ($i = 1; $i < 4; $i++) {
                 $model = $models[$i];
-                $model->Set('idUser', $idUser);
+                $model->Set('id', $id);
                 $delete = $model->ModalDelete();
             }
 

@@ -3,7 +3,7 @@
 class Table1Model extends Model
 {
     private $model = [];
-    private $cols = ['id_1', 'col1_1', 'col2_1', 'col3_1', 'col4_1','idUser'];
+    private $cols = ['id_1', 'col1_1', 'col2_1', 'col3_1', 'col4_1','id_user'];
     private $table = 'table1';
 
     public function __construct()
@@ -35,8 +35,8 @@ class Table1Model extends Model
         if ($this->model['id_1']) {
             $id = "id_1";
         } 
-        else if ($this->model['idUser']) {
-            $id = "idUser";
+        else if ($this->model['id_user']) {
+            $id = "id_user";
         } 
         else {
             return false;
@@ -106,7 +106,7 @@ class Table1Model extends Model
     {
         error_log('Table1Model::Select-> Ejecuto');
 
-        $same = ['idUser'];
+        $same = ['id_user'];
         $like = [];
 
         $where = [];

@@ -29,12 +29,12 @@ app.add_middleware(
 
 #  ----------------------------------------------------------------------------------------------
 @app.get("/")
-def index():
-    return {"answer": "svon"}
+async def index():
+    return {"detail": "sv on"}
 
 
 # functions ----------------------------------------------------------------------------------------------
-def getDtypes(df):
+async def getDtypes(df: pd.DataFrame):
     dtypes = df.dtypes
     del dtypes["key"]
 
@@ -50,264 +50,271 @@ def getDtypes(df):
 
 
 # upload -------------------------------------
-@app.post("/file_to_df/")
-async def file_to_df(file: UploadFile | None = None):
+@app.post("/fileToDf/")
+async def fileToDf(file: UploadFile):
+    if not file:
+        raise HTTPException(status_code=400, detail="form")
+
     contents = file.file
+    bool = True
+    df = ""
 
-    if not contents:
-        raise HTTPException(status_code=204, detail="sin contenido")
+    name = file.filename
+    if name.endswith(".csv"):
+        df = pd.read_csv(contents)
+    elif name.endswith((".xls", ".xlsx")):
+        df = pd.read_excel(contents)
     else:
-        bool = True
-        df = ""
+        raise HTTPException(status_code=400, detail="format")
 
-        name = file.filename
-        if name.endswith(".csv"):
-            df = pd.read_csv(contents)
-        elif name.endswith((".xls", ".xlsx")):
-            df = pd.read_excel(contents)
-        else:
-            bool = False
-            raise HTTPException(status_code=400, detail="formato invalido")
+    if bool:
+        df["key"] = df.index
+        cols = list(df.columns)
+        cols.remove("key")
+        response = {"value": {"cols": cols, "rows": df.to_json(orient="records")}}
 
-        if bool:
-            df["key"] = df.index
-            cols = list(df.columns)
-            cols.remove("key")
-            response = {"cols": cols, "rows": df.to_json(orient="records")}
-
-    return response
+        return response
 
 
-# procesamiento -------------------------------------
+# process -------------------------------------
 @app.post("/info/")
-def info(rows: Annotated[str, Form()] = None):
+async def info(rows: Annotated[str, Form()] = None):
 
     if not rows:
-        raise HTTPException(status_code=400, detail="sin data")
-    else:
-        dataDIC = loads(rows)
-        df = pd.DataFrame(dataDIC)
-        df.drop("key", axis=1, inplace=True)
+        raise HTTPException(status_code=400, detail="form")
 
-        buf = io.StringIO()
-        df.info(buf=buf)
-        s = buf.getvalue()
-        lines = [line.split() for line in s.splitlines()[3:-2]]
-        del lines[1]
-        cols = lines[0]
-        del lines[0]
-        df_info = pd.DataFrame(lines, columns=cols)
+    data_dicc = loads(rows)
+    df = pd.DataFrame(data_dicc)
+    df.drop("key", axis=1, inplace=True)
 
-        df_info["key"] = df_info["Column"]
+    buf = io.StringIO()
+    df.info(buf=buf)
+    s = buf.getvalue()
+    lines = [line.split() for line in s.splitlines()[3:-2]]
+    del lines[1]
+    cols = lines[0]
+    del lines[0]
+    df_info = pd.DataFrame(lines, columns=cols)
 
-        response = {"cols": cols, "rows": df_info.to_json(orient="records")}
+    df_info["key"] = df_info["Column"]
+
+    response = {"value": {"cols": cols, "rows": df_info.to_json(orient="records")}}
 
     return response
 
 
 @app.post("/describe/")
-def describe(rows: Annotated[str, Form()] = None):
+async def describe(rows: Annotated[str, Form()] = None):
 
     if not rows:
-        raise HTTPException(status_code=400, detail="sin data")
-    else:
-        dataDIC = loads(rows)
-        df = pd.DataFrame(dataDIC)
+        raise HTTPException(status_code=400, detail="form")
 
-        describe = df.describe(include="all")
+    data_dicc = loads(rows)
+    df = pd.DataFrame(data_dicc)
 
-        df = pd.DataFrame(describe)
-        df = df.drop(["key"], axis=1)
-        df = df.transpose()
-        df.insert(0, "Column", df.index)
-        df.insert(0, "key", df.index)
+    describe = df.describe(include="all")
 
-        cols = list(df.columns)
-        cols.remove("key")
+    df = pd.DataFrame(describe)
+    df = df.drop(["key"], axis=1)
+    df = df.transpose()
+    df.insert(0, "Column", df.index)
+    df.insert(0, "key", df.index)
 
-        response = {"cols": cols, "rows": df.to_json(orient="records")}
+    cols = list(df.columns)
+    cols.remove("key")
+
+    response = {"value": {"cols": cols, "rows": df.to_json(orient="records")}}
 
     return response
 
 
 @app.post("/isnull/")
-def isnull(rows: Annotated[str, Form()] = None):
+async def isnull(rows: Annotated[str, Form()] = None):
 
     if not rows:
-        raise HTTPException(status_code=400, detail="sin data")
-    else:
-        dataDIC = loads(rows)
-        df = pd.DataFrame(dataDIC)
+        raise HTTPException(status_code=400, detail="form")
 
-        df_isnull = df.isnull()
-        df_isnull["key"] = df_isnull.index
+    data_dicc = loads(rows)
+    df = pd.DataFrame(data_dicc)
 
-        cols = list(df_isnull.columns)
-        cols.remove("key")
+    df_isnull = df.isnull()
+    df_isnull["key"] = df_isnull.index
 
-        response = {"cols": cols, "rows": df_isnull.to_json(orient="records")}
+    cols = list(df_isnull.columns)
+    cols.remove("key")
+
+    response = {"value": {"cols": cols, "rows": df_isnull.to_json(orient="records")}}
 
     return response
 
 
 @app.post("/notnull/")
-def notnull(rows: Annotated[str, Form()] = None):
+async def notnull(rows: Annotated[str, Form()] = None):
 
     if not rows:
-        raise HTTPException(status_code=400, detail="sin data")
-    else:
-        dataDIC = loads(rows)
-        df = pd.DataFrame(dataDIC)
+        raise HTTPException(status_code=400, detail="form")
 
-        df_notnull = df.notnull()
-        df_notnull["key"] = df_notnull.index
+    data_dicc = loads(rows)
+    df = pd.DataFrame(data_dicc)
 
-        cols = list(df_notnull.columns)
-        cols.remove("key")
+    df_notnull = df.notnull()
+    df_notnull["key"] = df_notnull.index
 
-        response = {"cols": cols, "rows": df_notnull.to_json(orient="records")}
+    cols = list(df_notnull.columns)
+    cols.remove("key")
+
+    response = {"value": {"cols": cols, "rows": df_notnull.to_json(orient="records")}}
 
     return response
 
 
 # changes -------------------------------------
 @app.post("/editHeaders/")
-def editHeaders(
+async def editHeaders(
     rows: Annotated[str, Form()] = None,
-    newKeys: Annotated[str, Form()] = None,
+    new_keys: Annotated[str, Form()] = None,
 ):
 
-    if not rows:
-        raise HTTPException(status_code=400, detail="sin filas")
-    else:
-        dataDIC = loads(rows)
-        df = pd.DataFrame(dataDIC)
+    if not (rows or new_keys):
+        raise HTTPException(status_code=400, detail="form")
 
-        newKeys = loads(newKeys)
+    data_dicc = loads(rows)
+    df = pd.DataFrame(data_dicc)
 
-        df.rename(columns=newKeys, inplace=True)
+    new_keys = loads(new_keys)
 
-        cols = list(df.columns)
-        cols.remove("key")
+    df.rename(columns=new_keys, inplace=True)
 
-        response = {"cols": cols, "rows": df.to_json(orient="records")}
+    cols = list(df.columns)
+    cols.remove("key")
 
-        addData = getDtypes(df)
-        response |= addData
+    data = {"cols": cols, "rows": df.to_json(orient="records")}
+
+    add_data = await getDtypes(df)
+    data |= add_data
+
+    response = {"value": data}
 
     return response
 
 
 @app.post("/getDtype/")
-def getDtype(rows: Annotated[str, Form()] = None):
-
+async def getDtype(rows: Annotated[str, Form()] = None):
     if not rows:
-        raise HTTPException(status_code=400, detail="sin filas")
-    else:
-        dataDIC = loads(rows)
-        df = pd.DataFrame(dataDIC)
+        raise HTTPException(status_code=400, detail="form")
 
-        response = getDtypes(df)
+    data_dicc = loads(rows)
+    df = pd.DataFrame(data_dicc)
+    print(df)
+
+    response = {"value": await getDtypes(df)}
 
     return response
 
 
 @app.post("/changeDtype/")
-def changeDtype(
+async def changeDtype(
     rows: Annotated[str, Form()] = None, dtypes: Annotated[str, Form()] = None
 ):
 
     if not (rows or dtypes):
-        raise HTTPException(status_code=400, detail="sin data")
-    else:
-        dataDIC = loads(rows)
-        df = pd.DataFrame(dataDIC)
+        raise HTTPException(status_code=400, detail="form")
 
-        dtypesDIC = loads(dtypes)
+    data_dicc = loads(rows)
+    df = pd.DataFrame(data_dicc)
 
-        df1 = df.astype(dtypesDIC)
-        response = {"rows": df1.to_json(orient="records")}
+    dtypes_dicc = loads(dtypes)
 
-        addData = getDtypes(df1)
-        response |= addData
+    try:
+        df1 = df.astype(dtypes_dicc)
+    except:
+        raise HTTPException(status_code=404, detail="No se pudieron convertir los datos")
+    
+    data = {"rows": df1.to_json(orient="records")}
 
+    add_data = await getDtypes(df1)
+    data |= add_data
+
+    response = {"value": data}
     return response
 
 
 @app.post("/editRows/")
-def editRows(
-    rows: Annotated[str, Form()] = None, newValues: Annotated[str, Form()] = None
+async def editRows(
+    rows: Annotated[str, Form()] = None, new_values: Annotated[str, Form()] = None
 ):
-    if not (rows or newValues):
-        raise HTTPException(status_code=400, detail="sin data")
-    else:
-        dataDIC = loads(rows)
-        df = pd.DataFrame(dataDIC)
+    if not (rows or new_values):
+        raise HTTPException(status_code=400, detail="form")
 
-        newValuesDIC = loads(newValues)
+    data_dicc = loads(rows)
+    df = pd.DataFrame(data_dicc)
 
-        for k, v in newValuesDIC.items():
-            df.loc[df["key"] == int(k), list(v.keys())] = list(v.values())
+    newValuesDIC = loads(new_values)
 
-        response = {"rows": df.to_json(orient="records")}
+    for k, v in newValuesDIC.items():
+        df.loc[df["key"] == int(k), list(v.keys())] = list(v.values())
+
+    response = {"value": {"rows": df.to_json(orient="records")}}
 
     return response
 
 
 @app.post("/filter/")
-def filter(rows: Annotated[str, Form()] = None, filters: Annotated[str, Form()] = None):
+async def filter(
+    rows: Annotated[str, Form()] = None, filters: Annotated[str, Form()] = None
+):
 
     if not (rows or filters):
-        raise HTTPException(status_code=400, detail="sin data")
+        raise HTTPException(status_code=400, detail="form")
+
+    data_dicc = loads(rows)
+    df = pd.DataFrame(data_dicc)
+
+    filters = loads(filters)
+
+    cols = []
+    if filters["cols"] != "":
+        cols = [filters["cols"]]
     else:
-        dataDIC = loads(rows)
-        df = pd.DataFrame(dataDIC)
+        cols = df.columns
 
-        filters = loads(filters)
+    if filters["num"] != "":
 
-        cols = []
-        if filters["cols"] != "":
-            cols = [filters["cols"]]
-        else:
-            cols = df.columns
+        def evaluate(x):
+            t = isinstance(x, (int, float))
+            if t:
+                e = eval(str(x) + filters["cond_simbol"] + filters["num"])
+                return e
+            return False
 
-        if filters["num"] != "":
+    else:
 
-            def evaluate(x):
-                t = isinstance(x, (int, float))
-                if t:
-                    e = eval(str(x) + filters["cond_simbol"] + filters["num"])
-                    return e
-                return False
+        def evaluate(x):
+            t = isinstance(x, str)
+            if t:
+                e = filters["text"] in x
+                return e
+            return False
 
-        else:
+    mask = pd.DataFrame()
+    for col in cols:
+        if col != "key":
+            mask[col] = df[col].map(lambda x: evaluate(x))
 
-            def evaluate(x):
-                t = isinstance(x, str)
-                if t:
-                    e = filters["text"] in x
-                    return e
-                return False
+    df = df[mask.any(axis=1)]
 
-        mask = pd.DataFrame()
-        for col in cols:
-            if col != "key":
-                mask[col] = df[col].map(lambda x: evaluate(x))
+    if mask.any().any():
 
-        df = df[mask.any(axis=1)]
+        def getHlCols(r):
+            h = []
+            for k, v in r.items():
+                if v:
+                    h.append(k)
+            return h
 
-        if mask.any().any():
+        df["hl"] = mask.apply(getHlCols, axis=1)
 
-            def getHlCols(r):
-                h = []
-                for k, v in r.items():
-                    if v:
-                        h.append(k)
-                return h
-
-            df["hl"] = mask.apply(getHlCols, axis=1)
-
-        response = {"rows": df.to_json(orient="records")}
+    response = {"value": {"rows": df.to_json(orient="records")}}
 
     return response
 
@@ -317,64 +324,62 @@ def filter(rows: Annotated[str, Form()] = None, filters: Annotated[str, Form()] 
 async def createImgPost(
     rows: Annotated[str, Form()] = None, preferences: Annotated[str, Form()] = None
 ):
-    response = {"error": "execute"}
 
     if not (rows or preferences):
-        response = {"error": "form"}
-    else:
-        rows = loads(rows)
-        preferences = loads(preferences)
-        print(preferences)
+        raise HTTPException(status_code=400, detail="form")
 
-        df = pd.DataFrame(rows)
+    rows = loads(rows)
+    preferences = loads(preferences)
 
-        x = ""
-        y = ""
-        plot = False
-        x = preferences["ejex"][0]
-        if preferences["ejey"] != []:
-            y = preferences["ejey"][0]
+    df = pd.DataFrame(rows)
 
-        graph = preferences["type"]
+    x = ""
+    y = ""
+    plot = False
+    x = preferences["ejex"][0]
+    if preferences["ejey"] != []:
+        y = preferences["ejey"][0]
 
-        if graph == "bar":
-            if y == ("" or "quantity"):
-                data = df[preferences["ejex"]].value_counts()
-                x = data.index.get_level_values(0).to_list()
-                y = data.tolist()
+    graph = preferences["type"]
 
-            plot = sns.barplot(data=df, x=x, y=y)
-        elif graph == "hist":
-            plot = sns.histplot(data=df, x=x)
-        elif graph == "pie":
-            plot = True
-
+    if graph == "bar":
+        if y == ("" or "quantity"):
             data = df[preferences["ejex"]].value_counts()
             x = data.index.get_level_values(0).to_list()
             y = data.tolist()
 
-            plt.pie(y, labels=x, autopct="%.0f%%")
-        elif graph == "boxplot":
-            plot = sns.boxplot(data=df, x=x)
-        elif graph == "scatter":
-            plot = sns.regplot(data=df, x=x, y=y)
-        elif graph == "line":
-            plot = sns.lineplot(data=df, x=x, y=y)
-        elif graph == "corr":
-            plot = sns.heatmap(df.corr())
+        plot = sns.barplot(data=df, x=x, y=y)
+    elif graph == "hist":
+        plot = sns.histplot(data=df, x=x)
+    elif graph == "pie":
+        plot = True
 
-        if plot != False:
-            buffer = io.BytesIO()
+        data = df[preferences["ejex"]].value_counts()
+        x = data.index.get_level_values(0).to_list()
+        y = data.tolist()
 
-            if plot == True:
-                plt.savefig(buffer, format="png")
-            else:
-                img = plot.get_figure()
-                img.savefig(buffer, format="png")
+        plt.pie(y, labels=x, autopct="%.0f%%")
+    elif graph == "boxplot":
+        plot = sns.boxplot(data=df, x=x)
+    elif graph == "scatter":
+        plot = sns.regplot(data=df, x=x, y=y)
+    elif graph == "line":
+        plot = sns.lineplot(data=df, x=x, y=y)
+    elif graph == "corr":
+        plot = sns.heatmap(df.corr())
 
-            buffer.seek(0)
+    if plot != False:
+        buffer = io.BytesIO()
 
-            response = StreamingResponse(buffer, media_type="image/png")
-            plt.clf()
+        if plot == True:
+            plt.savefig(buffer, format="png")
+        else:
+            img = plot.get_figure()
+            img.savefig(buffer, format="png")
+
+        buffer.seek(0)
+
+        response = StreamingResponse(buffer, media_type="image/png")
+        plt.clf()
 
     return response

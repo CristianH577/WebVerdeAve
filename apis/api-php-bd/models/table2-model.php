@@ -3,7 +3,7 @@
 class Table2Model extends Model
 {
     private $model = [];
-    private $cols = ['id_2', 'col1_2', 'col2_2', 'col3_2', 'col4_2','idUser'];
+    private $cols = ['id_2', 'col1_2', 'col2_2', 'col3_2', 'col4_2','id_user'];
     private $table = 'table2';
 
     public function __construct()
@@ -35,8 +35,8 @@ class Table2Model extends Model
         if ($this->model['id_2']) {
             $id = "id_2";
         } 
-        else if ($this->model['idUser']) {
-            $id = "idUser";
+        else if ($this->model['id_user']) {
+            $id = "id_user";
         } 
         else {
             return false;

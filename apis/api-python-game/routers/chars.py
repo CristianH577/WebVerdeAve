@@ -253,10 +253,8 @@ def updateMapAll(char: class_char):
                     except:
                         try:
                             trap = map["traps"][col, row]
-                            if trap["kind"] in ["mimic","gas"]:
-                                char.map[col][row][
-                                    "layer"
-                                ] = "chest"
+                            if trap["kind"] in ["mimic", "gas"]:
+                                char.map[col][row]["layer"] = "chest"
                             elif trap["kind"] == "lever":
                                 char.map[col][row]["layer"] = "lever"
                         except:
@@ -411,7 +409,7 @@ def updateMap(x: str, y: int, char: class_char):
                                         except:
                                             try:
                                                 trap = map["traps"][new_x, new_y]
-                                                if trap["kind"] in ["mimic","gas"]:
+                                                if trap["kind"] in ["mimic", "gas"]:
                                                     char.map[new_x][new_y][
                                                         "layer"
                                                     ] = "chest"
@@ -901,53 +899,54 @@ async def index():
     return "chars"
 
 
-@router.get("/getList", status_code=200)
-async def getList():
-    return list_class
-
-
 @router.get("/getElementById/{id}", response_model={}, status_code=200)
 async def getElementById(id: int):
-    return searchCharById(id)
+    if not id:
+        raise HTTPException(status_code=400, detail="Error de formulario")
+
+    return {"value": searchCharById(id)}
 
 
 @router.post("/getElement", response_model=[], status_code=200)
 async def getElement(filters: dict):
     if not filters:
-        raise HTTPException(status_code=404, detail="form")
-    else:
-        return searchChar(filters)
+        raise HTTPException(status_code=400, detail="Error de formulario")
+
+    return {"value": searchChar(filters)}
 
 
 @router.post("/add", status_code=201)
 async def add(data: Annotated[str, Form()] = None):
     if not data:
-        raise HTTPException(status_code=404, detail="error form")
-    else:
-        try:
-            last_char_id = list_class_default[-1].id
-        except:
-            last_char_id = 3
+        raise HTTPException(status_code=400, detail="Error de formulario")
 
-        if last_char_id < 3:
-            last_char_id = 3
+    try:
+        last_char_id = list_class_default[-1].id
+    except:
+        last_char_id = 3
 
-        new_id = last_char_id + 1
+    if last_char_id < 3:
+        last_char_id = 3
 
-        data_dict = loads(data)
-        data_dict["id"] = new_id
+    new_id = last_char_id + 1
 
-        list_class_default.append(data_dict)
-        list_class.append(class_char(**data_dict))
+    data_dict = loads(data)
+    data_dict["id"] = new_id
 
-        await selectClass(data_dict["clase"], new_id)
+    list_class_default.append(data_dict)
+    list_class.append(class_char(**data_dict))
 
-        return new_id
+    await selectClass(data_dict["clase"], new_id)
+
+    return {"value": new_id}
 
 
 @router.delete("/{id}", status_code=204)
 async def delete(id: int):
-    if id in [1,2]:
+    if not id:
+        raise HTTPException(status_code=400, detail="Error de formulario")
+
+    if id in [1, 2]:
         await restart(id)
     else:
         found = False
@@ -958,7 +957,9 @@ async def delete(id: int):
                 break
 
         if not found:
-            raise HTTPException(status_code=404, detail="no hay default")
+            raise HTTPException(
+                status_code=404, detail="No existe informacion del personaje"
+            )
 
         found = False
         for k, y in enumerate(list_class):
@@ -967,7 +968,7 @@ async def delete(id: int):
                 break
 
         if not found:
-            raise HTTPException(status_code=404, detail="no existe id")
+            raise HTTPException(status_code=404, detail="Personaje no encontrada")
 
         if found:
             del list_class_default[i]
@@ -976,6 +977,9 @@ async def delete(id: int):
 
 @router.post("/update")
 async def update(char: Annotated[str, Form()] = None):
+    if not char:
+        raise HTTPException(status_code=400, detail="Error de formulario")
+
     found = False
 
     char_dict = loads(char)
@@ -995,28 +999,34 @@ async def update(char: Annotated[str, Form()] = None):
             break
 
     if not found:
-        raise HTTPException(status_code=404, detail="no existe")
+        raise HTTPException(status_code=404, detail="No se encontro al personaje")
 
 
-@router.get("/restart/{id_char}", status_code=204)
-async def restart(id_char: int):
+@router.get("/restart/{id}", status_code=204)
+async def restart(id: int):
+    if not id:
+        raise HTTPException(status_code=400, detail="Error de formulario")
+
     found = False
 
-    char_def = searchCharDefaultById(id_char)
+    char_def = searchCharDefaultById(id)
 
     for k, y in enumerate(list_class):
-        if y.id == id_char:
+        if y.id == id:
             list_class[k] = class_char(**char_def)
             found = True
             break
 
     if not found:
-        raise HTTPException(status_code=404, detail="no se encontro id")
+        raise HTTPException(status_code=404, detail="No se encontro al personaje")
 
 
 @router.get("/checkMove")
-async def checkMove(x: str, y: int, id_char: int):
-    char = searchCharById(id_char)
+async def checkMove(x: str, y: int, id: int):
+    if not (x or y or id):
+        raise HTTPException(status_code=400, detail="Error de formulario")
+
+    char = searchCharById(id)
 
     block = char.map[x][y]["kind"]
     if block == "empty":
@@ -1030,7 +1040,7 @@ async def checkMove(x: str, y: int, id_char: int):
     if block == "mob":
         char.mob["loc"] = [x, y]
 
-    if id_char == 1:
+    if id == 1:
         default = {
             "a": {1: {"kind": "wall"}},
             "b": {1: {"kind": "empty"}},
@@ -1055,14 +1065,17 @@ async def checkMove(x: str, y: int, id_char: int):
     await updateChar(char)
 
     try:
-        return r
+        return {"value": r}
     except:
         raise HTTPException(status_code=204)
 
 
 @router.get("/handleOption")
-async def handleOption(x: str, y: int, op: str, id_char: int):
-    char = searchCharById(id_char)
+async def handleOption(x: str, y: int, op: str, id: int):
+    if not (x or y or op or id):
+        raise HTTPException(status_code=400, detail="Error de formulario")
+
+    char = searchCharById(id)
 
     try:
         xy_mob = char.mob["loc"]
@@ -1124,14 +1137,17 @@ async def handleOption(x: str, y: int, op: str, id_char: int):
         if new:
             await updateChar(new)
 
-        return r
+        return {"value": r}
     else:
         raise HTTPException(status_code=204)
 
 
 @router.post("/handleFight")
-async def handleFight(turn: Annotated[str, Form()], id_char: Annotated[int, Form()]):
-    char = searchCharById(id_char)
+async def handleFight(turn: Annotated[str, Form()], id: Annotated[int, Form()]):
+    if not (turn or id):
+        raise HTTPException(status_code=400, detail="Error de formulario")
+
+    char = searchCharById(id)
     turn = loads(turn)
 
     if turn["current"] == "char":
@@ -1174,11 +1190,14 @@ async def handleFight(turn: Annotated[str, Form()], id_char: Annotated[int, Form
                 turn["msg"] = "El mob te golpea, te hizo " + str(hit) + " de daño"
 
     await updateChar(char)
-    return turn
+    return {"value": turn}
 
 
 @router.get("/endFight/{id}")
 async def endFight(id: int):
+    if not id:
+        raise HTTPException(status_code=400, detail="Error de formulario")
+
     char = searchCharById(id)
     r = False
 
@@ -1213,13 +1232,16 @@ async def endFight(id: int):
     await updateChar(char)
 
     if r:
-        return r
+        return {"value": r}
     else:
         raise HTTPException(status_code=204)
 
 
 @router.get("/useConsumable")
 async def useConsumable(id_item: int, id_char: int):
+    if not (id_item or id_char):
+        raise HTTPException(status_code=400, detail="Error de formulario")
+
     char = searchCharById(id_char)
 
     r = False
@@ -1227,13 +1249,15 @@ async def useConsumable(id_item: int, id_char: int):
     try:
         item = char.inventory[id_item]
     except:
-        raise HTTPException(status_code=404, detail="objeto sin inventario")
+        raise HTTPException(
+            status_code=404, detail="El objeto no esta en el inventario"
+        )
 
     if item.kind != "consumible":
         r = ["Objeto no consumible"]
 
     if item.quantity <= 0:
-        raise HTTPException(status_code=400, detail="objeto sin stock")
+        raise HTTPException(status_code=400, detail="Objeto sin existencias")
 
     used = False
     effect = item.effect
@@ -1271,7 +1295,8 @@ async def useConsumable(id_item: int, id_char: int):
 
     await updateChar(char)
 
-    return r
+    return {"value": r}
+
 
 # methods admin ------------------------------------------------------------------------------------
 @router.get("/getAllItems")
