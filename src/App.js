@@ -19,7 +19,7 @@ import More from "./views/Designs/More/More";
 import APIs from "./views/Apis/Apis";
 import Analyze from "./views/Apis/Analyze/Analyze";
 import Databases from "./views/Apis/Databases/Databases";
-import DatabasesNoUser from "./views/Apis/Databases/DatabasesNoUser";
+// import DatabasesNoUser from "./views/Apis/Databases/DatabasesNoUser";
 import Game from "./views/Apis/Game/Game";
 
 import Prices from "./views/Prices/Prices"
@@ -102,7 +102,8 @@ function App() {
 
     {
       path: 'apis/databases',
-      content: user ? <Databases user={user} setUser={setUser} /> : <DatabasesNoUser user={user} setUser={setUser} />,
+      // content: user ? <Databases user={user} setUser={setUser} /> : <DatabasesNoUser user={user} setUser={setUser} />,
+      content: <Databases user={user} setUser={setUser} />,
     },
 
     {

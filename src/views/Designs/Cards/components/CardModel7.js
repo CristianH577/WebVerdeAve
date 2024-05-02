@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 import { Card, CardHeader, Image } from "@nextui-org/react";
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import langText from '../../lang/general.json'
 
 import { Outlet } from "react-router-dom";
@@ -39,8 +39,7 @@ function Layout() {
       />
 
       {load
-        ?
-        <Outlet
+        ? <Outlet
           context={{
             dark: darkMode.value,
             lang: lang,

@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 import { useOutletContext } from 'react-router-dom';
 
@@ -21,7 +21,6 @@ function Sliders() {
     const section_class = 'w-full mb-8 flex flex-col items-center gap-8'
     const title_class = 'text-5xl break-all text-center'
     const divider_class = 'w-3/4 max-w-[1200px] my-8'
-
 
 
     return (

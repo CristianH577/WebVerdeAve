@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './Graphs.css'
 
 import addLangText from '../../../../lang/Designs/More/components/Graphs.json'

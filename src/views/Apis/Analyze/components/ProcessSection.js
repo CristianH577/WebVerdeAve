@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import addLangText from '../../../lang/Apis/Analyze/ProcessSection.json'
+import addLangText from '../../../../lang/Apis/Analyze/components/ProcessSection.json'
 import { useOutletContext } from 'react-router-dom';
 
 import { ButtonGroup, Button, Link } from "@nextui-org/react";
 
-import CustomTable from '../../../components/CustomTable';
+import CustomTable from '../../../../components/CustomTable';
 
-import { postFAPI } from '../../../libs/fastapi';
+import { postFAPI } from '../../../../libs/fastapi';
 
-import { Reset } from '../../../assets/icons'
+import { Reset } from '../../../../assets/icons'
 
 
 function Procesamiento({ data }) {
@@ -58,8 +58,7 @@ function Procesamiento({ data }) {
         const formData = new FormData()
         formData.append('rows', JSON.stringify(data.rows))
 
-        const response = await postFAPI(action, formData, lang)
-        console.log(response)
+        const response = await postFAPI('analyze/' + action, formData, lang)
 
         if (response.bool) {
             var val = response.value

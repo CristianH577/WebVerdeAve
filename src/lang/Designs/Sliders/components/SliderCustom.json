@@ -29,7 +29,8 @@
                 "progressbar": "progreso",
                 "preview": "Vista"
             }
-        }
+        },
+        "slide": "Diapositiva"
     },
     "en": {
         "title": "Customizable",
@@ -61,6 +62,7 @@
                 "progressbar": "progress",
                 "preview": "Preview"
             }
-        }
+        },
+        "slide": "Slide"
     }
 }

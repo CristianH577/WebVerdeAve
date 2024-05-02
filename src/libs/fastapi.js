@@ -1,26 +1,17 @@
 import axios from 'axios';
-import addLangText from '../lang/libs/fastapi.json'
+import langText from '../lang/libs/fastapi.json'
 
 import { toast } from 'react-toastify';
 
 
-const baseURL = 'http://127.0.0.1:8000/'
 const client = axios.create({
-    baseURL: baseURL
+    baseURL: 'http://127.0.0.1:8000/'
 })
 
-const langText = addLangText
-
-var config = {
-    lang: 'es',
-    dark: false,
-    toastId: 'toast_server'
-}
-
+var lang = 'es'
 const defaultAlert = {
     bool: false,
-    variant: 'info',
-    msg: langText[config.lang].errors.fapi,
+    msg: langText[lang]?.errors?.fapi,
     value: false,
     status: false,
 }
@@ -34,19 +25,26 @@ const analyzeResponse = (response) => {
 
         if (alert.status >= 200 && alert.status < 300) alert.bool = true
 
-        alert.msg = response.data?.detail
-        alert.value = response.data?.value
+        if (alert.status === 200) {
+            alert.variant = 'success'
 
-        if (alert.msg) alert.variant = 'success'
+            alert.msg = response.data?.detail
+            alert.value = response.data?.value
+        } else if (alert.status === 206) {
+            alert.variant = 'info'
 
-        if (alert.msg) showAlert()
+            alert.msg = response.data.detail?.detail
+            alert.value = response.data.detail?.value
+        }
+
+        if (alert.msg && alert.status) showAlert()
     }
 }
 const analyzeError = (e) => {
     // console.log(e)
-    if (e.code === "ERR_NETWORK") {
+    if (["ERR_NETWORK", "ERR_BAD_RESPONSE"].includes(e.code)) {
         alert.status = 500
-        alert.msg = langText[config.lang].errors.server
+        alert.msg = langText[lang]?.errors?.server
     } else if (e.code === "ERR_BAD_REQUEST") {
         alert.status = e.response.request.status
     }
@@ -55,61 +53,48 @@ const analyzeError = (e) => {
         alert.variant = 'danger'
         if (alert.status < 500) {
             const detail = e?.response?.data?.detail
-            const msg = langText[config.lang].errors[detail]
+            const msg = langText[lang]?.errors[detail]
             alert.msg = msg ? msg : detail
         }
     }
 
-    if (alert.msg) showAlert()
+    if (alert.msg && alert.status) showAlert()
 }
+
 const showAlert = () => {
-    const msg = alert.msg.title
+    const msg = alert.msg?.title
         ? <div>
             <div className='font-semibold'>{alert.msg.title}:</div>
             <div >{alert.msg.content}.</div>
         </div>
         : alert.msg
 
-    var type = toast.TYPE.DEFAULT
+
     switch (alert.variant) {
         case 'info':
-            type = toast.TYPE.INFO
+            toast.info(msg)
             break;
         case 'success':
-            type = toast.TYPE.SUCCESS
+            toast.success(msg)
             break;
         case 'warning':
-            type = toast.TYPE.WARNING
+            toast.warning(msg)
             break;
         case 'danger':
-            type = toast.TYPE.ERROR
+            toast.error(msg)
             break;
 
         default:
+            toast(msg)
             break;
     }
-
-    toast(msg, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        newestOnTop: false,
-        closeOnClick: true,
-        rtl: false,
-        pauseOnFocusLoss: true,
-        draggable: true,
-        pauseOnHover: true,
-        type: type,
-        theme: config.dark ? 'dark' : 'light',
-    })
 
 }
 
 
-export async function getFAPI(action, newConfig) {
+export async function getFAPI(action, currentLang) {
     alert = { ...defaultAlert }
-
-    newConfig && (config = { ...config, ...newConfig })
+    currentLang && (lang = currentLang)
 
     await client.get(action)
         .then(response => analyzeResponse(response))
@@ -118,10 +103,9 @@ export async function getFAPI(action, newConfig) {
     return alert
 }
 
-export async function postFAPI(action, data, newConfig) {
+export async function postFAPI(action, data, currentLang) {
     alert = { ...defaultAlert }
-
-    newConfig && (config = { ...config, ...newConfig })
+    currentLang && (lang = currentLang)
 
     await client.post(action, data)
         .then(response => analyzeResponse(response))
@@ -153,10 +137,9 @@ export async function putFAPI(action, data) {
 }
 
 
-export async function postFAPIgraph(action, data, newConfig) {
+export async function postFAPIgraph(action, data, currentLang) {
     alert = { ...defaultAlert }
-
-    newConfig && (config = { ...config, ...newConfig })
+    currentLang && (lang = currentLang)
 
     var blob = false
 
@@ -181,15 +164,8 @@ export async function postFAPIgraph(action, data, newConfig) {
                 alert.bool = true
             }
         })
-        // .then( blob => {
-        //     if (blob) {
-        //         const reader = new FileReader()
-        //         alert.value = reader.readAsDataURL(blob)
-        //     }
-        // })
         .catch(e => analyzeError(e))
 
-    // if (!blob) alert.msg = langText[config.lang].errors_server.response
     if (!alert.bool) showAlert(alert)
 
     return blob

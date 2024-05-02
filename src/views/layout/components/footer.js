@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import addLangText from '../../../lang/Layout/Footer.json'
 
 import { Button, ButtonGroup, Divider, Tooltip, Link } from "@nextui-org/react";
@@ -184,9 +184,9 @@ function Footer({ dark, lang }) {
                 </div>
             </div>
 
-            <div className='flex justify-center py-1 text-neutral-500 gap-2'>
-                <div>2023</div>
-                <div>©VerdeAve Inc.</div>
+            <div className='flex justify-center items-center py-1 text-neutral-500 gap-2'>
+                <p>2023</p>
+                <p>©VerdeAve Inc.</p>
             </div>
 
             {!loading &&

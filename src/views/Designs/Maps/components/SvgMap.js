@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import addLangText from '../../../../lang/Designs/Maps/components/SvgMap.json'
 import { useOutletContext } from 'react-router-dom';

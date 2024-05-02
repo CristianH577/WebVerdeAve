@@ -1,9 +1,10 @@
-import React from 'react';
 
-import addLangText from '../../../lang/Apis/Analyze/ShowSection.json'
+
+import addLangText from '../../../../lang/Apis/Analyze/components/ShowSection.json'
 import { useOutletContext } from 'react-router-dom';
 
-import CustomTable from '../../../components/CustomTable'
+import CustomTable from '../../../../components/CustomTable'
+import ErrorBoundary from '../../../../components/ErrorBoundary'
 
 
 function ShowSection({ data }) {
@@ -15,7 +16,7 @@ function ShowSection({ data }) {
 
 
     return (
-        <section>
+        <ErrorBoundary>
             <CustomTable
                 data={data}
                 preferences={{
@@ -25,7 +26,7 @@ function ShowSection({ data }) {
                 }}
                 ariaLabel={langText.table_aria}
             />
-        </section>
+        </ErrorBoundary>
     );
 }
 

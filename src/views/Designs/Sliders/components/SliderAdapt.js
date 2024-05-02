@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 import addLangText from '../../../../lang/Designs/Sliders/components/SliderAdapt.json'
 import { useOutletContext } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 import { Image, Tooltip } from "@nextui-org/react";
@@ -59,6 +59,7 @@ function APIs() {
                     </Tooltip>
                 )}
             </section>
+            
 
         </main>
     );

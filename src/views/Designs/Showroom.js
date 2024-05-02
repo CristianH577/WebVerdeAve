@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useMemo, useState } from 'react';
+import { createRef, useEffect, useMemo, useState } from 'react';
 import './Showroom.css'
 
 import addLangText from '../../lang/Designs/Showroom.json'

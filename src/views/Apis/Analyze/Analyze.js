@@ -1,4 +1,4 @@
-import React from 'react';
+
 import './Analyze.css'
 import { useState, useEffect } from 'react';
 
@@ -8,11 +8,11 @@ import { useOutletContext } from 'react-router-dom';
 import { Tabs, Tab } from "@nextui-org/react";
 import { Tooltip, Button } from "@nextui-org/react";
 
-import UploadData from './UploadSection';
-import ShowSection from './ShowSection';
-import ProcessSection from './ProcessSection';
-import ChangesSection from './ChangesSection';
-import GraphsSection from './GraphsSection';
+import UploadData from './components/UploadSection';
+import ShowSection from './components/ShowSection';
+import ProcessSection from './components/ProcessSection';
+import ChangesSection from './components/ChangesSection/ChangesSection';
+import GraphsSection from './components/GraphsSection';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -82,7 +82,8 @@ function Analyze() {
 
     return (
         <main className={context.mainClass + ' mt-0'}>
-            <div className='notice bg-custom opacity-50 shadow hover:opacity-100 mb-4'>
+
+            <div className='notice bg-content3 opacity-50 shadow hover:opacity-100 mb-8 '>
                 <div className='wrapper'>
                     <div className='content text-danger'>
                         {langText.notice.map((e, i) =>
@@ -92,9 +93,11 @@ function Analyze() {
                 </div>
             </div>
 
+
             <div className={context.titleClass}>
                 {langText.sections_titles.analyze}
             </div>
+
 
             <div className='font-semibold text-2xl flex '>
                 {langText.data}: {data.name}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './Game.css'
 
 import addLangText from '../../../lang/Apis/Game/Game.json'

@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import './Menu.css'
 import addLangText from '../../../lang/Layout/Menu.json'
 

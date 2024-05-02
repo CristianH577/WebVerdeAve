@@ -1,31 +1,34 @@
 import axios from 'axios';
-import addLangText from '../lang/libs/api.json'
+import langText from '../lang/libs/api.json'
 
 import { toast } from 'react-toastify';
 
 
 const client = axios.create({
-  baseURL: 'http://localhost:50/api-php-bd/'
+  baseURL: 'http://localhost:50/api-php-own-page/'
 })
 
 var lang = 'es'
-const langText = addLangText
-var alert = {
+const default_alert = {
   bool: false,
+  status: false,
   variant: 'warning',
-  msg: langText[lang].errors.api,
+  msg: langText[lang]?.errors?.api,
 }
+var alert = { ...default_alert }
 
 
 const analyzeResponse = (response) => {
-  // console.log(response)
+  // console.log('analyzeResponse', response)
+  alert.msg = false
   if (response) {
+    alert.status = response.status
     const error = response.data?.error
     const answer = response.data?.answer
 
     if (error) {
       alert.variant = 'danger'
-      const msg = langText[lang].errors[error]
+      const msg = langText[lang]?.errors[error]
       alert.msg = msg ? msg : error
     } else if (answer) {
       alert.bool = true
@@ -33,7 +36,7 @@ const analyzeResponse = (response) => {
       alert.value = answer?.value
 
       const detail = answer?.detail
-      const msg = langText[lang].success[detail]
+      const msg = langText[lang]?.success[detail]
       alert.msg = msg ? msg : detail
     }
 
@@ -43,10 +46,11 @@ const analyzeResponse = (response) => {
 }
 
 const analyzeError = (e) => {
-  // console.log(e)
-  if (e.code === "ERR_NETWORK") {
+  // console.log('analyzeError', e)
+  alert.msg = false
+  if (["ERR_NETWORK", "ERR_BAD_RESPONSE"].includes(e.code)) {
     alert.status = 500
-    alert.msg = langText[lang].errors.server
+    alert.msg = langText[lang]?.errors?.server
   } else if (e.code === "ERR_BAD_REQUEST") {
     alert.status = e.response.request.status
   }
@@ -55,7 +59,7 @@ const analyzeError = (e) => {
     alert.variant = 'danger'
     if (alert.status < 500) {
       const detail = e?.response?.data?.detail
-      const msg = langText[lang].errors[detail]
+      const msg = langText[lang]?.errors[detail]
       alert.msg = msg ? msg : detail
     }
   }
@@ -89,10 +93,12 @@ const showAlert = () => {
       toast(msg)
       break;
   }
+
 }
 
 
 export async function postAPI(action, data, currentLang) {
+  alert = { ...default_alert }
   currentLang && (lang = currentLang)
 
   await client.post(action, data)
@@ -103,6 +109,7 @@ export async function postAPI(action, data, currentLang) {
 }
 
 export async function getAPI(action, currentLang) {
+  alert = { ...default_alert }
   currentLang && (lang = currentLang)
 
   await client.get(action)

@@ -28,7 +28,7 @@
         }
     },
     "en": {
-        "errors_server": {
+        "errors": {
             "fapi": {
                 "title": "FastAPI",
                 "content": "Code error"

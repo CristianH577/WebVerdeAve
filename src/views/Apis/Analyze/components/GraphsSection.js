@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import addLangText from '../../../lang/Apis/Analyze/GraphsSection.json'
+import addLangText from '../../../../lang/Apis/Analyze/components/GraphsSection.json'
 import { useOutletContext } from 'react-router-dom';
 
 import { Button, ButtonGroup, Image, Select, SelectItem } from "@nextui-org/react";
 
-import { postFAPIgraph } from '../../../libs/fastapi';
+import { postFAPIgraph } from '../../../../libs/fastapi';
 
-import { Reset } from '../../../assets/icons'
+import { Reset } from '../../../../assets/icons'
 
 
 function GraphsSection({ data }) {
@@ -35,7 +35,7 @@ function GraphsSection({ data }) {
         form_data.append('rows',JSON.stringify(data.rows))
         form_data.append('preferences',JSON.stringify(preferences))
 
-        await postFAPIgraph('createImgPost', form_data, lang)
+        await postFAPIgraph('analyze/createImgPost', form_data, lang)
             .then(blob => {
                 if (blob) {
                     const reader = new FileReader()
@@ -45,11 +45,6 @@ function GraphsSection({ data }) {
                     reader.readAsDataURL(blob)
                 }
             })
-
-        // const response = await postFAPIgraph('createImgPost', form_data, lang)
-        // if (response.bool) {
-        //     setSrc(response.value)
-        // }
 
         setIsLoading(false)
     }

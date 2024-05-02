@@ -1,8 +1,10 @@
 {
     "es": {
-        "title": "Adaptables"
+        "title": "Adaptables",
+        "slide": "Diapositiva"
     },
     "en": {
-        "title": "Adaptable"
+        "title": "Adaptable",
+        "slide": "Slide"
     }
 }

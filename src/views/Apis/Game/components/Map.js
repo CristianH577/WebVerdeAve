@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 import { GiChest, GiOpenChest, GiGoblinHead, GiOrcHead, GiMimicChest, GiArrowFlights, GiMantrap, GiLever, GiPoisonGas, GiFishMonster } from "react-icons/gi";
 import { CgGhostCharacter } from "react-icons/cg";

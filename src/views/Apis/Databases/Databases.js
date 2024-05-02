@@ -1,20 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import addLangText from '../../../lang/Apis/Databases/Databases.json'
 import { useOutletContext } from 'react-router-dom';
 
-import { Button, ButtonGroup, Divider, Link } from "@nextui-org/react";
-import { Input, Tooltip } from "@nextui-org/react";
+import { postAPI, getAPI } from '../../../libs/api.js';
+
+import { Button, ButtonGroup, Spinner } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/react";
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import CustomTable from '../../../components/CustomTable.js'
-
-import { postAPI, getAPI } from '../../../libs/api.js';
-import { name, surname, username, fullname } from 'react-lorem-ipsum';
+import ErrorBoundary from '../../../components/ErrorBoundary.js'
+import FormAddTable from './components/FormAddTable.js';
+import FormAddRow from './components/FormAddRow.js';
+import FormEditRow from './components/FormEditRow.js';
 
 import { Delete, Check, Edit, Reset } from '../../../assets/icons.js';
+import MakeTable from './components/MakeTable.js';
+
 
 
 function Databases({ user, setUser }) {
@@ -37,40 +41,7 @@ function Databases({ user, setUser }) {
 
 
     // tables-----------------------------------------------------------------------------
-    const [table1, setTable1] = useState({
-        enabled: false,
-    })
-    const [table2, setTable2] = useState({
-        enabled: false,
-    })
-    const [table3, setTable3] = useState({
-        enabled: false,
-    })
-
-    const tables = [
-        {
-            key: 1,
-            table: table1,
-        },
-        {
-            key: 2,
-            table: table2,
-        },
-        {
-            key: 3,
-            table: table3,
-        },
-    ]
-
-    const clean_values_table = {
-        name: '',
-        col1: '',
-        col2: '',
-        col3: '',
-        col4: '',
-    }
-    const [defaultValuesTable, setDefaultValuesTable] = useState(clean_values_table)
-
+    const [tables, setTables] = useState([])
 
     const handleAddTable = (e) => {
         e.preventDefault()
@@ -80,101 +51,86 @@ function Databases({ user, setUser }) {
 
         const formData = new FormData(e.target)
 
-        var table = 1
-        if (table1.enabled) {
-            table = 2
-        }
-        if (table2.enabled) {
-            table = 3
-        }
+        var table_key = tables.length + 1
 
         const newTable = {
-            enabled: true,
-            key: table,
+            key: table_key,
             cols: [],
             rows: [],
             labels: {},
-            name: "Tabla " + table,
+            name: "Tabla " + table_key,
         }
 
         for (const entry of formData.entries()) {
             const [key, val] = entry
-            if (key === 'name') {
-                if (val !== '') newTable.name = val
-            } else if (val !== '') {
-                const k = key + "_" + table
-                newTable.cols.push(k)
-                newTable.labels[k] = val
+            if (val !== '') {
+                if (key === 'name') {
+                    newTable.name = val
+                } else {
+                    const k = key + "_" + table_key
+                    newTable.cols.push(k)
+                    newTable.labels[k] = val
+                }
             }
         }
 
-        newTable.cols.push('actions_' + table)
-        newTable.labels['actions_' + table] = ""
+        const col_actions = 'actions_' + table_key
+        newTable.cols.push(col_actions)
+        newTable.labels[col_actions] = ""
 
-        const newTableUser = { ...newTable }
-        newTableUser.rows = []
+        const newTables = [...tables]
+        newTables.push(newTable)
 
-        switch (table) {
-            case 1:
-                setTable1(newTable)
-                setUser({ ...user, table1: newTable })
-                break;
-            case 2:
-                setTable2(newTable)
-                setUser({ ...user, table2: newTable })
-                break;
-            case 3:
-                setTable3(newTable)
-                setUser({ ...user, table3: newTable })
-                break;
-
-            default:
-                break;
-        }
+        setTables(newTables)
+        setUser({ ...user, tables: newTables })
 
         setEdit(false)
         setIsLoading(false)
     }
+
     const handleResetTables = async () => {
         setEdit(false)
-        setTable1({ enabled: false })
-        setTable2({ enabled: false })
-        setTable3({ enabled: false })
+        setTables([])
         setUser({ id: user.id })
-        await getAPI('es/Databases_Controller/deleteUser?id=' + user.id, false)
+        setIsLoading(false)
+        await getAPI('es/Databases_Controller/deleteUser?id=' + user.id, lang)
     }
+
     const makeCell = (row, col) => {
         var cellContent = <></>
 
         if (col.includes('actions')) {
-            const table = parseInt(col.split("_")[1])
-            const id = row['id_' + table]
+            const table_key = parseInt(col.split("_")[1])
+            const id = row['id_' + table_key]
 
             cellContent =
                 <div className="flex items-center gap-4 justify-center">
                     <Tooltip color="danger" content={langText.actions.delete} >
                         <span
                             className="text-danger cursor-pointer active:opacity-50"
-                            onClick={() => setEdit({ key: 'deleteRow', id: id, table: table })}
+                            onClick={() => handleDeleteRow(table_key, id)}
                         >
                             {icons.Delete}
                         </span>
                     </Tooltip>
 
                     <Tooltip color="primary" content={langText.actions.edit} >
-                        <a href='#consola'>
-                            <span
-                                className=" text-primary cursor-pointer active:opacity-50"
-                                onClick={() => {
-                                    setEdit(false)
-                                    setTimeout(() => {
-                                        setEdit({ key: 'editRow', row: row, table: table })
-                                    }, 100)
-                                }}
-                            >
-                                {icons.Edit}
-                            </span>
-                        </a>
+                        <span
+                            className=" text-primary cursor-pointer active:opacity-50"
+                            onClick={() => {
+                                setEdit(false)
+
+                                setTimeout(() => {
+                                    setEdit({ key: 'editRow', row: row, table_key: table_key })
+                                }, 100)
+
+                                setTimeout(() => {
+                                    document.getElementById("form_edit_row").scrollIntoView()
+                                }, 200);
+                            }}
+                        >
+                            {icons.Edit}
+                        </span>
                     </Tooltip>
                 </div>
         } else {
@@ -183,52 +139,33 @@ function Databases({ user, setUser }) {
 
         return cellContent
     }
-    const updateTable = async (table) => {
-        setIsLoading(table)
 
-        const get_data = await getAPI('es/Databases_Controller/getRows?table=' + table + '&id=' + user.id, lang)
+    const updateTable = async (table_key) => {
+        setIsLoading(table_key)
 
-        if (get_data.bool) {
-            var newTable = {}
-            const newRows = get_data.value.map(row => {
-                row.key = row['id_' + table]
+        const response = await getAPI('es/Databases_Controller/getRows?table=' + table_key + '&id=' + user.id, lang)
+
+        if (response.bool && Array.isArray(response.value)) {
+            const newRows = response.value.map(row => {
+                row.key = row['id_' + table_key]
                 return row
             })
-            switch (table) {
-                case 1:
-                    newTable = { ...table1 }
-                    newTable.rows = newRows
-                    setTable1(newTable)
-                    break;
-                case 2:
-                    newTable = { ...table2 }
-                    newTable.rows = newRows
-                    setTable2(newTable)
-                    break;
-                case 3:
-                    newTable = { ...table3 }
-                    newTable.rows = newRows
-                    setTable3(newTable)
-                    break;
 
-                default:
-                    break;
-            }
+            const newTables = tables.map(table => {
+                if (table.key === table_key) table.rows = newRows
+                return table
+            })
+
+            setTables(newTables)
         }
 
-        setIsLoading(false)
+        setTimeout(() => {
+            setIsLoading(false)
+        }, 300)
     }
 
 
-    // filas-----------------------------------------------------------------------------
-    const cleanValuesRow = {
-        col1: '',
-        col2: '',
-        col3: '',
-        col4: '',
-    }
-    const [defaultValuesRow, setDefaultValuesRow] = useState(cleanValuesRow)
-
+    // rows-----------------------------------------------------------------------------
     const handleAddRow = async (e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -245,53 +182,83 @@ function Databases({ user, setUser }) {
         if (response.bool) updateTable(edit.table.key)
 
         setEdit(false)
-        setIsLoading(false)
+
+        setTimeout(() => {
+            setIsLoading(false)
+        }, 300)
     }
-    const handleDeleteRow = async () => {
-        setIsLoading(true)
 
-        const deleteRow = await getAPI('es/Databases_Controller/deleteRow?table=' + edit.table + '&id=' + edit.id, lang)
+    const handleDeleteRow = async (table_key, id) => {
 
-        if (deleteRow.bool) updateTable(edit.table)
+        const deleteRow = await getAPI('es/Databases_Controller/deleteRow?table=' + table_key + '&id=' + id, lang)
+
+        if (deleteRow.bool) await updateTable(table_key)
 
         setEdit(false)
-        setIsLoading(false)
     }
+
     const handleEditRow = async (e) => {
         e.preventDefault()
         e.stopPropagation()
 
-        setIsLoading(true)
+        var table = edit.table_key
+
+        setIsLoading(table)
 
         const form_data = new FormData(e.target)
 
-        var table = 0
-        for (const key of form_data.keys()) {
-            table = parseInt(key.split('_')[1])
-        }
         form_data.append('table', table)
         form_data.append('id_user', user.id)
         form_data.append('id_' + table, edit.row['id_' + table])
 
         const response = await postAPI('es/Databases_Controller/updateRow', form_data, lang)
 
-        if (response.bool) updateTable(table)
+        if (response.bool) await updateTable(table)
 
         setEdit(false)
-        setIsLoading(false)
     }
 
 
+    // user-----------------------------------------------------------------------------
+    const getUser = async () => {
+        setIsLoading(true)
+
+        if (!user) {
+            for (let i = 0; i < 3; i++) {
+                const newId = Math.floor(Math.random() * (10000) + 1)
+
+                const response = await getAPI('es/Databases_Controller/validateIdUser?id=' + newId, lang)
+
+                if (response.bool) {
+                    if (typeof response.value === 'object') {
+                        i = 3
+                    } else {
+                        if (!response.value) {
+                            i = 3
+                            setUser({
+                                id: newId
+                            })
+                        }
+                    }
+                } else {
+                    break
+                }
+            }
+        }
+
+        setIsLoading(false)
+    }
+
     useEffect(() => {
-        if (edit && edit.key.includes('delete')) handleDeleteRow()
-        setDefaultValuesTable(clean_values_table)
-        setDefaultValuesRow(cleanValuesRow)
-        // eslint-disable-next-line
-    }, [edit])
-    useEffect(() => {
-        if (user.table1) setTable1(user.table1)
-        if (user.table2) setTable2(user.table2)
-        if (user.table3) setTable3(user.table3)
+        if (user) {
+            if (user?.tables) {
+                setTables([...user.tables])
+            }
+        } else {
+            setTimeout(() => {
+                getUser()
+            }, 500);
+        }
         // eslint-disable-next-line
     }, [])
 
@@ -303,292 +270,76 @@ function Databases({ user, setUser }) {
                 {langText.sections_titles.databases}
             </div>
 
-            <ButtonGroup variant='shadow' className='buttongroup-xs' id='consola'>
-                <Button
-                    isIconOnly
-                    onClick={handleResetTables}
-                >
-                    {icons.Reset}
-                </Button>
-                <Button
-                    color='secondary'
-                    onClick={() => setEdit({ key: 'addTable' })}
-                    isDisabled={typeof edit === 'object' || (table1.enabled && table2.enabled && table3.enabled)}
-                >
-                    {langText.createTable}
-                </Button>
-            </ButtonGroup>
+            {(!user && isLoading) && (
+                <Spinner />
+            )}
+
+            {(!user && !isLoading) && (
+                <p className='p-2 border border-danger rounded-lg bg-content2 text-danger'>
+                    No hay conexion a la base de datos o hubo un problema para acceder a esta.
+                </p>
+            )}
+
+            {user && (
+                <ButtonGroup variant='shadow' className='buttongroup-xs mt-4' id='consola'  >
+                    <Button
+                        isIconOnly
+                        onClick={handleResetTables}
+                    >
+                        {icons.Reset}
+                    </Button>
+
+                    <Button
+                        color='secondary'
+                        onClick={() => setEdit({ key: 'addTable' })}
+                        isDisabled={typeof edit === 'object' || tables.length === 3}
+                    >
+                        {langText.createTable}
+                    </Button>
+                </ButtonGroup>
+            )}
+
 
             {edit.key === 'addTable' && (
-                <form
+                <FormAddTable
                     onSubmit={handleAddTable}
-                    className='bg-content1 py-4 xs:px-4 rounded-lg flex flex-col gap-4 items-center my-6 shadow-medium form-xs xs:min-w-[300px] max-w-[600px]'
-                >
-                    <div>{langText.createTable}:</div>
-
-                    <Input
-                        name={'name'}
-                        label={langText.nameOfTable}
-                        className='form-input'
-                        maxLength={50}
-                        autoComplete='off'
-
-                        value={defaultValuesTable.name}
-                        onValueChange={(e) => {
-                            const newValues = { ...defaultValuesTable }
-                            newValues.name = e
-                            setDefaultValuesTable(newValues)
-                        }}
-
-                        isClearable
-                        onClear={() => {
-                            const newValues = { ...defaultValuesTable }
-                            newValues.name = ''
-                            setDefaultValuesTable(newValues)
-                        }}
-                    />
-
-                    <div className='center gap-4 sm:flex-row w-full'>
-                        {[...Array(4)].map((e, i) =>
-                            <Input
-                                key={'col' + (i + 1)}
-                                name={'col' + (i + 1)}
-                                label={langText.databasesLabels['col' + (i + 1)]}
-                                className='form-input'
-                                maxLength={50}
-                                autoComplete='off'
-
-                                value={defaultValuesTable['col' + (i + 1)]}
-                                onValueChange={(e) => {
-                                    const newValues = { ...defaultValuesTable }
-                                    newValues['col' + (i + 1)] = e
-                                    setDefaultValuesTable(newValues)
-                                }}
-
-                                isClearable
-                                onClear={() => {
-                                    const newValues = { ...defaultValuesTable }
-                                    newValues['col' + (i + 1)] = ''
-                                    setDefaultValuesTable(newValues)
-                                }}
-                            />
-                        )}
-                    </div>
-
-                    <div className='center gap-4 sm:flex-row max-xs:w-full'>
-                        <Button
-                            isIconOnly
-                            isDisabled={isLoading}
-                            className='button-xs max-sm:w-full'
-                            onClick={() => setDefaultValuesTable(clean_values_table)}
-                        >
-                            {icons.Reset}
-                        </Button>
-
-                        <Button
-                            color='danger'
-                            isDisabled={isLoading}
-                            className='button-xs'
-                            onClick={() => setEdit(false)}
-                        >
-                            {langText.actions.cancel}
-                        </Button>
-
-                        <Button
-                            color='warning'
-                            isDisabled={isLoading}
-                            className='button-xs text-white'
-                            onClick={() => setDefaultValuesTable({
-                                name: langText.table_name,
-                                col1: langText.form.name,
-                                col2: langText.form.surname,
-                                col3: langText.form.user,
-                                col4: langText.asociated,
-                            })}
-                        >
-                            {langText.actions.autocomplete}
-                        </Button>
-
-                        <Button
-                            type='submit'
-                            color='secondary'
-                            isLoading={isLoading && edit.key === 'addTable'}
-                            className='button-xs'
-                        >
-                            {langText.createTable}
-                        </Button>
-                    </div>
-                </form>
+                    isLoading={isLoading}
+                    edit={edit}
+                    setEdit={setEdit}
+                    totalTables={tables.length}
+                />
             )}
-
 
             {edit.key === 'addRow' && (
-                <form
+                <FormAddRow
                     onSubmit={handleAddRow}
-                    className='bg-content1 py-4 xs:px-4 rounded-lg flex flex-col gap-4 items-center my-6 shadow-medium form-xs xs:min-w-[300px]'
-                >
-                    <div>{langText.addToTable}: {edit.table.name}</div>
-
-                    <div className='center gap-4 sm:flex-row w-full'>
-                        {edit.table.cols.map((col, i) =>
-                            !col.includes('actions') && (
-                                < Input
-                                    key={col}
-                                    name={col}
-                                    label={edit.table.labels[col]}
-                                    maxLength={50}
-                                    autoComplete='off'
-
-                                    value={defaultValuesRow['col' + (i + 1)]}
-                                    onValueChange={(e) => {
-                                        const newValues = { ...defaultValuesRow }
-                                        newValues['col' + (i + 1)] = e
-                                        setDefaultValuesRow(newValues)
-                                    }}
-
-                                    isClearable
-                                    onClear={() => {
-                                        const newValues = { ...defaultValuesRow }
-                                        newValues['col' + (i + 1)] = ''
-                                        setDefaultValuesRow(newValues)
-                                    }}
-                                />
-                            )
-                        )}
-                    </div>
-
-                    <div className='center gap-4 sm:flex-row max-xs:w-full'>
-                        <Button
-                            isIconOnly
-                            isDisabled={Boolean(isLoading)}
-                            className='button-xs max-sm:w-full'
-                            onClick={() => setDefaultValuesRow(cleanValuesRow)}
-                        >
-                            {icons.Reset}
-                        </Button>
-
-                        <Button
-                            color='danger'
-                            isDisabled={Boolean(isLoading)}
-                            className='button-xs'
-                            onClick={() => setEdit(false)}
-                        >
-                            {langText.actions.cancel}
-                        </Button>
-
-                        <Button
-                            color='warning'
-                            isDisabled={Boolean(isLoading)}
-                            className='button-xs text-white'
-                            onClick={() => setDefaultValuesRow({
-                                col1: name(),
-                                col2: surname(),
-                                col3: username(),
-                                col4: fullname(),
-                            })}
-                        >
-                            {langText.actions.autocomplete}
-                        </Button>
-
-                        <Button
-                            type='submit'
-                            color='secondary'
-                            isDisabled={Boolean(isLoading) || !edit.key.includes('addRow')}
-                            isLoading={Boolean(isLoading) && edit.key.includes('addRow')}
-                            className='button-xs'
-                        >
-                            {langText.actions.add}
-                        </Button>
-                    </div>
-                </form>
+                    isLoading={isLoading}
+                    edit={edit}
+                    setEdit={setEdit}
+                />
             )}
+
             {edit.key === 'editRow' && (
-                <form
+                <FormEditRow
                     onSubmit={handleEditRow}
-                    className='bg-content1 py-4 xs:px-4 rounded-lg flex flex-col gap-4 items-center my-6 shadow-medium form-xs xs:min-w-[300px]'
-                >
-                    <div>{langText.editRow}:</div>
-
-                    <div className='center gap-4 sm:flex-row w-full'>
-                        {Object.keys(edit.row).map(col =>
-                            col.includes('col') && (
-                                < Input
-                                    key={col}
-                                    name={col}
-                                    label={edit.table === 1 ? table1.labels[col] : edit.table === 2 ? table2.labels[col] : table3.labels[col]}
-                                    defaultValue={edit.row[col]}
-                                    className='form-input'
-                                    maxLength={50}
-                                    autoComplete='off'
-                                />
-                            )
-                        )}
-                    </div>
-
-                    <div className='center gap-4 sm:flex-row max-xs:w-full'>
-                        <Button
-                            color='danger'
-                            onClick={() => setEdit(false)}
-                            isDisabled={Boolean(isLoading)}
-                            className='button-xs'
-                        >
-                            {langText.actions.cancel}
-                        </Button>
-
-                        <Button
-                            type='submit'
-                            color='primary'
-                            isDisabled={Boolean(isLoading)}
-                            isLoading={isLoading && edit.key.includes('editRow')}
-                            className='button-xs'
-                        >
-                            {langText.actions.save}
-                        </Button>
-                    </div>
-                </form>
+                    isLoading={isLoading}
+                    edit={edit}
+                    setEdit={setEdit}
+                    labels={tables.find(table => table.key === edit.table_key).labels}
+                />
             )}
 
 
-            {tables.map(item =>
-                item.table.enabled && (
-                    <section key={item.key} className=' w-full center items-center'>
-                        <Divider className='mt-8 mb-4 w-3/4' />
-
-                        <div className='text-center' >{item.table.name}</div>
-
-                        <ButtonGroup variant='ghost' className='buttongroup-xs mt-2' id='consola'>
-                            <Button
-                                color='warning'
-                                className='hover:!text-white'
-                                onClick={() => updateTable(item.key)}
-                                isDisabled={typeof edit === 'object' || Boolean(isLoading)}
-                                isLoading={isLoading === item.key}
-                            >
-                                {langText.actions.refresh}
-                            </Button>
-                            <Button
-                                href="#consola"
-                                as={Link}
-                                color='primary'
-                                onClick={() => setEdit({ key: 'addRow', table: item.table })}
-                                isDisabled={typeof edit === 'object' || Boolean(isLoading)}
-                            >
-                                {langText.actions.add}
-                            </Button>
-                        </ButtonGroup>
-
-                        <CustomTable
-                            data={item.table}
-                            preferences={{
-                                model: ['pages'],
-                                checks: ['headers', 'strip'],
-                            }}
-                            makeCell={makeCell}
-                            ariaLabel={'Bases de datos: Tabla 1'}
-                            className={'mt-4 w-full max-w-[800px]'}
-                        />
-                    </section>
-                )
+            {tables.map(table =>
+                <ErrorBoundary>
+                    <MakeTable
+                        table={table}
+                        isLoading={isLoading}
+                        makeCell={makeCell}
+                        updateTable={updateTable}
+                        setEdit={setEdit}
+                    />
+                </ErrorBoundary>
             )}
 
 
