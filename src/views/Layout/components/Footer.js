@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import addLangText from '../../../lang/Layout/Footer.json'
+import addLangText from '../../../lang/Layout/components/Footer.json'
 
 import { Button, ButtonGroup, Divider, Tooltip, Link } from "@nextui-org/react";
 

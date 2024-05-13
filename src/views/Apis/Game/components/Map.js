@@ -1,40 +1,43 @@
 
-
-import { GiChest, GiOpenChest, GiGoblinHead, GiOrcHead, GiMimicChest, GiArrowFlights, GiMantrap, GiLever, GiPoisonGas, GiFishMonster } from "react-icons/gi";
-import { CgGhostCharacter } from "react-icons/cg";
+import { Image } from "@nextui-org/react";
 
 
-function Map({base_cols, char, zoom, move, checkAllowMove, handleCellAction }) {
+import char_icon from '../../../../assets/imgs/game/char.png'
+
+import chest from '../../../../assets/imgs/game/chest.png'
+import chest_open from '../../../../assets/imgs/game/chest_open.png'
+
+import mimic from '../../../../assets/imgs/game/mimic.png'
+import arrow from '../../../../assets/imgs/game/arrow.png'
+import lever from '../../../../assets/imgs/game/lever.png'
+import gas from '../../../../assets/imgs/game/gas.png'
+import trap_floor from '../../../../assets/imgs/game/trap_floor.png'
+
+
+function Map({ base_cols, char, zoom, move, checkAllowMove, handleCellAction, icons_mobs }) {
     const base_rows = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
     const showCoords = false
 
 
     const icons = {
-        chest: <GiChest className='w-3/4 h-3/4' />,
-        chest_open: <GiOpenChest className='w-3/4 h-3/4' />,
+        chest: <Image src={chest} alt="" radius="none" className="z-0" />,
+        chest_open: <Image src={chest_open} alt="" radius="none" className="z-0" />,
 
-        mobs: {
-            0: <GiGoblinHead className='w-full h-full text-lime-500 ' />,
-            1: <GiOrcHead className='w-full h-full text-green-600' />,
-            2: <GiFishMonster className='w-full h-full text-green-800' />,
-        },
         traps: {
-            arrow: <GiArrowFlights className='w-full h-full text-amber-400' />,
-            mimic: <GiMimicChest size={50} color='gold' />,
-            gas: <GiPoisonGas size={50} className='text-lime-400' />,
-            floor: <GiMantrap className='w-full h-full text-stone-200' />,
-            lever: <GiLever className='w-1/2 h-full' color='firebrick' style={{ transform: 'rotateZ(90deg)' }} />,
+            arrow: <Image src={arrow} alt="" radius="none" className="z-0" />,
+            mimic: <Image src={mimic} alt="" radius="none" className="z-0" />,
+            gas: <Image src={gas} alt="" radius="none" className="z-0 h-full" />,
+            floor: <Image src={trap_floor} alt="" radius="none" className="z-0" />,
+            lever: <Image src={lever} alt="" className="z-0" style={{ transform: ' rotateZ(90deg)' }} />,
         },
-        lever: <GiLever className='w-1/2 h-full' color='firebrick' style={{ transform: 'rotateX(180deg) rotateZ(90deg)' }} />,
 
+        lever: <Image src={lever} alt="" className="z-0" style={{ transform: 'rotateX(180deg) rotateZ(90deg)' }} />
     }
 
 
     const makeCell = (x, y) => {
         var data = ''
-        if (char && char.map[x] && char.map[x][y]) {
-            data = char.map[x][y]
-        }
+        if (char && char.map[x] && char.map[x][y]) data = char.map[x][y]
 
         var content = ''
         var clase = ''
@@ -113,27 +116,18 @@ function Map({base_cols, char, zoom, move, checkAllowMove, handleCellAction }) {
                 break;
             case "chest":
                 clase = 'center items-center'
-                content = <span className='w-full h-full center items-center bg-black/60 p-1 rounded-md text-[gold]'>
-                    {data.interacted === "end" ? icons.chest_open : icons.chest}
-                </span>
+                content = data.interacted === "end" ? icons.chest_open : icons.chest
                 break;
             case 'lever':
-                content = <span className='w-full h-full flex bg-black/60 p-1 rounded-md '>
-                    {icons.lever}
-                </span>
+                content = icons.lever
                 break;
             case 'mob':
                 clase = 'center items-center'
-                content = <span className='w-full h-full center items-center bg-black/60 p-1 rounded-md '>
-                    {icons.mobs[data.mob]}
-                </span>
+                content = icons_mobs[data.mob]
                 break;
             case 'trap':
                 clase = 'center items-center'
-
-                content = <span className={'w-full h-full bg-black/60 p-1 rounded-md' + (data.trap === 'lever' ? ' flex' : 'center items-center')}>
-                    {icons.traps[data.trap]}
-                </span>
+                content = icons.traps[data.trap]
                 break;
 
             default:
@@ -144,7 +138,7 @@ function Map({base_cols, char, zoom, move, checkAllowMove, handleCellAction }) {
         return <div
             key={[x, y]}
             className={
-                ' relative bg-cover '
+                ' relative bg-cover transition-all ease-in delay-500 '
                 + bg
             }
             style={{
@@ -209,18 +203,23 @@ function Map({base_cols, char, zoom, move, checkAllowMove, handleCellAction }) {
                 </div>
             )}
 
-            <CgGhostCharacter
-                className=' absolute transition-all ease-in '
+            <Image
+                src={char_icon} 
+                alt=""
+                radius="none"
                 hidden={move[0] === 0 && move[1] === 0}
+                removeWrapper
+                className="z-10 absolute"
                 style={{
                     left: move[0] + 'px',
                     top: move[1] + 'px',
                     zIndex: 10,
                     width: (64 * zoom) + 'px',
                     height: (64 * zoom) + 'px',
+                    transition:'all .5s ease-in-out'
                 }}
-                color='black'
             />
+            
         </section>
     );
 }

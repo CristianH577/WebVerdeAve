@@ -181,7 +181,11 @@ function CreateChar({ createChar }) {
                             type='submit'
                             className='form-button w-full sm:w-auto button-game'
                             isLoading={isSubmitting}
-                            isDisabled={!(dirty && isValid && addStats.add === 0)}
+                            isDisabled={!(
+                                dirty
+                                && isValid
+                                && addStats.add === 0
+                            )}
                         >
                             {langText.create}
                         </Button>

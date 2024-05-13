@@ -1,7 +1,8 @@
+
 import axios from 'axios';
 import langText from '../lang/libs/fastapi.json'
 
-import { toast } from 'react-toastify';
+import { toast, Flip } from 'react-toastify';
 
 
 const client = axios.create({
@@ -9,11 +10,13 @@ const client = axios.create({
 })
 
 var lang = 'es'
+let toastFAPI = 'toastFAPI'
 const defaultAlert = {
     bool: false,
     msg: langText[lang]?.errors?.fapi,
     value: false,
     status: false,
+    variant: 'default'
 }
 var alert = { ...defaultAlert }
 
@@ -21,6 +24,7 @@ var alert = { ...defaultAlert }
 const analyzeResponse = (response) => {
     // console.log(response)
     if (response) {
+        alert.msg = false
         alert.status = response.status
 
         if (alert.status >= 200 && alert.status < 300) alert.bool = true
@@ -41,7 +45,8 @@ const analyzeResponse = (response) => {
     }
 }
 const analyzeError = (e) => {
-    // console.log(e)
+    // console.log('analyzeError', e)
+    alert.msg = false
     if (["ERR_NETWORK", "ERR_BAD_RESPONSE"].includes(e.code)) {
         alert.status = 500
         alert.msg = langText[lang]?.errors?.server
@@ -50,7 +55,7 @@ const analyzeError = (e) => {
     }
 
     if (alert.status) {
-        alert.variant = 'danger'
+        alert.variant = 'error'
         if (alert.status < 500) {
             const detail = e?.response?.data?.detail
             const msg = langText[lang]?.errors[detail]
@@ -69,24 +74,16 @@ const showAlert = () => {
         </div>
         : alert.msg
 
-
-    switch (alert.variant) {
-        case 'info':
-            toast.info(msg)
-            break;
-        case 'success':
-            toast.success(msg)
-            break;
-        case 'warning':
-            toast.warning(msg)
-            break;
-        case 'danger':
-            toast.error(msg)
-            break;
-
-        default:
-            toast(msg)
-            break;
+    if (!toast.isActive(toastFAPI)) {
+        toastFAPI = toast(msg, {
+            type: alert.variant,
+        })
+    } else {
+        toast.update(toastFAPI, {
+            render: msg,
+            type: alert.variant,
+            transition: Flip
+        })
     }
 
 }
@@ -141,32 +138,28 @@ export async function postFAPIgraph(action, data, currentLang) {
     alert = { ...defaultAlert }
     currentLang && (lang = currentLang)
 
-    var blob = false
-
     const config_post = {
         responseType: "blob",
     }
 
     await client.post(action + "/", data, config_post)
-        .then(async (response) => {
-            const isJsonBlob = (data) => data instanceof Blob && data.type === "application/json"
-            const responseData = isJsonBlob(response?.data)
-                ? await (response?.data)?.text()
-                : response?.data || {}
-            const responseJson = (typeof responseData === "string")
-                ? JSON.parse(responseData)
-                : responseData;
+        .then(response => {
+            const url = URL.createObjectURL(response.data)
 
-            if (responseJson.error) {
-                analyzeResponse(response)
-            } else {
-                blob = responseJson
-                alert.bool = true
+            alert.bool = true
+            alert.value = url
+        })
+        .catch(e => {
+            if (e?.response?.data) {
+                var reader = new FileReader()
+                reader.onload = function (x) {
+                    const texto = x.target.result
+                    e.response.data = JSON.parse(texto)
+                    analyzeError(e)
+                }
+                reader.readAsText(e.response.data)
             }
         })
-        .catch(e => analyzeError(e))
 
-    if (!alert.bool) showAlert(alert)
-
-    return blob
+    return alert
 }

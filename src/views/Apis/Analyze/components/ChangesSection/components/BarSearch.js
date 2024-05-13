@@ -14,7 +14,7 @@ function BarSearch({ filters, setFilters, isLoading, cols, onSearch, onReset }) 
         ...addLangText[context.lang],
         search: context.langText[context.lang].search.search,
         currency: context.langText[context.lang].form.currency,
-        columns: context.langText[context.lang].table.columns
+        column: context.langText[context.lang].table.column
     }
 
     const condSelects = ['==', '!=', '<', '>', '<=', '>=']
@@ -27,9 +27,6 @@ function BarSearch({ filters, setFilters, isLoading, cols, onSearch, onReset }) 
                 placeholder={langText.search + "..."}
                 variant="bordered"
                 size='sm'
-                classNames={{
-                    inputWrapper: "rounded-lg ",
-                }}
 
                 value={filters.text}
                 isDisabled={filters.num !== ''}
@@ -45,15 +42,12 @@ function BarSearch({ filters, setFilters, isLoading, cols, onSearch, onReset }) 
 
             <Input
                 type="number"
-                label={langText.condition}
+                placeholder={langText.condition + "..."}
                 variant="bordered"
                 size='sm'
-                className="form-input "
-                classNames={{
-                    label: 'text-neutral-400 font-normal ',
-                }}
+                className="form-input"
                 endContent={
-                    <div className="flex items-center h-full">
+                    <div className="flex items-center h-full" >
                         <label className="sr-only" htmlFor="currency">
                             {langText.currency}
                         </label>
@@ -66,6 +60,12 @@ function BarSearch({ filters, setFilters, isLoading, cols, onSearch, onReset }) 
                         >
                             {condSelects.map(e => <option key={e}>{e}</option>)}
                         </select>
+
+                        <span role="button" data-filled={Boolean(filters.num)} class="p-2 -m-2 hidden appearance-none select-none opacity-0 data-[filled=true]:opacity-70 hover:!opacity-100 rounded-full outline-none text-medium data-[filled=true]:block transition-opacity motion-reduce:transition-none" onClick={() => setFilters({ ...filters, num: '', cond_simbol: "==" })}>
+                            <svg aria-hidden="true" focusable="false" height="1em" role="presentation" viewBox="0 0 24 24" width="1em">
+                                <path d="M12 2a10 10 0 1010 10A10.016 10.016 0 0012 2zm3.36 12.3a.754.754 0 010 1.06.748.748 0 01-1.06 0l-2.3-2.3-2.3 2.3a.748.748 0 01-1.06 0 .754.754 0 010-1.06l2.3-2.3-2.3-2.3A.75.75 0 019.7 8.64l2.3 2.3 2.3-2.3a.75.75 0 011.06 1.06l-2.3 2.3z" fill="currentColor"></path>
+                            </svg>
+                        </span>
                     </div>
                 }
 
@@ -77,7 +77,7 @@ function BarSearch({ filters, setFilters, isLoading, cols, onSearch, onReset }) 
             />
 
             <Select
-                label={langText.columns}
+                label={langText.column}
                 selectionMode="single"
                 className="form-select "
                 variant="bordered"
@@ -99,6 +99,7 @@ function BarSearch({ filters, setFilters, isLoading, cols, onSearch, onReset }) 
             <ButtonGroup variant="ghost" size='lg' isDisabled={isLoading}>
                 <Button
                     isIconOnly
+                    isDisabled={filters.text === '' && filters.num === ''}
                     onClick={onSearch}
                 >
                     <Search />

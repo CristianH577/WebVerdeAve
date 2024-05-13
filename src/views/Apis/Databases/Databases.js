@@ -8,9 +8,6 @@ import { postAPI, getAPI } from '../../../libs/api.js';
 import { Button, ButtonGroup, Spinner } from "@nextui-org/react";
 import { Tooltip } from "@nextui-org/react";
 
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
 import ErrorBoundary from '../../../components/ErrorBoundary.js'
 import FormAddTable from './components/FormAddTable.js';
 import FormAddRow from './components/FormAddRow.js';
@@ -341,20 +338,6 @@ function Databases({ user, setUser }) {
                     />
                 </ErrorBoundary>
             )}
-
-
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme={context.dark ? 'dark' : 'light'}
-            />
 
         </main >
     );

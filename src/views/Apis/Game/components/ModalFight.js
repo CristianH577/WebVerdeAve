@@ -4,30 +4,18 @@ import { Button, Progress } from "@nextui-org/react";
 import { Modal, ModalContent, ModalBody, ModalFooter } from "@nextui-org/react";
 
 import { LuShield, LuHeart } from "react-icons/lu";
-import { GiBackpack, GiGoblinHead, GiOrcHead, GiFishMonster } from "react-icons/gi";
+import { GiBackpack } from "react-icons/gi";
 import { FaRegHandRock } from "react-icons/fa";
-import { CgGhostCharacter } from "react-icons/cg";
 
 
-function ModalFight({ char, dark, langText, isLoading, turn, openInventory, handleFightDecide, handleFightContinue, handleFightEnd }) {
 
+function ModalFight({ char, dark, langText, isLoading, turn, openInventory, handleFightDecide, handleFightContinue, handleFightEnd, icon_char, icons_mobs }) {
     const icons = {
-        char: <CgGhostCharacter className='w-full h-full' />,
-
         hp: <LuHeart size={30} className='text-danger' />,
         damage: <FaRegHandRock size={25} color='gray' />,
         defence: <LuShield size={25} color='gold' />,
         inventory: <GiBackpack size={30} />,
-
-        fight: {
-            mobs: {
-                0: <GiGoblinHead className='w-full h-full' />,
-                1: <GiOrcHead className='w-full h-full' />,
-                2: <GiFishMonster className='w-full h-full' />,
-            },
-        }
     }
-
 
 
     return (
@@ -49,7 +37,7 @@ function ModalFight({ char, dark, langText, isLoading, turn, openInventory, hand
 
                         <div className='flex justify-center'>
                             <span className='w-[150px]'>
-                                {icons.char}
+                                {icon_char}
                             </span>
                         </div>
 
@@ -82,7 +70,7 @@ function ModalFight({ char, dark, langText, isLoading, turn, openInventory, hand
 
                             <div className='flex justify-center'>
                                 <span className='w-[150px]'>
-                                    {icons.fight.mobs[char.map[char.mob.loc[0]][char.mob.loc[1]].mob]}
+                                    {icons_mobs[char.map[char.mob.loc[0]][char.mob.loc[1]].mob]}
                                 </span>
                             </div>
 
@@ -126,7 +114,7 @@ function ModalFight({ char, dark, langText, isLoading, turn, openInventory, hand
                     </div>
 
                     {turn.state === 'decide' && (
-                        <div className='flex justify-center gap-4' >
+                        <div className='flex justify-center gap-4 flex-wrap' >
                             {['attack', 'defence'].map(action =>
                                 <Button
                                     key={action}

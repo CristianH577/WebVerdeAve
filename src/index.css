@@ -9,30 +9,15 @@
     }
 
     @font-face {
-        font-family: 'gobold';
-        src: url('./assets/fonts/gobold/Gobold\ Extra1.otf') format('truetype');
+        font-family: 'titillium';
+        src: url('./assets/fonts/titillium-cufonfonts/Titillium-Light.otf') format('truetype');
     }
-
-    @font-face {
-        font-family: 'comfortaa';
-        src: url('./assets/fonts/comfortaa/Comfortaa-Regular.ttf') format('truetype');
-    }
-    @font-face {
-        font-family: 'champagne_limousines';
-        src: url('./assets/fonts/champagne_limousines/Champagne\ &\ Limousines.ttf') format('truetype');
-    }
-
-    @font-face {
-        font-family: 'calinastiya';
-        src: url('./assets/fonts/calinastiya/Calinastiya\ demo.ttf') format('truetype');
-    }
-
 
 }
 
 html {
     scroll-behavior: smooth;
-    font-family: cursive;
+    font-family: titillium;
 }
 
 .break-all {
@@ -93,6 +78,17 @@ body.dark-mode .custom-title {
 
 .bg-secondary-200 {
     background-color: hsl(var(--nextui-secondary-200) / var(--nextui-background-opacity, var(--tw-bg-opacity)));
+}
+
+
+/* Swiper */
+.swiper .swiper-button-prev,
+.swiper .swiper-button-next{
+    opacity: 30%;
+}
+.swiper .swiper-button-prev:hover,
+.swiper .swiper-button-next:hover{
+    opacity: 100%;
 }
 
 

@@ -9,16 +9,13 @@ import { Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import { Image } from "@nextui-org/react";
-import { Card, CardHeader, CardFooter, Button } from "@nextui-org/react";
-
 
 import dia from '../../assets/imgs/dia.jpg'
 import noche from '../../assets/imgs/noche.jpg'
 
-import banner_analyze from '../../assets/imgs/home/banner_analyze.jpg'
-import banner_design from '../../assets/imgs/home/banner_desing.jpg'
-import banner_graf from '../../assets/imgs/home/banner_graf.png'
+import banner_analyze from '../../assets/imgs/home/banner_analyze.png'
+import banner_design from '../../assets/imgs/home//banner_desing-sf.png'
+import banner_graf from '../../assets/imgs/home/banner_graf-sf.png'
 
 import card_analyze from '../../assets/imgs/home/card_analyze.jpg'
 import card_desing from '../../assets/imgs/home/card_desing.jpg'
@@ -36,7 +33,8 @@ import css from '../../assets/imgs/home/css.png'
 import gimp from '../../assets/imgs/home/gimp.png'
 import autocad from '../../assets/imgs/home/autocad.png'
 
-import BannerCard from './components/BannerCard';
+import SlideContentHome from './components/SlideContentHome';
+import CardHome from './components/CardHome';
 
 
 
@@ -48,47 +46,55 @@ function Home() {
     ...addLangText[context.lang]
   }
 
-  const articles = [
+  const slider_items = [
     {
-      key: 'designs',
-      img: card_desing,
-      navigate: '/designs'
+      ...langText.banners.designs,
+      icons: [react, tailwind, nextui],
+      img: banner_design,
+      span_text_class: 'text-secondary-600',
+      bg: ' from-secondary-300/90 to-secondary/80',
+      button_color: 'primary',
+      link: '/designs',
     },
     {
-      key: 'ecommerce',
-      img: card_ecom,
-      navigate: '/designs/showroom'
+      ...langText.banners.apis,
+      icons: [python, php],
+      img: banner_analyze,
+      span_text_class: 'text-danger-600',
+      bg: ' from-danger-300/90 to-danger/80',
+      button_color: 'warning',
+      link: '/apis',
     },
     {
-      key: 'analyze',
-      img: card_analyze,
-      navigate: '/analyze'
-    },
-    {
-      key: 'databases',
-      img: card_database,
-      navigate: '/databases'
+      ...langText.banners.graf,
+      icons: [css, gimp, autocad],
+      img: banner_graf,
+      span_text_class: 'text-success-400',
+      bg: ' from-success-300/90 to-success/80',
+      button_color: 'secondary',
     },
   ]
 
-  const slider_items = [
+  const cards_items = [
     {
-      bg_image: banner_design,
-      title: langText.banners.design_web,
-      logos: [react, tailwind, nextui],
-      bg_gradient: 'from-blue-400 to-primary dark:from-primary dark:to-blue-800'
+      img: card_desing,
+      link: '/designs',
+      ...langText.cards.designs
     },
     {
-      bg_image: banner_analyze,
-      title: langText.banners.analyze,
-      logos: [python, php],
-      bg_gradient: 'from-yellow-400 to-warning dark:from-warning dark:to-yellow-800'
+      img: card_ecom,
+      link: '/designs/showroom',
+      ...langText.cards.ecommerce
     },
     {
-      bg_image: banner_graf,
-      title: langText.banners.design_graf,
-      logos: [css, gimp, autocad],
-      bg_gradient: 'from-purple-400 to-secondary dark:from-secondary dark:to-purple-800'
+      img: card_analyze,
+      link: '/apis/analyze',
+      ...langText.cards.analyze
+    },
+    {
+      img: card_database,
+      link: '/apis/databases',
+      ...langText.cards.databases
     },
   ]
 
@@ -111,23 +117,19 @@ function Home() {
             spaceBetween={0}
             slidesPerView={1}
             loop={true}
+            navigation={true}
             autoplay={{
               enabled: true,
               delay: 3000,
               disableOnInteraction: false,
             }}
-            wrapperClass='items-center '
-            centeredSlides
 
-            navigation={true}
           >
             {slider_items.map((e, i) =>
-              <SwiperSlide key={i} className='!flex justify-center'>
-                <BannerCard
-                  bg_image={e.bg_image}
-                  title={e.title}
-                  logos={e.logos}
-                  bg_gradient={e.bg_gradient}
+              <SwiperSlide key={i} className='!h-auto'>
+                <SlideContentHome
+                  {...e}
+                  onMore={navigate}
                 />
               </SwiperSlide>
             )}
@@ -138,39 +140,12 @@ function Home() {
 
         {/* cartas */}
         <section className='my-8 grid gap-4 lg:gap-8 grid-cols-1 md:grid-cols-2 xs:px-2 lg:px-8 max-w-[2600px]'>
-          {articles.map(art =>
-            <Card key={art.key} isFooterBlurred className="w-full h-[300px] max-xs:rounded-none max-w-[600px] ">
-              <CardHeader className="absolute z-10 top-0 flex-col items-start card-header rounded-none bg-gradient-to-r from-slate-500/80 to-slate-500/10 ">
-                <p className="text-tiny text-neutral-900 opacity-60 uppercase font-bold">
-                  {langText.articles[art.key].subtitle}
-                </p>
-                <h4 className="text-white/90 font-semibold text-4xl italic">
-                  {langText.articles[art.key].title}
-                </h4>
-              </CardHeader>
-
-              <Image
-                removeWrapper
-                alt={langText.imgOf + langText.articles[art.key].title}
-                className="z-0 w-full h-full object-cover max-[360px]:rounded-none"
-                src={art.img}
-              />
-
-              <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100 max-[360px]:rounded-none">
-                <div className="flex flex-grow gap-2 items-center">
-                  <Image
-                    alt={langText.iconOf + langText.articles[art.key].title}
-                    className="rounded-full w-10 h-11 bg-black"
-                    src={art.img}
-                  />
-                  <div className="flex flex-col">
-                    <p className="text-tiny text-white/60">{langText.articles[art.key].footer_text}</p>
-                    <p className="text-tiny text-white/60">{langText.articles[art.key].footer_subtext}</p>
-                  </div>
-                </div>
-                <Button radius="full" size="sm" className='hover:bg-primary-300' onClick={() => navigate(art.navigate)}>{langText.explore}</Button>
-              </CardFooter>
-            </Card>
+          {cards_items.map((card, i) =>
+            <CardHome
+              key={i}
+              {...card}
+              onExplore={navigate}
+            />
           )}
         </section>
       </div>

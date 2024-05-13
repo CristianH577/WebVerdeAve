@@ -14,9 +14,6 @@ import ProcessSection from './components/ProcessSection';
 import ChangesSection from './components/ChangesSection/ChangesSection';
 import GraphsSection from './components/GraphsSection';
 
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
 import { Download } from '../../../assets/icons';
 
 
@@ -141,19 +138,6 @@ function Analyze() {
                 )}
             </Tabs>
 
-
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme={context.dark ? 'dark' : 'light'}
-            />
 
         </main>
     );

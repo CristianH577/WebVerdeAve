@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 
 import { LuShield, LuHeart } from "react-icons/lu";
 import { FaRegHandRock } from "react-icons/fa";
-import { CgGhostCharacter } from "react-icons/cg";
 import { AiOutlineThunderbolt } from "react-icons/ai";
 import { GiBackpack } from "react-icons/gi";
 
@@ -13,8 +12,6 @@ import { GiBackpack } from "react-icons/gi";
 function CharInfo({ char, langText, dark, openInventory, toastId }) {
 
     const icons = {
-        char: <CgGhostCharacter className='w-full h-full' />,
-
         hp: <LuHeart size={30} className='text-danger' />,
         hp_max: <LuHeart size={25} className='text-danger' />,
         damage: <FaRegHandRock size={25} color='gray' />,
@@ -22,16 +19,16 @@ function CharInfo({ char, langText, dark, openInventory, toastId }) {
 
         inventory: <GiBackpack size={30} />,
         effects: <AiOutlineThunderbolt size={30} className='' />,
-
     }
 
+
     return (
-        <section
-            className={'flex gap-2 mb-4 items-center style-game xs:rounded-lg py-2 xs:px-6 max-xs:w-full max-xs:flex-col'}>
+        <section className={'flex gap-2 mb-4 items-center style-game xs:rounded-lg py-2 xs:px-6 max-xs:w-full max-xs:flex-col'}>
             <div className='flex flex-col'>
                 <div className='capitalize text-xl mb-1 text-center'>
                     {char.name} - {langText.clase[char.clase]} {langText.level}{char.level}
                 </div>
+
                 <div className='flex items-center gap-2 group'>
                     {icons.hp}
                     <Progress

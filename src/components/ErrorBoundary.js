@@ -12,7 +12,7 @@ class ErrorBoundary extends React.Component {
 
 
     render() {
-        if (this.state.hasError) return <div className='flex justify-center'> 
+        if (this.state.hasError) return <div className='flex justify-center items-center'> 
             <span className='rounded-lg p-4 border border-danger text-danger bg-warning-50 my-4 uppercase'>
                 Error de renderizado
             </span>

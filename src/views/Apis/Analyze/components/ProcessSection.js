@@ -1,13 +1,13 @@
 import { useState } from 'react';
-
 import addLangText from '../../../../lang/Apis/Analyze/components/ProcessSection.json'
 import { useOutletContext } from 'react-router-dom';
 
+import { postFAPI } from '../../../../libs/fastapi';
+
 import { ButtonGroup, Button, Link } from "@nextui-org/react";
 
+import ErrorBoundary from '../../../../components/ErrorBoundary';
 import CustomTable from '../../../../components/CustomTable';
-
-import { postFAPI } from '../../../../libs/fastapi';
 
 import { Reset } from '../../../../assets/icons'
 
@@ -55,17 +55,10 @@ function Procesamiento({ data }) {
     const getData = async (action) => {
         setIsLoading(action)
 
-        const formData = new FormData()
-        formData.append('rows', JSON.stringify(data.rows))
+        const response = await postFAPI('analyze/' + action, data.rows, lang)
 
-        const response = await postFAPI('analyze/' + action, formData, lang)
-
-        if (response.bool) {
-            var val = response.value
-            const newData = {
-                cols: val.cols,
-                rows: JSON.parse(val.rows),
-            }
+        if (response.bool && typeof response.value === 'object') {
+            const newData = { ...response.value }
 
             const newContent = { ...content }
             newContent[action] = newData
@@ -115,15 +108,17 @@ function Procesamiento({ data }) {
                                 </div>
 
                             )}
-                            <CustomTable
-                                data={content[e.id]}
-                                preferences={{
-                                    model: ['info', 'describe'].includes(e.id) ? ['none'] : ['pages'],
-                                    checks: ['headers'],
-                                }}
-                                ariaLabel={langText.tableAria[e.id]}
-                                color={e.color}
-                            />
+                            <ErrorBoundary>
+                                <CustomTable
+                                    data={content[e.id]}
+                                    preferences={{
+                                        model: ['info', 'describe'].includes(e.id) ? ['none'] : ['pages'],
+                                        checks: ['headers'],
+                                    }}
+                                    ariaLabel={langText.tableAria[e.id]}
+                                    color={e.color}
+                                />
+                            </ErrorBoundary>
                         </>
                     )}
                 </section>

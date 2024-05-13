@@ -40,7 +40,6 @@ function UploadSection({ setData }) {
         const formData = new FormData()
         formData.append('file', file)
         const response = await postFAPI('analyze/fileToDf', formData, lang)
-        console.log(response)
 
         if (response.bool && typeof response.value === 'object') {
             const cols = response.value?.cols

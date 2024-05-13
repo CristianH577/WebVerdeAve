@@ -4,19 +4,17 @@ import './Game.css'
 import addLangText from '../../../lang/Apis/Game/Game.json'
 import { useOutletContext } from 'react-router-dom';
 
+import { getFAPI, postFAPI, deleteFAPI } from '../../../libs/fastapi';
 
-import { Button, Tooltip, ButtonGroup } from "@nextui-org/react";
+import { Button, Tooltip, ButtonGroup, Image } from "@nextui-org/react";
 import { Modal, ModalContent, ModalBody } from "@nextui-org/react";
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import CreateChar from './components/CreateChar';
 import Map from './components/Map';
 import CharInfo from './components/CharInfo';
 import ModalFight from './components/ModalFight';
-
-import { getFAPI, postFAPI, deleteFAPI } from '../../../libs/fastapi';
-
 
 import { LuSword, LuSwords, LuSkull } from "react-icons/lu";
 import { GiAbdominalArmor, GiTorch, GiBossKey, GiHealthPotion, GiMagicPotion, GiWizardStaff, GiLeatherArmor, GiRobe, GiLindenLeaf, GiPiercingSword, GiTribalMask } from "react-icons/gi";
@@ -25,23 +23,27 @@ import { TfiKey } from "react-icons/tfi";
 import { RiCoinLine } from "react-icons/ri";
 import { LiaPoopSolid } from "react-icons/lia";
 
+import char_icon from '../../../assets/imgs/game/char.png'
+import goblin from '../../../assets/imgs/game/goblin.png'
+import ogre from '../../../assets/imgs/game/ogre.png'
+import minotaur from '../../../assets/imgs/game/minotaur.png'
+
 
 
 function Game() {
     const context = useOutletContext()
+    const lang = context.lang
     const langText = {
-        ...context.langText[context.lang],
-        ...addLangText[context.lang]
+        ...context.langText[lang],
+        ...addLangText[lang]
     }
 
     const [isLoading, setIsLoading] = useState(false)
 
-    const server_notify_config = {
-        lang: context.lang,
-        dark: context.dark,
-    }
 
     const icons = {
+        char: <Image src={char_icon} alt="" radius="none" className="z-0" />,
+
         options: {
             fight: <LuSwords />,
             leave: <FaRunning />,
@@ -67,6 +69,11 @@ function Game() {
 
         death: <LuSkull size={100} />,
 
+        mobs: {
+            0: <Image src={goblin} alt="" radius="none" className="z-0" />,
+            1: <Image src={ogre} alt="" radius="none" className="z-0" />,
+            2: <Image src={minotaur} alt="" radius="none" className="z-0" />,
+        },
     }
 
 
@@ -78,8 +85,8 @@ function Game() {
 
         if (typeof char === 'number' || char.id) {
             const id = char.id || char
-            const char_data = await getFAPI("/chars/getElementById/" + id, server_notify_config)
-            if (char_data.bool) setChar(char_data.value)
+            const response = await getFAPI("game/getElementById/" + id, lang)
+            if (response.bool) setChar(response.value)
         }
 
         setIsLoading(false)
@@ -87,13 +94,40 @@ function Game() {
 
     const createChar = async values => {
         setIsLoading(true)
-        const form_data = new FormData()
-        form_data.append('data', JSON.stringify(values))
-        const create = await postFAPI("/chars/add", form_data, server_notify_config)
-        if (create.bool) setChar(create.value)
+
+        const response = await postFAPI("game/add", values, lang)
+        if (response.bool) setChar(response.value)
+
         setIsLoading(false)
-        return create.bool
+        return response.bool
     }
+
+    const resetGame = async () => {
+        if (char) {
+            const r = await deleteFAPI("game/" + char.id, lang)
+            if (r.bool) {
+                setChar(false)
+                cleanToast()
+                setTurn(default_turn)
+                setSpecialEvent(false)
+            }
+        }
+    }
+
+    const restart = async () => {
+        if (char) {
+            const r = await getFAPI("game/restart/" + char.id, lang)
+            if (r.bool) {
+                setChar(char.id)
+                cleanToast()
+                setTurn(default_turn)
+                setSpecialEvent(false)
+                document.querySelector('#map').scroll(0, 0)
+                getChar()
+            }
+        }
+    }
+
 
     // map ------------------------------------
     const base_cols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u']
@@ -140,13 +174,11 @@ function Game() {
 
     // actions ------------------------------------
     const handleMove = async (x, y) => {
-        const url = "/chars/checkMove?x=" + x + "&y=" + y + "&id=" + char.id
-        const interaction = await getFAPI(url, server_notify_config)
+        const url = "game/checkMove?x=" + x + "&y=" + y + "&id=" + char.id
+        const response = await getFAPI(url, lang)
 
-        if (interaction.bool) {
-            if (interaction.value) {
-                handleInteraction(interaction.value, -1)
-            }
+        if (response.bool && response.value) {
+            handleInteraction(response.value, -1)
         }
 
         getChar()
@@ -180,31 +212,35 @@ function Game() {
     }
 
     const handleInteraction = async (array, i) => {
-        if (i === -1) {
-            await cleanToast()
+        if (i === -1) await cleanToast()
+
+        const toast_config = {
+            position: "bottom-center",
+            autoClose: false,
+            closeOnClick: false,
+            closeButton: false,
+            draggable: false,
+            className: 'toast-game'
         }
-        if (!toast.isActive(toastId.current)) {
-            toastId.current = toast("")
-        }
+        if (!toast.isActive(toastId.current)) toastId.current = toast("", toast_config)
 
         const new_msg = array[i + 1]
         if (new_msg) {
             var content = <></>
 
             if (typeof (new_msg) === 'string') {
-                content =
-                    <div className='text-center'>
-                        <div className='pb-2'>
-                            {new_msg}
-                        </div>
-                        <div className='text-sm text-game_s1'>
-                            {langText.toast.to_continue}
-                        </div>
+                content = <div className='text-center'>
+                    <div className='pb-2'>
+                        {new_msg}
                     </div>
+                    <div className='text-sm text-game_s1'>
+                        {langText.toast.to_continue}
+                    </div>
+                </div>
 
                 toast.update(toastId.current, {
                     render: content,
-                    className: '!cursor-pointer',
+                    className: '!cursor-pointer toast-game',
                     onClick: () => handleInteraction(array, i + 1)
                 })
             }
@@ -232,7 +268,7 @@ function Game() {
 
                 toast.update(toastId.current, {
                     render: content,
-                    className: '',
+                    className: 'toast-game',
                 })
             }
         }
@@ -243,9 +279,9 @@ function Game() {
     }
 
     const handleEvent = async op => {
-        const url = "/chars/handleOption?x=" + char.interacting[0] + "&y=" + char.interacting[1] + "&op=" + op + "&id=" + char.id
+        const url = "game/handleOption?x=" + char.interacting[0] + "&y=" + char.interacting[1] + "&op=" + op + "&id=" + char.id
 
-        const event = await getFAPI(url, server_notify_config)
+        const event = await getFAPI(url, lang)
         if (event.bool) {
             if (event.value !== "") {
                 var msg = false
@@ -298,7 +334,7 @@ function Game() {
                 form_data.append('turn', JSON.stringify(new_turn))
                 form_data.append('id', char.id)
 
-                const response = await postFAPI("/chars/handleFight", form_data, server_notify_config)
+                const response = await postFAPI("game/handleFight", form_data, lang)
                 if (response.bool) new_turn = response.value
                 break;
             case 'defence':
@@ -315,7 +351,7 @@ function Game() {
                     form_data.append('turn', JSON.stringify(new_turn))
                     form_data.append('id', char.id)
 
-                    const response = await postFAPI("/chars/handleFight", form_data, server_notify_config)
+                    const response = await postFAPI("game/handleFight", form_data, lang)
                     if (response.bool) new_turn = response.value
                 }
                 break;
@@ -365,7 +401,7 @@ function Game() {
                     form_data.append('turn', JSON.stringify(new_turn))
                     form_data.append('id', char.id)
 
-                    const response = await postFAPI("/chars/handleFight", form_data, server_notify_config)
+                    const response = await postFAPI("game/handleFight", form_data, lang)
                     if (response.bool) {
                         new_turn = response.value
                     }
@@ -380,9 +416,9 @@ function Game() {
 
     const handleFightEnd = async () => {
         setIsLoading(true)
-        const url = "/chars/endFight/" + char.id
+        const url = "game/endFight/" + char.id
 
-        const end = await getFAPI(url, server_notify_config)
+        const end = await getFAPI(url, lang)
 
         if (end.bool) {
             if (end.status === 200) {
@@ -404,10 +440,10 @@ function Game() {
         char.stats.hp = addStats.hp_max
         setChar({ ...char })
 
-        const data = { char: JSON.stringify(char) }
-        const url = "/chars/update"
+        const form_data = new FormData()
+        form_data.append('char', JSON.stringify(char))
 
-        const update = await postFAPI(url, data, server_notify_config)
+        const update = await postFAPI("game/update", form_data, lang)
         if (update.bool) {
             setSpecialEvent(false)
             getChar()
@@ -431,7 +467,7 @@ function Game() {
                         <div className='w-full center items-center gap-2 mt-2'>
 
                             {['hp_max', 'damage', 'defence'].map(stat =>
-                                <div key={stat} className='w-full flex justify-center items-center gap-2 items-center gap-2 max-xs:flex-col'>
+                                <div key={stat} className='w-full flex justify-center items-center gap-2 items-center  max-xs:flex-col'>
                                     {icons[stat]}
 
                                     <div className='flex w-[150px] max-xs:w-full'>
@@ -490,9 +526,9 @@ function Game() {
         setIsLoading(true)
         const id_item = e.target.name
 
-        const url = "/chars/useConsumable?id_item=" + id_item + "&id_char=" + char.id
+        const url = "game/useConsumable?id_item=" + id_item + "&id_char=" + char.id
 
-        const use = await getFAPI(url, server_notify_config)
+        const use = await getFAPI(url, lang)
 
         if (use.bool) {
             handleInteraction(use.value, -1)
@@ -572,33 +608,6 @@ function Game() {
 
 
     //  ------------------------------------
-    const resetGame = async () => {
-        if (char) {
-            const r = await deleteFAPI("chars/" + char.id, server_notify_config)
-            if (r.bool) {
-                setChar(false)
-                cleanToast()
-                setTurn(default_turn)
-                setSpecialEvent(false)
-            }
-        }
-    }
-    const restart = async () => {
-        if (char) {
-            const r = await getFAPI("/chars/restart/" + char.id, server_notify_config)
-            if (r.bool) {
-                setChar(char.id)
-                cleanToast()
-                setTurn(default_turn)
-                setSpecialEvent(false)
-                document.querySelector('#map').scroll(0, 0)
-                getChar()
-            }
-        }
-    }
-
-
-    //  ------------------------------------
     useEffect(() => {
         if (typeof char === "object" && char.stats.hp <= 0) {
             const body =
@@ -630,24 +639,40 @@ function Game() {
     // eslint-disable-next-line
     useEffect(handleLvlUp, [addStats])
 
+
     // ADMIN ------------------------------------
-    // const getAdminChar = async () => {
-    //     setIsLoading(true)
-    //     const char_data = await getFAPI("/chars/getElementById/" + 1, server_notify_config)
-    //     if (char_data.bool) {
-    //         setChar(char_data.value)
-    //     }
-    //     setIsLoading(false)
-    // }
-    // const getAllItems = async () => {
-    //     setIsLoading(true)
-    //     const r = await getFAPI("/chars/getAllItems/", server_notify_config)
-    //     if (r.bool) {
-    //         getChar()
-    //         handleInteraction(r.value, -1)
-    //     }
-    //     setIsLoading(false)
-    // }
+    const getAdminChar = async () => {
+        setIsLoading(true)
+        const response = await getFAPI("game/getElementById/" + 1, lang)
+        if (response.bool) setChar(response.value)
+        setIsLoading(false)
+    }
+    const getAllItems = async () => {
+        setIsLoading(true)
+        const response = await getFAPI("game/getAllItems/", lang)
+        if (response.bool) {
+            getChar()
+            handleInteraction(response.value, -1)
+        }
+        setIsLoading(false)
+    }
+    const test = async () => {
+        setIsLoading(true)
+        // const form_data = new FormData()
+        // form_data.append('num', 3)
+        // form_data.append('text', "sdfsdfa")
+        // // form_data.append('turn', JSON.stringify({test: "gds"}))
+        // // form_data.append('turn', '{test: "gds"}')
+
+        // const data = {
+        //     num: 3,
+        //     text: "sdfsdfa",
+        // }
+
+        const response = await getFAPI("/game", lang)
+        console.log(response)
+        setIsLoading(false)
+    }
 
 
     return (
@@ -658,7 +683,10 @@ function Game() {
             </div>
 
             {/* admin section */}
-            {/* <div>
+            <div>
+                <Button onClick={test}>
+                    test
+                </Button>
                 <div className='flex flex-wrap gap-4 mb-4 border-y'>
                     <Button onClick={getAdminChar} color='primary'>admin char</Button>
                     <Button onClick={() => {
@@ -691,7 +719,7 @@ function Game() {
                         </Button>
                     </div>
                 )}
-            </div> */}
+            </div>
 
             {char === false && (
                 <CreateChar createChar={createChar} />
@@ -753,7 +781,7 @@ function Game() {
                             className='button-xs'
                             onClick={resetGame}
                         >
-                            Borrar game
+                            {langText.delete_character}
                         </Button>
                     </div>
 
@@ -772,6 +800,7 @@ function Game() {
                         char={char}
                         zoom={zoom}
                         move={move}
+                        icons_mobs={icons.mobs}
                         checkAllowMove={checkAllowMove}
                         handleCellAction={handleCellAction}
                     />
@@ -780,6 +809,8 @@ function Game() {
                     {/* fight */}
                     <ModalFight
                         char={char}
+                        icon_char={icons.char}
+                        icons_mobs={icons.mobs}
                         dark={context.dark}
                         langText={langText}
                         isLoading={isLoading}
@@ -808,23 +839,6 @@ function Game() {
                     {specialEvent.body}
                 </ModalContent>
             </Modal>
-
-
-            <ToastContainer
-                toastId={toastId}
-                position="bottom-center"
-                autoClose={false}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick={false}
-                closeButton={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable={false}
-                pauseOnHover
-                theme={context.dark ? 'dark' : 'light'}
-                className='toast-game'
-            />
 
         </main >
     );

@@ -7,6 +7,7 @@ import { Divider } from '@nextui-org/react';
 
 import Notifications from './components/Notifications';
 import Graphs from './components/Graphs';
+import CisterciensesNumbers from './components/CisterciensesNumbers';
 
 
 
@@ -29,6 +30,10 @@ function More() {
             <Divider className='w-3/4 max-w-[1200px] my-8' />
 
             <Graphs />
+
+            <Divider className='w-3/4 max-w-[1200px] my-8' />
+
+            <CisterciensesNumbers />
 
         </main>
     );

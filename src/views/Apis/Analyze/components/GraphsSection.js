@@ -3,9 +3,9 @@ import { useState } from 'react';
 import addLangText from '../../../../lang/Apis/Analyze/components/GraphsSection.json'
 import { useOutletContext } from 'react-router-dom';
 
-import { Button, ButtonGroup, Image, Select, SelectItem } from "@nextui-org/react";
-
 import { postFAPIgraph } from '../../../../libs/fastapi';
+
+import { Button, ButtonGroup, Image, Select, SelectItem } from "@nextui-org/react";
 
 import { Reset } from '../../../../assets/icons'
 
@@ -21,8 +21,8 @@ function GraphsSection({ data }) {
     const [isLoading, setIsLoading] = useState(false)
     const [src, setSrc] = useState('')
     const [preferences, setPreferences] = useState({
-        ejex: [],
-        ejey: [],
+        axisX: [],
+        axisY: [],
         type: '',
     })
 
@@ -31,20 +31,12 @@ function GraphsSection({ data }) {
     const makeGraph = async () => {
         setIsLoading(true)
 
-        const form_data = new FormData()
-        form_data.append('rows',JSON.stringify(data.rows))
-        form_data.append('preferences',JSON.stringify(preferences))
-
-        await postFAPIgraph('analyze/createImgPost', form_data, lang)
-            .then(blob => {
-                if (blob) {
-                    const reader = new FileReader()
-                    reader.onloadend = () => {
-                        setSrc(reader.result)
-                    }
-                    reader.readAsDataURL(blob)
-                }
-            })
+        const data_form = {
+            rows: data.rows,
+            preferences: preferences,
+        }
+        const response = await postFAPIgraph('analyze/makeGraph', data_form, lang)
+        if (response.bool && response.value) setSrc(response.value)
 
         setIsLoading(false)
     }
@@ -61,9 +53,9 @@ function GraphsSection({ data }) {
                     variant="bordered"
                     onSelectionChange={e => {
                         const type = Array.from(e)[0]
-                        const x = type === 'corr' ? ['class'] : [preferences.ejex]
+                        const x = type === 'corr' ? ['class'] : [preferences.axisX]
                         const y = ["hist", "pie", "boxplot"].includes(type) ? ['quantity'] : []
-                        setPreferences({ type: type, ejex: x, ejey: y })
+                        setPreferences({ type: type, axisX: x, axisY: y })
                     }}
                 >
                     {graphSelects.map((select) => (
@@ -79,7 +71,7 @@ function GraphsSection({ data }) {
                     className=" max-w-[360px] form-select"
                     variant="bordered"
                     isDisabled={["corr"].includes(preferences.type)}
-                    onSelectionChange={e => preferences.ejex = Array.from(e)}
+                    onSelectionChange={e => preferences.axisX = Array.from(e)}
                 >
                     {data.cols.map(col => (
                         <SelectItem key={col} >
@@ -92,9 +84,9 @@ function GraphsSection({ data }) {
                     label={langText.axisY}
                     className="max-w-[360px] form-select"
                     variant="bordered"
-                    selectedKeys={preferences.ejey}
+                    selectedKeys={preferences.axisY}
                     isDisabled={["hist", "pie", "boxplot", "corr"].includes(preferences.type)}
-                    onSelectionChange={e => setPreferences({ ...preferences, ejey: Array.from(e) })}
+                    onSelectionChange={e => setPreferences({ ...preferences, axisY: Array.from(e) })}
                 >
                     <SelectItem
                         key={'quantity'}
@@ -121,8 +113,8 @@ function GraphsSection({ data }) {
                                 ? false
                                 : (
                                     !preferences.type
-                                    || preferences.ejex.length === 0
-                                    || preferences.ejey.length === 0
+                                    || preferences.axisX.length === 0
+                                    || preferences.axisY.length === 0
                                 )
                         }
                         isLoading={isLoading}

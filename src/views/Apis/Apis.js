@@ -54,12 +54,15 @@ function APIs() {
                             alt={langText.imgOf + langText.sections_titles[art.key]}
                             src={art.img}
                             className=" h-[200px] cursor-pointer hover:scale-75"
-                            onClick={() => navigate(art.key)}
+                            onClick={() => {
+                                navigate(art.key)
+                                window.scroll(0, 0)
+                            }}
                         />
                     </Tooltip>
                 )}
             </section>
-            
+
 
         </main>
     );

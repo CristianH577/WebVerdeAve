@@ -1,0 +1,9 @@
+.dropdown-buttongroup button.min-w-unit-24,
+.dropdown-buttongroup button.min-w-unit-12 {
+    min-width: 0;
+}
+
+.dropdown-buttongroup button.w-unit-12 {
+    width: var(--nextui-spacing-unit-8);
+    ;
+}

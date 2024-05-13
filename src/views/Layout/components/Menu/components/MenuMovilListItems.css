@@ -1,0 +1,50 @@
+
+.css-menu-enter {
+    opacity: 0;
+    transform: translateX(-100%);
+}
+
+.css-menu-enter-active {
+    opacity: 100%;
+    transform: translateX(0);
+    transition: all .5s ease-in-out;
+}
+
+.css-menu-exit {
+    opacity: 100%;
+    transform: translateX(0);
+}
+
+.css-menu-exit-active {
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: all .5s ease-in;
+}
+
+
+
+.css-submenu-enter {
+    opacity: 0;
+    transform: translateX(100%);
+    position: absolute;
+    top: 0;
+}
+
+.css-submenu-enter-active {
+    opacity: 100%;
+    transform: translateX(0);
+    transition: all .5s ease-in-out;
+}
+
+.css-submenu-exit {
+    opacity: 100%;
+    transform: translateX(0);
+    position: absolute;
+    top: 0;
+}
+
+.css-submenu-exit-active {
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all .5s ease-in;
+}

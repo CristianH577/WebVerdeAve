@@ -42,6 +42,27 @@ function ChangesSection({ data, setData }) {
     const [filters, setFilters] = useState(filtersDefault)
 
 
+    const checkResponse = (check, response, set) => {
+        if (response.bool && typeof response.value === 'object') {
+            const newData = {
+                ...dataEdited,
+                editing: true,
+            }
+
+            var bool = true
+            check.forEach(key => {
+                if (response.value.hasOwnProperty(key)) {
+                    newData[key] = response.value[key]
+                } else {
+                    bool = false
+                }
+            })
+
+            // if (bool) setDataEdited(newData)
+            if (bool) set(newData)
+        }
+    }
+
     // headers
     const handleEditHeaders = async (e) => {
         e.preventDefault()
@@ -83,24 +104,7 @@ function ChangesSection({ data, setData }) {
             }
             const response = await postFAPI('analyze/editHeaders', data, lang)
 
-            if (response.bool && typeof response.value === 'object') {
-                const newData = {
-                    ...dataEdited,
-                    editing: true,
-                }
-
-                var bool = true
-                const check = ['cols', 'rows', 'dtypes', 'labels']
-                check.forEach(key => {
-                    if (response.value.hasOwnProperty(key)) {
-                        newData[key] = response.value[key]
-                    } else {
-                        bool = false
-                    }
-                })
-
-                if (bool) setDataEdited(newData)
-            }
+            checkResponse(['cols', 'rows', 'dtypes', 'labels'], response, setDataEdited)
         }
 
         setEdit(false)
@@ -111,31 +115,10 @@ function ChangesSection({ data, setData }) {
     const getDtype = async () => {
         setIsLoading(true)
         setEdit('dtype')
-        console.log(typeof dataEdited.rows)
-        console.log( dataEdited.rows)
 
-        const data={
-            rows: dataEdited.rows
-        }
-        const response = await postFAPI('analyze/getDtype', data, lang)
-        console.log(response)
+        const response = await postFAPI('analyze/getDtype', dataEdited.rows, lang)
 
-        // if (response.bool && typeof response.value === 'object') {
-        //     const dtypes = response.value?.dtypes
-        //     const labels = response.value?.labels
-
-        //     if (dtypes && labels) {
-        //         const newData = {
-        //             ...dataEdited,
-        //             editing: true,
-        //             dtypes: dtypes,
-        //             labels: labels,
-        //         }
-
-        //         setDataEdited(newData)
-        //     }
-
-        // }
+        checkResponse(['dtypes', 'labels'], response, setDataEdited)
 
         setEdit(false)
         setIsLoading(false)
@@ -149,40 +132,20 @@ function ChangesSection({ data, setData }) {
 
         const form_values = new FormData(e.target)
 
-        var new_Dtypes = false
+        var new_Dtypes = {}
         for (const entry of form_values.entries()) {
             const [key, val] = entry
-            if (val !== dataEdited.dtypes[key]) {
-                if (new_Dtypes === false) new_Dtypes = {}
-                new_Dtypes[key] = val
-            }
+            if (val !== dataEdited.dtypes[key]) new_Dtypes[key] = val
         }
 
-        if (!!new_Dtypes) {
-            const form_data = new FormData()
-            form_data.append('rows', JSON.stringify(dataEdited.rows))
-            form_data.append('dtypes', JSON.stringify(new_Dtypes))
-
-            const response = await postFAPI('analyze/changeDtype', form_data, lang)
-
-            if (response.bool && typeof response.value === 'object') {
-                const value = response.value
-                const dtypes = value?.dtypes
-                const labels = value?.labels
-                const rows = JSON.parse(value?.rows)
-
-                if (typeof dtypes === 'object' && typeof labels === 'object' && Array.isArray(rows)) {
-                    const newData = {
-                        ...dataEdited,
-                        editing: true,
-                        dtypes: dtypes,
-                        labels: labels,
-                        rows: rows,
-                    }
-
-                    setDataEdited(newData)
-                }
+        if (Object.entries(new_Dtypes).length !== 0) {
+            const data = {
+                rows: dataEdited.rows,
+                dtypes: new_Dtypes,
             }
+            const response = await postFAPI('analyze/changeDtype', data, lang)
+
+            checkResponse(['rows', 'dtypes', 'labels'], response, setDataEdited)
         }
 
         setEdit(false)
@@ -197,25 +160,14 @@ function ChangesSection({ data, setData }) {
         setIsLoading(true)
 
         if (Object.keys(newRowsValues).length !== 0) {
-            const form_data = new FormData()
-            form_data.append('rows', JSON.stringify(dataEdited.rows))
-            form_data.append('new_values', JSON.stringify(newRowsValues))
-            const response = await postFAPI('analyze/editRows', form_data, lang)
-
-            if (response.bool && typeof response.value === 'string') {
-                const rows = JSON.parse(response.value)
-
-                if (Array.isArray(rows)) {
-                    const newData = {
-                        ...dataEdited,
-                        editing: true,
-                        rows: rows,
-                    }
-
-                    setDataEdited(newData)
-                }
-
+            const data = {
+                rows: dataEdited.rows,
+                new_values: newRowsValues,
             }
+
+            const response = await postFAPI('analyze/editRows', data, lang)
+
+            checkResponse(['rows'], response, setDataEdited)
         }
 
         setSelectedRows([])
@@ -226,26 +178,22 @@ function ChangesSection({ data, setData }) {
 
     const handleDelete = () => {
         setIsLoading(true)
-        var newRows = []
+        var newRows = false
 
-        var selected = false
-        if (selectedRows.size) {
-            selected = [...new Set(selectedRows)].map(Number)
-        } else if (dataFiltered !== false) {
-            selected = dataFiltered.rows.reduce((prev, val) => prev = [...prev, val.key], [])
-        }
-
-        if (selected) {
+        if (selectedRows === 'all') {
+            newRows = []
+        } else if (selectedRows?.size) {
+            const selected = [...new Set(selectedRows)].map(Number)
             newRows = dataEdited.rows.filter(row => {
                 if (selected.includes(row.key)) return false
                 return row
             })
         }
 
-        setDataEdited({
+        if (newRows) setDataEdited({
             ...dataEdited,
-            rows: newRows,
             editing: true,
+            rows: newRows,
         })
 
         setIsLoading(false)
@@ -262,35 +210,25 @@ function ChangesSection({ data, setData }) {
         setSelectedRows([])
 
         if (filters.text !== '' || filters.num !== '') {
-
-            const form_data = new FormData()
-            form_data.append('rows', JSON.stringify(dataEdited.rows))
-            form_data.append('filters', JSON.stringify(filters))
-            const response = await postFAPI('analyze/filter', form_data, lang)
-
-            if (response.bool && typeof response.value === 'string') {
-                const rows = JSON.parse(response.value)
-
-                if (Array.isArray(rows)) {
-                    const newData = {
-                        ...dataEdited,
-                        rows: rows,
-                    }
-
-                    setDataFiltered(newData)
-                }
+            const data = {
+                rows: dataEdited.rows,
+                filters: filters,
             }
+            const response = await postFAPI('analyze/filter', data, lang)
+
+            checkResponse(['rows'], response, setDataFiltered)
         }
 
         setIsLoading(false)
     }
 
     const makeCellFilter = (row, col) => {
-        var content = <span>{row[col]}</span>
+        const val = row[col] || ''
+        var content = <span>{val}</span>
 
         if (row.hl && row.hl.includes(col)) {
             content = <div className='p-1 bg-warning-400 dark:bg-warning-200 rounded'>
-                {row[col]}
+                {val}
             </div>
         }
         return content
@@ -299,6 +237,7 @@ function ChangesSection({ data, setData }) {
     const handleResetFilters = () => {
         setDataFiltered(false)
         setFilters(filtersDefault)
+        setSelectedRows([])
     }
 
     const handleSetData = () => {
@@ -455,7 +394,7 @@ function ChangesSection({ data, setData }) {
 
             <CustomTable
                 ariaLabel={langText.tableAria}
-                data={dataFiltered ? dataFiltered : dataEdited}
+                data={dataFiltered || dataEdited}
                 preferences={{
                     model: ['solicitude'],
                     results: 20,

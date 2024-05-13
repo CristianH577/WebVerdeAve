@@ -1,7 +1,7 @@
 import axios from 'axios';
 import langText from '../lang/libs/api.json'
 
-import { toast } from 'react-toastify';
+import { toast, Flip } from 'react-toastify';
 
 
 const client = axios.create({
@@ -9,6 +9,7 @@ const client = axios.create({
 })
 
 var lang = 'es'
+let toastFAPI = 'toastFAPI'
 const default_alert = {
   bool: false,
   status: false,
@@ -20,14 +21,14 @@ var alert = { ...default_alert }
 
 const analyzeResponse = (response) => {
   // console.log('analyzeResponse', response)
-  alert.msg = false
   if (response) {
+    alert.msg = false
     alert.status = response.status
     const error = response.data?.error
     const answer = response.data?.answer
 
     if (error) {
-      alert.variant = 'danger'
+      alert.variant = 'error'
       const msg = langText[lang]?.errors[error]
       alert.msg = msg ? msg : error
     } else if (answer) {
@@ -47,7 +48,6 @@ const analyzeResponse = (response) => {
 
 const analyzeError = (e) => {
   // console.log('analyzeError', e)
-  alert.msg = false
   if (["ERR_NETWORK", "ERR_BAD_RESPONSE"].includes(e.code)) {
     alert.status = 500
     alert.msg = langText[lang]?.errors?.server
@@ -56,7 +56,8 @@ const analyzeError = (e) => {
   }
 
   if (alert.status) {
-    alert.variant = 'danger'
+    alert.msg = false
+    alert.variant = 'error'
     if (alert.status < 500) {
       const detail = e?.response?.data?.detail
       const msg = langText[lang]?.errors[detail]
@@ -75,23 +76,16 @@ const showAlert = () => {
     </div>
     : alert.msg
 
-  switch (alert.variant) {
-    case 'info':
-      toast.info(msg)
-      break;
-    case 'success':
-      toast.success(msg)
-      break;
-    case 'warning':
-      toast.warning(msg)
-      break;
-    case 'danger':
-      toast.error(msg)
-      break;
-
-    default:
-      toast(msg)
-      break;
+    if (!toast.isActive(toastFAPI)) {
+      toastFAPI = toast(msg, {
+          type: alert.variant,
+      })
+  } else {
+      toast.update(toastFAPI, {
+          render: msg,
+          type: alert.variant,
+          transition: Flip
+      })
   }
 
 }

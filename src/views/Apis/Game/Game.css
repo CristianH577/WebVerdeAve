@@ -31,7 +31,11 @@
 }
 
 /* toast-game */
-.toast-game .Toastify__toast{
+/* .toast-game .Toastify__toast{
+    background-color: hsl(var(--nextui-game_p) / var(--nextui-game_p-opacity, var(--tw-bg-opacity)));
+    color: hsl(var(--nextui-game_s2) / var(--nextui-game_s2-opacity, var(--tw-text-opacity)));
+} */
+.toast-game{
     background-color: hsl(var(--nextui-game_p) / var(--nextui-game_p-opacity, var(--tw-bg-opacity)));
     color: hsl(var(--nextui-game_s2) / var(--nextui-game_s2-opacity, var(--tw-text-opacity)));
 }
