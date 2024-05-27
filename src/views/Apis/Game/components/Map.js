@@ -2,16 +2,16 @@
 import { Image } from "@nextui-org/react";
 
 
-import char_icon from '../../../../assets/imgs/game/char.png'
+import char_icon from '../../../../assets/imgs/game/char.webp'
 
-import chest from '../../../../assets/imgs/game/chest.png'
-import chest_open from '../../../../assets/imgs/game/chest_open.png'
+import chest from '../../../../assets/imgs/game/chest.webp'
+import chest_open from '../../../../assets/imgs/game/chest_open.webp'
 
-import mimic from '../../../../assets/imgs/game/mimic.png'
-import arrow from '../../../../assets/imgs/game/arrow.png'
-import lever from '../../../../assets/imgs/game/lever.png'
-import gas from '../../../../assets/imgs/game/gas.png'
-import trap_floor from '../../../../assets/imgs/game/trap_floor.png'
+import mimic from '../../../../assets/imgs/game/mimic.webp'
+import arrow from '../../../../assets/imgs/game/arrow.webp'
+import lever from '../../../../assets/imgs/game/lever.webp'
+import gas from '../../../../assets/imgs/game/gas.webp'
+import trap_floor from '../../../../assets/imgs/game/trap_floor.webp'
 
 
 function Map({ base_cols, char, zoom, move, checkAllowMove, handleCellAction, icons_mobs }) {

@@ -1,0 +1,26 @@
+.css-banner2-enter,
+.css-banner2-enter .content {
+    opacity: 0;
+    max-height: 0;
+}
+
+.css-banner2-enter-active {
+    opacity: 100%;
+    max-height: 100vh;
+    transition: all .5s ease-in;
+}
+
+.css-banner2-exit {
+    opacity: 100%;
+    max-height: 100vh;
+}
+
+.css-banner2-exit-active{
+    opacity: 0;
+    max-height: 0;
+    transition: all .5s ease-out;
+}
+.css-banner2-exit-active .content.content {
+    opacity: 0;
+    transition: all .5s ease-out;
+}

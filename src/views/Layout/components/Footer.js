@@ -26,9 +26,9 @@ function Footer({ dark, lang }) {
             key: 'sections',
             elements: [
                 'home',
-                'designs',
+                'web',
                 'apis',
-                'prices',
+                'design',
             ],
         },
         {
@@ -102,6 +102,7 @@ function Footer({ dark, lang }) {
             y = total
         }
         window.scroll(0, y)
+        window.location.hash = ''
     }
 
 
@@ -123,7 +124,7 @@ function Footer({ dark, lang }) {
                                 key={e.key}
                                 content={e.key} size='lg'
                                 offset={0}
-                                className={dark ? 'dark text-foreground ' : ''}
+                                className={'bg-content3 ' + (dark ? 'dark text-foreground ' : '')}
                                 classNames={{
                                     base: 'shadow-transparent bg-transparent',
                                 }}
@@ -186,7 +187,10 @@ function Footer({ dark, lang }) {
 
             <div className='flex justify-center items-center py-1 text-neutral-500 gap-2'>
                 <p>2023</p>
-                <p>©VerdeAve Inc.</p>
+                <span className='relative ps-4'>
+                    <p className='text-2xl absolute left-0 -top-[1px]'>© </p>
+                    <p>VerdeAve Inc.</p>
+                </span>
             </div>
 
             {!loading &&

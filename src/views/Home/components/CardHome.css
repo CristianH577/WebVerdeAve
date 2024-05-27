@@ -1,0 +1,17 @@
+.css-CardHome-enter {
+    opacity: 0;
+}
+
+.css-CardHome-enter-active {
+    opacity: 100%;
+    transition: all .5s ease-in;
+}
+
+.css-CardHome-exit {
+    opacity: 100%;
+}
+
+.css-CardHome-exit-active {
+    opacity: 0;
+    transition: all .5s ease-out;
+}

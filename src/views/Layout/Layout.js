@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import langText from '../../lang/general.json'
 
 import { Outlet } from "react-router-dom";
@@ -16,20 +16,12 @@ import 'react-toastify/dist/ReactToastify.css';
 function Layout() {
   const darkMode = useDarkMode(false)
   const [lang, setLang] = useState('es')
-  const [load, setLoad] = useState(false)
-
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoad(true)
-    }, 1000);
-  }, [])
 
 
   return (
     <div
       className={
-        'flex flex-col min-h-screen text-foreground bg-background overflow-x-hidden'
+        'flex flex-col min-h-screen text-foreground bg-background overflow-hidden'
         + (darkMode.value ? ' dark' : ' light')
       }
     >
@@ -39,13 +31,13 @@ function Layout() {
         setLang={setLang}
       />
 
-      {load
+      {document.readyState === 'complete'
         ? <Outlet
           context={{
             dark: darkMode.value,
             lang: lang,
             langText: langText,
-            mainClass: 'sm:mx-8 my-8 flex flex-col items-center xs:px-2',
+            mainClass: 'sm:mx-8 my-8 flex flex-col items-center',
             titleClass: 'custom-title text-9xl mb-8 break-all text-center capitalize',
           }}
         />
@@ -53,7 +45,6 @@ function Layout() {
       }
 
       <Footer dark={darkMode.value} lang={lang} />
-
 
       <ToastContainer
         position="top-right"

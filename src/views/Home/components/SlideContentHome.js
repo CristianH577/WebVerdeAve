@@ -16,15 +16,15 @@ function SlideContentHome(props) {
     return (
         <div
             className={
-                'bg-gradient-to-br dark:bg-gradient-to-tl py-4 sm:py-6 px-4 sm:h-[300px] flex justify-center h-full '
+                'bg-gradient-to-br dark:bg-gradient-to-tl p-4 sm:p-6  flex justify-center !h-full '
                 + (props.bg && props.bg)
             }
         >
-            <div className=" max-w-[900px] flex justify-center items-center gap-2 max-[450px]:flex-col ">
-                <div className='flex flex-col items-center justify-around h-full mix-[450px]:w-1/2 sm:w-2/3 gap-2'>
+            <div className="max-w-[900px] flex justify-evenly items-center gap-2 max-sm:flex-col ">
+                <div className=' flex flex-col items-center sm:w-2/3 gap-2'>
                     <h1 className='text-3xl flex flex-wrap justify-center gap-2 uppercase text-white'>
                         {props.title && (
-                            <p className='p-2 max-[450px]:break-all'>
+                            <p className='p-2 max-sm:break-all'>
                                 {props.title}
                             </p>
                         )}
@@ -42,14 +42,14 @@ function SlideContentHome(props) {
                     </p>
 
                     {props.icons && (
-                        <div className='flex items-center gap-4 my-2 h-8'>
+                        <div className='flex items-center gap-4 my-2 h-[48px]'>
                             {props.icons.map((icon, i) =>
                                 <Image
                                     key={'icon_' + i}
                                     alt={langText.iconOf + (props.title || props.span)}
                                     src={icon}
                                     removeWrapper
-                                    className='h-full'
+                                    className='h-full '
                                 />
                             )}
                         </div>
@@ -62,10 +62,11 @@ function SlideContentHome(props) {
                     )}
                 </div>
 
-                <div className='mix-[450px]:w-1/2 sm:w-1/3 flex items-center flex-col'>
+                <div className='sm:w-1/3 flex items-center flex-col'>
                     <Image
                         src={props.img}
                         alt={langText.imgOf + (props.title || props.span)}
+                        className=' object-contain'
                     />
                 </div>
             </div>

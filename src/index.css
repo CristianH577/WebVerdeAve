@@ -5,12 +5,26 @@
 @layer base {
     @font-face {
         font-family: 'campana script';
-        src: url('./assets/fonts/campana_script/CampanaScript_PERSONAL_USE_ONLY.otf') format('truetype');
+        src: url('./assets/fonts/campana_script/CampanaScript_PERSONAL_USE_ONLY.otf');
+        font-display: swap;
     }
 
     @font-face {
         font-family: 'titillium';
-        src: url('./assets/fonts/titillium-cufonfonts/Titillium-Light.otf') format('truetype');
+        src: url('./assets/fonts/titillium-cufonfonts/Titillium-Light.otf');
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: 'menulis';
+        src: url('./assets/fonts/menulis.ttf');
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: 'calvera';
+        src: url('./assets/fonts/Calvera.ttf');
+        font-display: swap;
     }
 
 }
@@ -83,11 +97,12 @@ body.dark-mode .custom-title {
 
 /* Swiper */
 .swiper .swiper-button-prev,
-.swiper .swiper-button-next{
+.swiper .swiper-button-next {
     opacity: 30%;
 }
+
 .swiper .swiper-button-prev:hover,
-.swiper .swiper-button-next:hover{
+.swiper .swiper-button-next:hover {
     opacity: 100%;
 }
 

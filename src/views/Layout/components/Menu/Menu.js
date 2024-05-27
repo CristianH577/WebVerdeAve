@@ -7,8 +7,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, Button, ButtonGroup, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Image, NavbarMenu, } from "@nextui-org/react";
 import { Link as LinkNextUI } from "@nextui-org/react";
 
-import ave from '../../../../assets/imgs/ave.png'
-import buho from '../../../../assets/imgs/buho.png'
+import ave from '../../../../assets/imgs/layout/ave-64.webp'
+import buho from '../../../../assets/imgs/layout/buho-64.webp'
 import { ChevronDown, MoonIcon, SunIcon, ChevronRight, ChevronLeft } from '../../../../assets/icons.js';
 import { Cards, Forms, Galleries, Maps, Sliders, Bag, Tables, More } from '../../../../assets/icons.js';
 import { Game, Analyze, Databases } from '../../../../assets/icons.js';
@@ -50,9 +50,11 @@ function Menu({ darkMode, lang, setLang }) {
     game: <Game />,
   }
 
-  const menu_items = ['home', 'designs', 'apis', 'prices']
+  const menu_items = ['home', 'web', 'apis', 'design',
+    // 'prices'
+  ]
   const sub_menus = {
-    designs: [
+    web: [
       "cards",
       "forms",
       "galeries",
@@ -98,8 +100,10 @@ function Menu({ darkMode, lang, setLang }) {
   }, [isMenuOpen])
 
 
+
   return (
     <Navbar
+      id='nav-main'
       isMenuOpen={isMenuOpen}
       className='bg-content1 shadow transition-all'
       classNames={{
@@ -118,6 +122,8 @@ function Menu({ darkMode, lang, setLang }) {
           "data-[active=true]:after:bg-red-500",
         ],
       }}
+
+      onMouseLeave={() => setIsDropdownOpen(false)}
     >
 
       {/* logo */}
@@ -129,17 +135,11 @@ function Menu({ darkMode, lang, setLang }) {
         />
         <NavbarBrand className='sm:justify-center '>
           <Image
-            src={ave}
+            src={darkMode.value ? buho : ave}
             alt='logo'
-            width={50}
-            className={'cursor-pointer hover:scale-110 rounded-full bg-custom ' + (darkMode.value ? '!opacity-0  w-0' : 'opacity-100')}
-            onClick={() => navigate('/')}
-          />
-          <Image
-            src={buho}
-            alt='logo'
-            width={50}
-            className={'cursor-pointer hover:scale-110 rounded-full bg-custom ' + (darkMode.value ? 'opacity-100' : '!opacity-0 w-0')}
+            width={64}
+            removeWrapper
+            className={'cursor-pointer hover:scale-110 rounded-full bg-custom '}
             onClick={() => navigate('/')}
           />
         </NavbarBrand>
@@ -164,6 +164,7 @@ function Menu({ darkMode, lang, setLang }) {
             onMouseEnter={() => {
               handleDropdown(true, item)
             }}
+            onMouseLeave={() => setIsDropdownOpen(false)}
           >
             <NavbarItem
               key={item}

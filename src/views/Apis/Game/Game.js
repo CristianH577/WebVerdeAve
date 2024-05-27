@@ -15,6 +15,8 @@ import CreateChar from './components/CreateChar';
 import Map from './components/Map';
 import CharInfo from './components/CharInfo';
 import ModalFight from './components/ModalFight';
+// eslint-disable-next-line
+import Admin from './components/Admin';
 
 import { LuSword, LuSwords, LuSkull } from "react-icons/lu";
 import { GiAbdominalArmor, GiTorch, GiBossKey, GiHealthPotion, GiMagicPotion, GiWizardStaff, GiLeatherArmor, GiRobe, GiLindenLeaf, GiPiercingSword, GiTribalMask } from "react-icons/gi";
@@ -23,10 +25,10 @@ import { TfiKey } from "react-icons/tfi";
 import { RiCoinLine } from "react-icons/ri";
 import { LiaPoopSolid } from "react-icons/lia";
 
-import char_icon from '../../../assets/imgs/game/char.png'
-import goblin from '../../../assets/imgs/game/goblin.png'
-import ogre from '../../../assets/imgs/game/ogre.png'
-import minotaur from '../../../assets/imgs/game/minotaur.png'
+import char_icon from '../../../assets/imgs/game/char.webp'
+import goblin from '../../../assets/imgs/game/goblin.webp'
+import ogre from '../../../assets/imgs/game/ogre.webp'
+import minotaur from '../../../assets/imgs/game/minotaur.webp'
 
 
 
@@ -640,40 +642,6 @@ function Game() {
     useEffect(handleLvlUp, [addStats])
 
 
-    // ADMIN ------------------------------------
-    const getAdminChar = async () => {
-        setIsLoading(true)
-        const response = await getFAPI("game/getElementById/" + 1, lang)
-        if (response.bool) setChar(response.value)
-        setIsLoading(false)
-    }
-    const getAllItems = async () => {
-        setIsLoading(true)
-        const response = await getFAPI("game/getAllItems/", lang)
-        if (response.bool) {
-            getChar()
-            handleInteraction(response.value, -1)
-        }
-        setIsLoading(false)
-    }
-    const test = async () => {
-        setIsLoading(true)
-        // const form_data = new FormData()
-        // form_data.append('num', 3)
-        // form_data.append('text', "sdfsdfa")
-        // // form_data.append('turn', JSON.stringify({test: "gds"}))
-        // // form_data.append('turn', '{test: "gds"}')
-
-        // const data = {
-        //     num: 3,
-        //     text: "sdfsdfa",
-        // }
-
-        const response = await getFAPI("/game", lang)
-        console.log(response)
-        setIsLoading(false)
-    }
-
 
     return (
         <main className={context.mainClass}>
@@ -682,44 +650,16 @@ function Game() {
                 {langText.sections_titles.game}
             </div>
 
-            {/* admin section */}
-            <div>
-                <Button onClick={test}>
-                    test
-                </Button>
-                <div className='flex flex-wrap gap-4 mb-4 border-y'>
-                    <Button onClick={getAdminChar} color='primary'>admin char</Button>
-                    <Button onClick={() => {
-                        setChar(2)
-                        cleanToast()
-                    }} color='primary'>test char</Button>
-                    <Button onClick={() => {
-                        setChar(false)
-                        cleanToast()
-                        setTurn(default_turn)
-                    }} color='primary'>false char</Button>
-                </div>
-
-                {typeof char === 'object' && (
-                    <div className='flex flex-wrap gap-4 mb-4 max-xs:flex-col max-xs:w-full'>
-                        <Button
-                            onClick={() => console.log(char)}
-                        >
-                            front
-                        </Button>
-                        <Button
-                            onClick={() => console.log(char.interacting)}
-                        >
-                            interacting
-                        </Button>
-                        <Button
-                            onClick={getAllItems}
-                        >
-                            getAllItems
-                        </Button>
-                    </div>
-                )}
-            </div>
+            {/* <Admin
+                char={char}
+                setChar={setChar}
+                setIsLoading={setIsLoading}
+                cleanToast={cleanToast}
+                setTurn={cleanToast}
+                getChar={getChar}
+                handleInteraction={handleInteraction}
+                default_turn={default_turn}
+            /> */}
 
             {char === false && (
                 <CreateChar createChar={createChar} />

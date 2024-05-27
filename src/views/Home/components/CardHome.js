@@ -4,10 +4,11 @@ import { useOutletContext } from 'react-router-dom';
 
 
 import { Image } from "@nextui-org/react";
-import { Card, CardHeader, CardFooter, Button } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 
 
-function CardHome(props) {
+
+function CardHome({ onExlore, ...props }) {
     const context = useOutletContext()
     const langText = {
         ...addLangText[context.lang],
@@ -15,34 +16,52 @@ function CardHome(props) {
         imgOf: context.langText[context.lang].imgOf,
     }
 
-    return (
-        <Card isFooterBlurred className="w-full h-[300px] max-xs:rounded-none max-w-[600px] ">
-            <CardHeader className="absolute z-10 top-0 flex-col items-start card-header rounded-none bg-gradient-to-r from-slate-500/80 to-slate-500/10 ">
-                <p className="text-tiny text-neutral-300 opacity-100 uppercase font-bold">
-                    {props.subtitle}
-                </p>
-                <h4 className="text-white/90 font-semibold text-4xl italic">
-                    {props.title}
-                </h4>
-            </CardHeader>
+    const is_even = (props.i || props.i === 0) && props.i % 2 === 0
 
+    const contextImg = require.context('../../../assets/imgs/home/cards', true)
+
+    const lg = contextImg(`./${props.id}-lg.webp`) || null
+    const img = contextImg(`./${props.id}.webp`) || null
+
+
+    return (
+        <article
+            className={'flex flex-col-reverse w-full px-2  gap-8 justify-center items-center ' + (is_even ? 'sm:flex-row-reverse' : 'sm:flex-row')}
+            data-aos={is_even ? "fade-right" : "fade-left"}
+        >
             <Image
-                removeWrapper
                 alt={langText.imgOf + props.title}
-                className="z-0 w-full h-full object-cover max-[360px]:rounded-none"
-                src={props.img}
+                removeWrapper
+                className='object-cover h-[100vw] sm:w-1/2 sm:h-[25vw] max-h-[300px]'
+                src={lg}
+                srcSet={`${lg} 1024w , ${img} 1280w `}
+                sizes="(max-width: 1024px) 1024px, 1280px"
             />
 
-            <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100 max-[360px]:rounded-none">
-                <div className="flex flex-grow gap-2 items-center">
-                    <div className="flex flex-col">
-                        <p className="text-tiny text-white/60">{props.footer_text}</p>
-                        <p className="text-tiny text-white/60">{props.footer_subtext}</p>
+            <div className='w-full sm:w-1/2 flex sm:items-center '>
+                <div className={'space-y-4 text-balance w-full ' + (is_even && 'text-end')}>
+                    <div>
+                        <h1 className='font-bold text-5xl'>{props.title}</h1>
+                        <h2 className='text-neutral-800 dark:text-neutral-400 text-3xl'>{props.subtitle}</h2>
                     </div>
+
+                    <p className=' break-'>
+                        {props.desc}
+                    </p>
+
+                    <Button
+                        className='bg-foreground text-background font-semibold hover:scale-105'
+                        onPress={() => {
+                            onExlore && onExlore(props.link)
+                            window.window.scroll(0, 0)
+                        }}
+                    >
+                        {langText.explore}
+                    </Button>
                 </div>
-                <Button color='warning' variant='ghost' radius="full" size="sm" className='hover:!text-white' onClick={() => props.onExlore(props.navigate)}>{langText.explore}</Button>
-            </CardFooter>
-        </Card>
+            </div>
+        </article>
+
     );
 }
 

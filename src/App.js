@@ -6,22 +6,25 @@ import Layout from "./views/Layout/Layout";
 import Home from "./views/Home/Home";
 import NotFound from "./views/NotFound/NotFound";
 
-import Designs from "./views/Designs/Designs";
-import Cards from "./views/Designs/Cards/Cards";
-import Sliders from "./views/Designs/Sliders/Sliders";
-import Forms from "./views/Designs/Forms";
-import Galeries from "./views/Designs/Galeries/Galeries";
-import Showroom from "./views/Designs/Showroom";
-import Tables from "./views/Designs/Tables";
-import Maps from "./views/Designs/Maps/Maps";
-import More from "./views/Designs/More/More";
+import Web from "./views/Web/Web";
+import Cards from "./views/Web/Cards/Cards";
+import Sliders from "./views/Web/Sliders/Sliders";
+import Forms from "./views/Web/Forms/Forms";
+import Galeries from "./views/Web/Galeries/Galeries";
+import Showroom from "./views/Web/Showroom/Showroom";
+import Tables from "./views/Web/Tables";
+import Maps from "./views/Web/Maps/Maps";
+import More from "./views/Web/More/More";
 
 import APIs from "./views/Apis/Apis";
 import Analyze from "./views/Apis/Analyze/Analyze";
 import Databases from "./views/Apis/Databases/Databases";
 import Game from "./views/Apis/Game/Game";
+import MakeBoard from "./views/Apis/MakeBoard/MakeBoard";
 
-import Prices from "./views/Prices/Prices"
+import Design from "./views/Design/Design"
+
+// import Prices from "./views/Prices/Prices"
 
 import Test from "./views/Plantilla/Test";
 
@@ -54,39 +57,39 @@ function App() {
     },
 
     {
-      path: 'designs',
-      content: <Designs />,
+      path: 'web',
+      content: <Web />,
     },
     {
-      path: 'designs/cards',
+      path: 'web/cards',
       content: <Cards />,
     },
     {
-      path: 'designs/galeries',
+      path: 'web/galeries',
       content: <Galeries />,
     },
     {
-      path: 'designs/sliders',
+      path: 'web/sliders',
       content: <Sliders />,
     },
     {
-      path: 'designs/forms',
+      path: 'web/forms',
       content: <Forms />,
     },
     {
-      path: 'designs/showroom',
+      path: 'web/showroom',
       content: <Showroom />,
     },
     {
-      path: 'designs/tables',
+      path: 'web/tables',
       content: <Tables />,
     },
     {
-      path: 'designs/maps',
+      path: 'web/maps',
       content: <Maps />,
     },
     {
-      path: 'designs/more',
+      path: 'web/more',
       content: <More />,
     },
 
@@ -98,21 +101,28 @@ function App() {
       path: 'apis/analyze',
       content: <Analyze />,
     },
-
     {
       path: 'apis/databases',
       content: <Databases user={user} setUser={setUser} />,
     },
-
     {
       path: 'apis/game',
       content: <Game />,
     },
+    {
+      path: 'apis/make_board',
+      content: <MakeBoard />,
+    },
 
     {
-      path: 'prices',
-      content: <Prices />,
+      path: 'design',
+      content: <Design />,
     },
+
+    // {
+    //   path: 'prices',
+    //   content: <Prices />,
+    // },
 
     {
       path: 'test',

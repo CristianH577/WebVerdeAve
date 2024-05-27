@@ -10,11 +10,40 @@ module.exports = {
 
   theme: {
     extend: {
-      backgroundImage:{
-        'ladrillo': "url('../src/assets/imgs/game/ladrillo.jpg')",
-        'piso': "url('../src/assets/imgs/game/piso.jpg')",
-        'puerta': "url('../src/assets/imgs/game/puerta.png')",
-        'char': "url('../src/assets/imgs/game/char.png')",
+      backgroundImage: {
+        'ladrillo': "url('../src/assets/imgs/game/ladrillo.webp')",
+        'piso': "url('../src/assets/imgs/game/piso.webp')",
+        'puerta': "url('../src/assets/imgs/game/puerta.webp')",
+        'char': "url('../src/assets/imgs/game/char.webp')",
+      },
+
+      keyframes: {
+        shake: {
+          '0%, 100%': { transform: 'rotate(0)' },
+          '10%, 30%, 50%, 70%, 90%': { transform: 'rotate(-5deg)' },
+          '20%, 40%, 60%, 80%': { transform: 'rotate(5deg)' },
+        },
+        shakeXLeft: {
+          '0%': { transform: 'translateX(0)' },
+          '50%': { transform: 'translateX(-30%)' },
+          '100%': { transform: 'translateX(0%)' },
+        },
+        shakeXRight: {
+          '0%': { transform: 'translateX(0)' },
+          '50%': { transform: 'translateX(30%)' },
+          '100%': { transform: 'translateX(0%)' },
+        },
+        shakeYTop: {
+          '0%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(30%)' },
+          '100%': { transform: 'translateY(0%)' },
+        }
+      },
+      animation: {
+        shake: 'shake 1.5s ease-in-out infinite',
+        shakeXLeft: 'shakeXLeft 2s infinite',
+        shakeXRight: 'shakeXRight 2s infinite',
+        shakeYTop: 'shakeYTop 2s infinite',
       }
     },
     screens: {
@@ -25,6 +54,9 @@ module.exports = {
       'xl': '1280px',
       '2xl': '1536px',
     },
+    maxWidth: {
+      'screen': '100vw',
+    }
   },
 
   darkMode: "class",
