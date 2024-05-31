@@ -15,8 +15,11 @@ https://drive.google.com/file/d/1FAkfMmcOHpVwOwBQO3SROWyxhLuUs2Zn/view?usp=shari
 ## Multimedia
 
 <div display="flex" align="center">
+
+<span>
   
 [![Youtube](https://img.shields.io/badge/Presentacion-FF0000?style=for-the-badge&logo=youtube&logoColor=white&labelColor=101010)](https://www.youtube.com/watch?v=nokyIElOMxU)
+</span>
 
 <p>(Version antigua)</p>
 
