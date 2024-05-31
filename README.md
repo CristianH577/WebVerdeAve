@@ -2,12 +2,14 @@
 
 Web para mostrar habilidades de programacion.
 
-Api PHP: https://github.com/CristianH577/WebVerdeAve-ApiPHP
+Api PHP: 
+https://github.com/CristianH577/WebVerdeAve-ApiPHP
 
-Api Python: https://github.com/CristianH577/WebVerdeAve-ApiPython
+Api Python:
+https://github.com/CristianH577/WebVerdeAve-ApiPython
 
 Version ejecutable: Sin APIs. Solo descargar y entrar al acceso directo.
-  https://drive.google.com/file/d/1FAkfMmcOHpVwOwBQO3SROWyxhLuUs2Zn/view?usp=sharing()
+https://drive.google.com/file/d/1FAkfMmcOHpVwOwBQO3SROWyxhLuUs2Zn/view?usp=sharing()
 
 
 ## Multimedia
