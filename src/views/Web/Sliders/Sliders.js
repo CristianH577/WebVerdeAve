@@ -1,10 +1,10 @@
 
-import ShowModelsMain from '../../../components/ShowModelsMain';
+import ShowModelsMain from '../../../components/ShowModelsMain.js';
 
-import SliderCustom from './components/SliderCustom';
-import SliderParallax from './components/SliderParallax';
-import SliderEffects from './components/SliderEffects';
-import SliderAdapt from './components/SliderAdapt';
+import SliderCustom from './components/SliderCustom.js';
+import SliderParallax from './components/SliderParallax.js';
+import SliderEffects from './components/SliderEffects.js';
+import SliderAdapt from './components/SliderAdapt.js';
 
 
 

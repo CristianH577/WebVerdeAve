@@ -4,19 +4,19 @@ import './Game.css'
 import addLangText from '../../../lang/Apis/Game/Game.json'
 import { useOutletContext } from 'react-router-dom';
 
-import { getFAPI, postFAPI, deleteFAPI } from '../../../libs/fastapi';
+import { getFAPI, postFAPI, deleteFAPI } from '../../../libs/fastapi.js';
 
 import { Button, Tooltip, ButtonGroup, Image } from "@nextui-org/react";
 import { Modal, ModalContent, ModalBody } from "@nextui-org/react";
 
 import { toast } from 'react-toastify';
 
-import CreateChar from './components/CreateChar';
-import Map from './components/Map';
-import CharInfo from './components/CharInfo';
-import ModalFight from './components/ModalFight';
+import CreateChar from './components/CreateChar.js';
+import Map from './components/Map.js';
+import CharInfo from './components/CharInfo.js';
+import ModalFight from './components/ModalFight.js';
 // eslint-disable-next-line
-import Admin from './components/Admin';
+import Admin from './components/Admin.js';
 
 import { LuSword, LuSwords, LuSkull } from "react-icons/lu";
 import { GiAbdominalArmor, GiTorch, GiBossKey, GiHealthPotion, GiMagicPotion, GiWizardStaff, GiLeatherArmor, GiRobe, GiLindenLeaf, GiPiercingSword, GiTribalMask } from "react-icons/gi";

@@ -5,16 +5,18 @@ import { useOutletContext } from 'react-router-dom';
 
 import { Button } from "@nextui-org/react";
 
-import CustomTable from '../../../../../components/CustomTable'
-import ErrorBoundary from '../../../../../components/ErrorBoundary'
+import { postFAPI } from '../../../../../libs/fastapi.js';
 
-import { postFAPI } from '../../../../../libs/fastapi';
+import CustomTable from '../../../../../components/CustomTable.js'
+import ErrorBoundary from '../../../../../components/ErrorBoundary.js'
+import FormEditHeaders from './components/FormEditHeaders.js';
+import FormEditTypes from './components/FormEditTypes.js';
+import FormEditRows from './components/FormEditRows.js';
+import BarSearch from './components/BarSearch.js';
 
-import { ArrowUp, Reset } from '../../../../../assets/icons';
-import FormEditHeaders from './components/FormEditHeaders';
-import FormEditTypes from './components/FormEditTypes';
-import FormEditRows from './components/FormEditRows';
-import BarSearch from './components/BarSearch';
+import { Reset } from '../../../../../assets/icons.js';
+import { BsArrowUpCircle } from "react-icons/bs";
+
 
 
 function ChangesSection({ data, setData }) {
@@ -256,7 +258,6 @@ function ChangesSection({ data, setData }) {
 
     return (
         <section className='mx-auto my-4 flex flex-col items-center'>
-
             {/* convierto data editada en principal */}
             {dataEdited.editing && (
                 <div className='font-semibold text-2xl break-all max-sm:text-center px-2 mb-6'>
@@ -269,7 +270,7 @@ function ChangesSection({ data, setData }) {
                         className='ms-2'
                         onClick={handleSetData}
                     >
-                        <ArrowUp />
+                        <BsArrowUpCircle />
                     </Button>
                 </div>
             )}
@@ -338,7 +339,7 @@ function ChangesSection({ data, setData }) {
 
 
             {edit === 'headers' && (
-                <ErrorBoundary>
+                <ErrorBoundary lang={context.lang}>
                     <FormEditHeaders
                         onSubmit={handleEditHeaders}
                         isLoading={isLoading}
@@ -351,7 +352,7 @@ function ChangesSection({ data, setData }) {
 
 
             {edit === 'types' && (
-                <ErrorBoundary>
+                <ErrorBoundary lang={context.lang}>
                     <FormEditTypes
                         onSubmit={handleEditDtype}
                         isLoading={isLoading}
@@ -363,7 +364,7 @@ function ChangesSection({ data, setData }) {
             )}
 
             {edit === 'editRows' && (
-                <ErrorBoundary>
+                <ErrorBoundary lang={context.lang}>
                     <FormEditRows
                         onSubmit={handleEditRows}
                         isLoading={isLoading}

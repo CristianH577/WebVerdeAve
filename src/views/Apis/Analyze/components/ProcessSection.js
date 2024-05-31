@@ -2,14 +2,14 @@ import { useState } from 'react';
 import addLangText from '../../../../lang/Apis/Analyze/components/ProcessSection.json'
 import { useOutletContext } from 'react-router-dom';
 
-import { postFAPI } from '../../../../libs/fastapi';
+import { postFAPI } from '../../../../libs/fastapi.js';
 
-import { ButtonGroup, Button, Link } from "@nextui-org/react";
+import { ButtonGroup, Button } from "@nextui-org/react";
 
-import ErrorBoundary from '../../../../components/ErrorBoundary';
-import CustomTable from '../../../../components/CustomTable';
+import ErrorBoundary from '../../../../components/ErrorBoundary.js';
+import CustomTable from '../../../../components/CustomTable.js';
 
-import { Reset } from '../../../../assets/icons'
+import { Reset } from '../../../../assets/icons.js'
 
 
 function Procesamiento({ data }) {
@@ -67,6 +67,9 @@ function Procesamiento({ data }) {
 
         setIsLoading(false)
     }
+    const handleShowContent = id => {
+        document.querySelector('#' + id).scrollIntoView()
+    }
 
 
     return (
@@ -78,10 +81,11 @@ function Procesamiento({ data }) {
                         key={e.id}
                         color={e.color}
                         className='text-white'
-                        onClick={() => getData(e.id)}
                         isLoading={isLoading === e.id}
-                        as={Link}
-                        href={'#' + e.id}
+                        onPress={() => {
+                            getData(e.id)
+                            handleShowContent(e.id)
+                        }}
                     >
                         {e.b_label}
                     </Button>
@@ -108,7 +112,7 @@ function Procesamiento({ data }) {
                                 </div>
 
                             )}
-                            <ErrorBoundary>
+                            <ErrorBoundary lang={context.lang}>
                                 <CustomTable
                                     data={content[e.id]}
                                     preferences={{

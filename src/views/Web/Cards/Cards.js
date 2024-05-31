@@ -1,9 +1,9 @@
-import addLangText from '../../../lang/Web/Cards.json'
+import addLangText from '../../../lang/Web/Cards/Cards.json'
 import { useOutletContext } from 'react-router-dom';
 
 import { LoremIpsum } from 'react-lorem-ipsum';
 
-import ShowModelsMain from '../../../components/ShowModelsMain';
+import ShowModelsMain from '../../../components/ShowModelsMain.js';
 
 import CardExample from './components/CardExample.js';
 import CardModel1 from './components/CardModel1.js';

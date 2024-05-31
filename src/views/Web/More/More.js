@@ -1,11 +1,8 @@
 
-
-
-import ShowModelsMain from '../../../components/ShowModelsMain';
-import Notifications from './components/Notifications';
-import Graphs from './components/Graphs';
-import CisterciensesNumbers from './components/CisterciensesNumbers';
-
+import ShowModelsMain from '../../../components/ShowModelsMain.js';
+import Notifications from './components/Notifications.js';
+import Graphs from './components/Graphs.js';
+import CisterciensesNumbers from './components/CisterciensesNumbers.js';
 
 
 function More() {
@@ -20,6 +17,7 @@ function More() {
         <ShowModelsMain
             id={'more'}
             models={models}
+            className={'xs:px-2 md:px-8'}
         />
     );
 }

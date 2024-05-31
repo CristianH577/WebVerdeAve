@@ -8,13 +8,14 @@ import { useOutletContext } from 'react-router-dom';
 import { Tabs, Tab } from "@nextui-org/react";
 import { Tooltip, Button } from "@nextui-org/react";
 
-import UploadData from './components/UploadSection';
-import ShowSection from './components/ShowSection';
-import ProcessSection from './components/ProcessSection';
-import ChangesSection from './components/ChangesSection/ChangesSection';
-import GraphsSection from './components/GraphsSection';
+import UploadData from './components/UploadSection.js';
+import ShowSection from './components/ShowSection.js';
+import ProcessSection from './components/ProcessSection.js';
+import ChangesSection from './components/ChangesSection/ChangesSection.js';
+import GraphsSection from './components/GraphsSection.js';
 
-import { Download } from '../../../assets/icons';
+import { TbFileDownload } from "react-icons/tb";
+
 
 
 function Analyze() {
@@ -78,11 +79,10 @@ function Analyze() {
 
 
     return (
-        <main className={context.mainClass + ' mt-0'}>
-
+        <>
             <div className='notice bg-content3 opacity-50 shadow hover:opacity-100 mb-8 '>
                 <div className='wrapper'>
-                    <div className='content text-danger'>
+                    <div className='content text-danger dark:text-warning'>
                         {langText.notice.map((e, i) =>
                             <div key={i}>{e}</div>
                         )}
@@ -90,56 +90,59 @@ function Analyze() {
                 </div>
             </div>
 
-
-            <div className={context.titleClass}>
-                {langText.sections_titles.analyze}
-            </div>
+            <main className={context.mainClass + ' mt-0'}>
 
 
-            <div className='font-semibold text-2xl flex '>
-                {langText.data}: {data.name}
-                {data.edited && (
-                    <>
-                        <Tooltip content={langText.tool_tip} className={context.dark ? 'dark text-foreground' : ''}>
-                            <div className='cursor-default'>*</div>
-                        </Tooltip>
-
-                        <Button
-                            isIconOnly
-                            color='success'
-                            size='sm'
-                            variant='light'
-                            className='ms-1'
-                            onClick={handleDownload}
-                        >
-                            <Download size={24} />
-                        </Button>
-                    </>
-                )}
-            </div>
-
-            <Tabs
-                color='primary'
-                aria-label={langText.tabs_aria}
-                className='mt-4'
-                disabledKeys={tabDisabled}
-                classNames={{
-                    panel: 'max-[360px]:px-0 w-full ',
-                    base: 'max-[360px]:w-full ',
-                    tabList: 'p-2 flex-col w-full sm:flex-row sm:w-auto max-[360px]:rounded-none max-[360px]:px-0',
-                    tab: ' max-[360px]:rounded-none ',
-                    cursor: ' max-[360px]:rounded-none',
-                }}
-            >
-                {tabs.map(tab =>
-                    <Tab key={tab.key} title={langText.tabs[tab.key]} >
-                        {tab.content}
-                    </Tab>
-                )}
-            </Tabs>
+                <h1 className={context.titleClass}>
+                    {langText.sections_titles.analyze}
+                </h1>
 
 
-        </main>
+                <div className='font-semibold text-2xl flex '>
+                    {langText.data}: {data.name}
+                    {data.edited && (
+                        <>
+                            <Tooltip content={langText.tool_tip} className={context.dark ? 'dark text-foreground' : ''}>
+                                <div className='cursor-default'>*</div>
+                            </Tooltip>
+
+                            <Button
+                                isIconOnly
+                                color='success'
+                                size='sm'
+                                variant='light'
+                                className='ms-1'
+                                onClick={handleDownload}
+                            >
+                                <TbFileDownload size={24} />
+                            </Button>
+                        </>
+                    )}
+                </div>
+
+
+                <Tabs
+                    color='primary'
+                    aria-label={langText.tabs_aria}
+                    className='mt-4'
+                    disabledKeys={tabDisabled}
+                    classNames={{
+                        panel: 'max-[360px]:px-0 w-full ',
+                        base: 'max-[360px]:w-full ',
+                        tabList: 'p-2 flex-col w-full sm:flex-row sm:w-auto max-[360px]:rounded-none max-[360px]:px-0',
+                        tab: ' max-[360px]:rounded-none ',
+                        cursor: ' max-[360px]:rounded-none',
+                    }}
+                >
+                    {tabs.map(tab =>
+                        <Tab key={tab.key} title={langText.tabs[tab.key]} >
+                            {tab.content}
+                        </Tab>
+                    )}
+                </Tabs>
+
+            </main>
+        </>
     );
 }
 

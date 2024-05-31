@@ -26,9 +26,13 @@ function SliderAdapt(props) {
 
     return (
         <section className={props.section_class}>
-            <div className={props.title_class}>
+            <h2 className={props.title_class}>
                 {langText.title}
-            </div>
+            </h2>
+
+            <p className='text-neutral-400 text-center'>
+                {langText.desc}
+            </p>
 
             <Swiper
                 modules={[Navigation, Pagination, Mousewheel]}

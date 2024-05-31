@@ -21,7 +21,9 @@ import 'swiper/css/pagination';
 
 import { useAsyncList } from "@react-stately/data";
 
-import { Fire, Star, Delete, Check, Edit, Heart, Award, Droplet } from '../../../../assets/icons.js';
+import { BsStarFill, BsAwardFill, BsHeartFill, BsDropletFill } from "react-icons/bs";
+import { Delete, Check, Edit } from '../../../../assets/icons.js';
+
 
 
 function MakeGalery({ model, data }) {
@@ -42,17 +44,15 @@ function MakeGalery({ model, data }) {
     const artImgs = require.context('../../../../assets/imgs/web/galeries', true)
 
     const icons = {
-        Fire: <Fire size={48} fill='red' />,
-
-        Delete: <Delete size={20} />,
-        Check: <Check size={24} />,
+        Delete: <Delete  size={20} />,
+        Check: <Check size={20} />,
         Edit: <Edit size={20} />,
     }
     const labels = [
-        <Star className='text-warning' size={32} />,
-        <Heart className='text-danger' size={32} />,
-        <Award className='text-success' size={32} />,
-        <Droplet className='text-primary' size={32} />,
+        <BsStarFill className='text-warning' size={32} />,
+        <BsHeartFill className='text-danger' size={32} />,
+        <BsAwardFill className='text-success' size={32} />,
+        <BsDropletFill className='text-primary' size={32} />,
     ]
 
     const listPages = useMemo(() => {
@@ -192,7 +192,7 @@ function MakeGalery({ model, data }) {
 
                     content =
                         <Table
-                            aria-label="Tabla de galeria"
+                            aria-label={langText.table_aria}
                             className='w-[100vw] min-[360px]:w-[90vw] max-w-[1000px] '
                             classNames={{
                                 wrapper: 'h-full max-[360px]:px-0',
@@ -226,7 +226,7 @@ function MakeGalery({ model, data }) {
                             navigation={true}
                             grabCursor={true}
                             breakpoints={design === 'card' ? breakpointsCard : breakpoints}
-                            className='min-[360px]:max-w-[90%] h-full bg-content1 rounded-lg border shadow '
+                            className='min-[360px]:max-w-[90%] h-full bg-content3 rounded-lg border shadow '
                             autoHeight={true}
                         >
                             {getArticles()}
@@ -531,8 +531,8 @@ function MakeGalery({ model, data }) {
                             setPage(page)
                             if (display !== 'slider') {
                                 window.scroll(0, 0)
-                            }else {
-                                refSwiper && refSwiper.slideTo(0,0)
+                            } else {
+                                refSwiper && refSwiper.slideTo(0, 0)
                             }
                         }}
                         boundaries={-1}

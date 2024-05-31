@@ -6,17 +6,17 @@ import { useOutletContext } from 'react-router-dom';
 
 
 import { ButtonGroup, Button } from "@nextui-org/react";
-import { Card, CardFooter, Image, Link } from "@nextui-org/react";
+import { Card, CardFooter, Image } from "@nextui-org/react";
 
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, Marker, Popup, TileLayer, Polygon, Polyline } from 'react-leaflet'
 import { divIcon } from 'leaflet';
 import { renderToStaticMarkup } from 'react-dom/server'
 
-import DraggableMarker from './DraggableMarker'
+import DraggableMarker from './DraggableMarker.js'
 
-import { Geo, Geo2, Geo3, ArrowDown, ArrowDown2, GeoDraggable } from '../../../../assets/icons';
-import { GoogleMap, Clock, Size } from '../../../../assets/icons';
+import { ArrowDown2, GeoDraggable, GoogleMap, Clock, Size } from '../../../../assets/icons.js';
+import { BsGeo, BsGeoAlt, BsPinMap, BsArrowDown } from "react-icons/bs";
 
 
 function LeafletMap() {
@@ -30,10 +30,10 @@ function LeafletMap() {
     const center = [-26.830908014632424, -65.20604648867965]
     const size = 50
     const icons = {
-        independencia: <Geo size={size} />,
-        urquiza: <Geo2 size={size} />,
-        yrigoyen: <Geo3 size={size} />,
-        alberdi: <ArrowDown size={size} />,
+        independencia: <BsGeo size={size} />,
+        urquiza: <BsPinMap size={size} />,
+        yrigoyen: <BsGeoAlt size={size} />,
+        alberdi: <BsArrowDown size={size} />,
         martin: <ArrowDown2 size={size} />,
 
         direc: <GoogleMap size={32} />,
@@ -111,9 +111,14 @@ function LeafletMap() {
         return customMarketIcon
     }
 
+    const handleShowContent = id => {
+        document.querySelector('#' + id).scrollIntoView()
+    }
+
 
     return (
         <section className='center items-center '>
+
             <ButtonGroup variant='shadow' className='buttongroup-xs '>
                 <Button
                     color={show.marks ? 'primary' : 'default'}
@@ -158,7 +163,7 @@ function LeafletMap() {
                 >
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.webp"
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
 
                     {show.marks &&
@@ -183,11 +188,9 @@ function LeafletMap() {
                                         />
                                         <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
                                             <div className="text-white/90 font-medium text-xl">{place.title}</div>
-                                            <Link href={'#' + place.id}>
-                                                <Button className="text-tiny text-white bg-black/20" variant="flat" color="default" radius="lg" size="sm" >
-                                                    {langText.more}
-                                                </Button>
-                                            </Link>
+                                            <Button className="text-tiny text-white bg-black/20" variant="flat" color="default" radius="lg" size="sm" onPress={() => handleShowContent(place.id)}>
+                                                {langText.more}
+                                            </Button>
                                         </CardFooter>
                                     </Card>
                                 </Popup>

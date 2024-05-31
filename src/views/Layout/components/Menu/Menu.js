@@ -1,20 +1,25 @@
+
 import { useEffect, useState } from 'react';
-import './Menu.css'
-import addLangText from '../../../../lang/Layout/components/Menu/Menu.json'
+import addLangText from '../../../../lang/Layout/Menu.json'
 
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, Button, ButtonGroup, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Image, NavbarMenu, } from "@nextui-org/react";
-import { Link as LinkNextUI } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, Button, Image, NavbarMenu, } from "@nextui-org/react";
+
+import MenuMovilListItems from './components/MenuMovilListItems.js';
+import DropdownCustom from './components/DropdownCustom.js';
 
 import ave from '../../../../assets/imgs/layout/ave-64.webp'
 import buho from '../../../../assets/imgs/layout/buho-64.webp'
-import { ChevronDown, MoonIcon, SunIcon, ChevronRight, ChevronLeft } from '../../../../assets/icons.js';
-import { Cards, Forms, Galleries, Maps, Sliders, Bag, Tables, More } from '../../../../assets/icons.js';
-import { Game, Analyze, Databases } from '../../../../assets/icons.js';
+import { BsBag, BsPostcard, BsColumns, BsMap, BsThreeDots } from "react-icons/bs";
+import { PiSunDimFill, PiMoonFill } from "react-icons/pi";
+import { FaWpforms, FaChessBoard } from "react-icons/fa";
+import { PiSlideshow } from "react-icons/pi";
+import { GoTable } from "react-icons/go";
+import { IoGameControllerOutline } from "react-icons/io5";
+import { AiOutlineDatabase } from "react-icons/ai";
+import { GrAnalytics } from "react-icons/gr";
 
-import MenuMovilDropItems from './components/MenuMovilDropItems.js';
-import MenuMovilListItems from './components/MenuMovilListItems.js';
 
 
 function Menu({ darkMode, lang, setLang }) {
@@ -24,35 +29,26 @@ function Menu({ darkMode, lang, setLang }) {
 
   const navigate = useNavigate()
   const location = useLocation()
-  const [menuModel, setMenuModel] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   const icons = {
-    ChevronDown: <ChevronDown size={25} />,
-    ChevronRight: <ChevronRight size={30} />,
-    ChevronLeft: <ChevronLeft size={30} />,
+    cards: <BsPostcard />,
+    forms: <FaWpforms />,
+    galeries: <BsColumns />,
+    maps: <BsMap />,
+    sliders: <PiSlideshow size={16} />,
+    showroom: <BsBag size={16} />,
+    tables: <GoTable size={16} />,
+    more: <BsThreeDots />,
 
-    moon: <MoonIcon className='text-[#eae4d9]' />,
-    sun: <SunIcon className='text-warning' />,
-
-    cards: <Cards />,
-    forms: <Forms />,
-    galeries: <Galleries />,
-    maps: <Maps />,
-    sliders: <Sliders />,
-    showroom: <Bag />,
-    tables: <Tables />,
-    more: <More />,
-
-    analyze: <Analyze />,
-    databases: <Databases />,
-    game: <Game />,
+    analyze: <GrAnalytics />,
+    databases: <AiOutlineDatabase />,
+    game: <IoGameControllerOutline />,
+    make_board: <FaChessBoard />,
   }
 
-  const menu_items = ['home', 'web', 'apis', 'design',
-    // 'prices'
-  ]
+  const menu_items = ['home', 'web', 'apis', 'design']
   const sub_menus = {
     web: [
       "cards",
@@ -67,16 +63,27 @@ function Menu({ darkMode, lang, setLang }) {
     apis: [
       'databases',
       'analyze',
-      'game'
+      'game',
+      'make_board'
     ],
   }
 
+  const items_class = [
+    "flex",
+    "relative",
+    "h-full",
+    "items-center",
+    "data-[active=true]:after:content-['']",
+    "data-[active=true]:after:absolute",
+    "data-[active=true]:after:bottom-0",
+    "data-[active=true]:after:left-0",
+    "data-[active=true]:after:right-0",
+    "data-[active=true]:after:h-[2px]",
+    "data-[active=true]:after:rounded-[2px]",
+    "data-[active=true]:after:bg-red-500",
+  ]
 
-  const handleDropdown = (e, name) => {
-    var set = name
-    if (!e) set = false
-    setIsDropdownOpen(set)
-  }
+
 
 
   useEffect(() => {
@@ -105,22 +112,9 @@ function Menu({ darkMode, lang, setLang }) {
     <Navbar
       id='nav-main'
       isMenuOpen={isMenuOpen}
-      className='bg-content1 shadow transition-all'
+      className='shadow-lg transition-all bg-content1'
       classNames={{
-        item: [
-          "flex",
-          "relative",
-          "h-full",
-          "items-center",
-          "data-[active=true]:after:content-['']",
-          "data-[active=true]:after:absolute",
-          "data-[active=true]:after:bottom-0",
-          "data-[active=true]:after:left-0",
-          "data-[active=true]:after:right-0",
-          "data-[active=true]:after:h-[2px]",
-          "data-[active=true]:after:rounded-[2px]",
-          "data-[active=true]:after:bg-red-500",
-        ],
+        item: items_class,
       }}
 
       onMouseLeave={() => setIsDropdownOpen(false)}
@@ -137,7 +131,7 @@ function Menu({ darkMode, lang, setLang }) {
           <Image
             src={darkMode.value ? buho : ave}
             alt='logo'
-            width={64}
+            width={52}
             removeWrapper
             className={'cursor-pointer hover:scale-110 rounded-full bg-custom '}
             onClick={() => navigate('/')}
@@ -148,80 +142,30 @@ function Menu({ darkMode, lang, setLang }) {
 
       {/* menu */}
       <NavbarContent className="hidden items-center sm:flex gap-4 " justify="center">
-        {menu_items.map(item => sub_menus[item] === undefined
-          ? <NavbarItem
+        {menu_items.map(item =>
+          < NavbarItem
             key={item}
             isActive={location.pathname.includes(item)}
-          >
-            <LinkNextUI color="foreground" className='gap-1 cursor-pointer flex hover:text-warning' onClick={() => navigate('/' + item)} >
-              {langText.menu_items[item].label}
-            </LinkNextUI>
-          </NavbarItem>
-
-          : <ButtonGroup
-            key={item}
-            className='dropdown-buttongroup h-full'
-            onMouseEnter={() => {
-              handleDropdown(true, item)
-            }}
+            className='hover:bg-content3 px-2 cursor-pointer'
+            onClick={() => navigate('/' + item)}
+            onMouseEnter={() => setIsDropdownOpen(item)}
             onMouseLeave={() => setIsDropdownOpen(false)}
           >
-            <NavbarItem
-              key={item}
-              isActive={location.pathname.includes(item)}
-            >
-              <LinkNextUI color="foreground" className='gap-1 cursor-pointer flex hover:text-warning' onClick={() => navigate('/' + item)} >
-                {langText.menu_items[item].label}
-              </LinkNextUI>
-            </NavbarItem>
-
-            <Dropdown
-              className={(darkMode.value ? 'dark' : '')}
-              isOpen={isDropdownOpen === item}
-              name={item}
-              onOpenChange={e => {
-                handleDropdown(e, item)
-              }}
-            >
-              <NavbarItem
-                isActive={location.pathname.includes(item)}
-              >
-                <DropdownTrigger>
-                  <Button
-                    disableRipple
-                    className="p-0 bg-transparent data-[hover=true]:bg-transparent hover:text-warning "
-                    radius="sm"
-                    variant="light"
-                    size='lg'
-                    color='foreground'
-                    isIconOnly
-                  >
-                    {icons.ChevronDown}
-                  </Button>
-                </DropdownTrigger>
-              </NavbarItem>
-
-              <DropdownMenu
-                aria-label="drop1"
-                className=" dark:text-white "
-                itemClasses={{
-                  base: "gap-4"
-                }}
-              >
-                {sub_menus[item].map((sub) =>
-                  <DropdownItem
-                    key={sub}
-                    description={langText.sub_menus[item][sub].desc}
-                    onClick={() => navigate('/' + item + '/' + sub)}
-                    className={location.pathname.includes(sub) ? 'bg-primary-100' : ''}
-                    startContent={icons[sub]}
-                  >
-                    {langText.sub_menus[item][sub].label}
-                  </DropdownItem>
-                )}
-              </DropdownMenu>
-            </Dropdown>
-          </ButtonGroup>
+            {langText.menu_items[item].label}
+            {sub_menus[item] !== undefined && (
+              <DropdownCustom
+                item={item}
+                icons={icons}
+                location={location}
+                langText={langText}
+                navigate={navigate}
+                isDropdownOpen={isDropdownOpen}
+                darkMode={darkMode.value}
+                sub_menus={sub_menus}
+                setIsDropdownOpen={setIsDropdownOpen}
+              />
+            )}
+          </NavbarItem>
         )}
       </NavbarContent>
 
@@ -238,7 +182,10 @@ function Menu({ darkMode, lang, setLang }) {
             className='rounded-full'
             onClick={!darkMode.value ? darkMode.enable : darkMode.disable}
           >
-            {darkMode.value ? icons.moon : icons.sun}
+            {darkMode.value
+              ? <PiMoonFill size={24} className='text-[#eae4d9]' />
+              : <PiSunDimFill size={24} className='text-warning' />
+            }
           </Button>
         </NavbarItem>
 
@@ -254,20 +201,6 @@ function Menu({ darkMode, lang, setLang }) {
             {lang}
           </Button>
         </NavbarItem>
-
-        <NavbarItem className='sm:hidden'>
-          <Button
-            isIconOnly
-            variant='light'
-            aria-label="Modelo de menu"
-            size='sm'
-            color='default'
-            className='rounded-full'
-            onClick={() => setMenuModel(!menuModel)}
-          >
-            {menuModel ? langText.menuModel.drop : langText.menuModel.list}
-          </Button>
-        </NavbarItem>
       </NavbarContent>
 
 
@@ -276,24 +209,14 @@ function Menu({ darkMode, lang, setLang }) {
         style={{ zIndex: '1000' }}
         className='p-0 shadow-inner !h-full'
       >
-        {menuModel
-          ? <MenuMovilDropItems
-            items={menu_items}
-            sub_menus={sub_menus}
-            icons={icons}
-            lang={lang}
-            navigate={navigate}
-            location={location}
-          />
-          : <MenuMovilListItems
-            items={menu_items}
-            sub_menus={sub_menus}
-            icons={icons}
-            lang={lang}
-            navigate={navigate}
-            location={location}
-          />
-        }
+        <MenuMovilListItems
+          items={menu_items}
+          sub_menus={sub_menus}
+          icons={icons}
+          navigate={navigate}
+          location={location}
+          langText={langText}
+        />
       </NavbarMenu>
 
     </Navbar >

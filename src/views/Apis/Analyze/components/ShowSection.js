@@ -3,20 +3,19 @@
 import addLangText from '../../../../lang/Apis/Analyze/components/ShowSection.json'
 import { useOutletContext } from 'react-router-dom';
 
-import CustomTable from '../../../../components/CustomTable'
-import ErrorBoundary from '../../../../components/ErrorBoundary'
+import CustomTable from '../../../../components/CustomTable.js'
+import ErrorBoundary from '../../../../components/ErrorBoundary.js'
 
 
 function ShowSection({ data }) {
     const context = useOutletContext()
     const langText = {
-        ...context.langText[context.lang],
         ...addLangText[context.lang]
     }
 
 
     return (
-        <ErrorBoundary>
+        <ErrorBoundary lang={context.lang}>
             <CustomTable
                 data={data}
                 preferences={{

@@ -1,6 +1,7 @@
-import { Image } from "@nextui-org/react";
+
 import { useState } from "react";
 
+import { Image } from "@nextui-org/react";
 
 
 function Design3D({ title_class }) {

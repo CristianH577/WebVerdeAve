@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import './SliderCustom.css'
-
 import addLangText from '../../../../lang/Web/Sliders/components/SliderCustom.json'
 import { useOutletContext } from 'react-router-dom';
 
@@ -51,12 +50,11 @@ function SliderCustom(props) {
     }, [custom])
 
 
-
     return (
         <section className={props.section_class}>
-            <div className={props.title_class}>
+            <h2 className={props.title_class}>
                 {langText.title}
-            </div>
+            </h2>
 
             <div className='w-full flex justify-center items-center max-lg:flex-col gap-4'>
 
@@ -135,15 +133,16 @@ function SliderCustom(props) {
                 </div>
 
                 {!custom.reload
-                    ?
-                    <div className='w-full max-w-[400px] '>
+                    ? <div className='w-full max-w-[400px] '>
                         <Swiper
                             onSwiper={setRefSwiper}
                             modules={[Navigation, Pagination, Autoplay, Mousewheel, Keyboard, Scrollbar, Zoom]}
                             spaceBetween={10}
                             slidesPerView={1}
                             centeredSlides={true}
-                            className='w-full max-w-[400px] max-h-[400px] xs:rounded-lg shadow-medium bg-content1 xs:!px-2 !m-0'
+                            className={'w-full max-w-[400px] max-h-[400px] xs:rounded-lg shadow-medium bg-content1 xs:!px-2 !m-0 '
+                                + ((custom.preferences.includes('pagination') && ['bullets', 'fraction'].includes(custom.pagination)) ? '!pb-6 ' : '')
+                            }
                             wrapperClass='items-center h-full'
 
                             //preferences
@@ -165,10 +164,10 @@ function SliderCustom(props) {
                             allowTouchMove={custom.controls.includes('mouse')}
 
                             //pagination
-                            scrollbar={{
-                                enabled: custom.preferences.includes('pagination') && custom.pagination === 'bar',
-                                draggable: true,
-                            }}
+                            scrollbar={
+                                (custom.preferences.includes('pagination') && custom.pagination === 'bar') && {
+                                    draggable: true,
+                                }}
                             pagination={{
                                 enabled: (custom.preferences.includes('pagination') && custom.pagination !== 'bar'),
                                 type: custom.pagination,
@@ -220,12 +219,12 @@ function SliderCustom(props) {
                             )}
                         </Swiper>
                     </div>
-                    :
-                    <div className='relative'>
+                    : <div className='relative'>
                         <Spinner color='danger' size='lg' className='absolute m-auto w-full h-full z-20' />
                         <Image
                             shadow="sm"
                             radius="lg"
+                            alt={langText.slide}
                             removeWrapper
                             src={imgs(`./gato1.webp`)}
                             className="max-xs:rounded-none object-cover w-full max-w-[400px]"

@@ -1,5 +1,6 @@
 
 
+import { useEffect } from 'react';
 import addLangText from '../../lang/Home/Home.json'
 import { useNavigate, useOutletContext } from "react-router-dom";
 
@@ -12,8 +13,6 @@ import 'swiper/css/pagination';
 
 import AOS from 'aos'
 import 'aos/dist/aos.css';
-import { useEffect } from 'react';
-
 
 import dia from '../../assets/imgs/home/dia.webp'
 import noche from '../../assets/imgs/home/noche.webp'
@@ -35,8 +34,8 @@ import css from '../../assets/imgs/home/logos/css.webp'
 import gimp from '../../assets/imgs/home/logos/gimp.webp'
 import autocad from '../../assets/imgs/home/logos/autocad.webp'
 
-import SlideContentHome from './components/SlideContentHome';
-import CardHome from './components/CardHome';
+import SlideContentHome from './components/SlideContentHome.js';
+import CardHome from './components/CardHome.js';
 import { Divider, Image } from '@nextui-org/react';
 
 
@@ -45,13 +44,15 @@ function Home() {
   const navigate = useNavigate()
   const context = useOutletContext()
   const langText = {
-    ...context.langText[context.lang],
+    // ...context.langText[context.lang],
+    icon_of: context.langText[context.lang].icon_of,
+    img_of: context.langText[context.lang].img_of,
     ...addLangText[context.lang]
   }
 
   const slider_items = [
     {
-      ...langText.banners.web,
+      id: 'web',
       icons: [react, tailwind, nextui],
       img: banner_design,
       span_text_class: 'text-secondary-600',
@@ -60,7 +61,7 @@ function Home() {
       link: '/web',
     },
     {
-      ...langText.banners.apis,
+      id: 'apis',
       icons: [python, php],
       img: banner_analyze,
       span_text_class: 'text-danger-600',
@@ -69,7 +70,7 @@ function Home() {
       link: '/apis',
     },
     {
-      ...langText.banners.graf,
+      id: 'graf',
       icons: [css, gimp, autocad],
       img: banner_graf,
       span_text_class: 'text-success-400',
@@ -83,30 +84,24 @@ function Home() {
     {
       id: 'web',
       link: '/web',
-      ...langText.cards.web
     },
-    // {
-    //   id: 'showroom',
-    //   link: '/web/showroom',
-    //   ...langText.cards.ecommerce
-    // },
-    // {
-    //   id: 'analyze',
-    //   link: '/apis/analyze',
-    //   ...langText.cards.analyze
-    // },
-    // {
-    //   id: 'databases',
-    //   link: '/apis/databases',
-    //   ...langText.cards.databases
-    // },
-    // {
-    //   id: 'design',
-    //   link: '/design',
-    //   ...langText.cards.design
-    // },
+    {
+      id: 'showroom',
+      link: '/web/showroom',
+    },
+    {
+      id: 'analyze',
+      link: '/apis/analyze',
+    },
+    {
+      id: 'databases',
+      link: '/apis/databases',
+    },
+    {
+      id: 'design',
+      link: '/design',
+    },
   ]
-
 
 
   useEffect(() => {
@@ -138,11 +133,12 @@ function Home() {
           }}
           className='w-full h-screen sm:h-[400px] shadow-lg'
         >
-          {slider_items.map((e, i) =>
-            <SwiperSlide key={i} className='!h-auto'>
+          {slider_items.map(e =>
+            <SwiperSlide key={e.id} className='!h-auto'>
               <SlideContentHome
                 {...e}
                 onMore={navigate}
+                langText={langText}
               />
             </SwiperSlide>
           )}
@@ -162,7 +158,7 @@ function Home() {
             <Divider />
 
             <div className='uppercase flex justify-around text-[10vw] sm:text-5xl'>
-              {"programacion".split('').map((e, i) =>
+              {langText.logo_title.split('').map((e, i) =>
                 <p key={i}>{e}</p>
               )}
             </div>
@@ -177,6 +173,7 @@ function Home() {
               key={card.id}
               {...card}
               i={i}
+              langText={langText}
               onExlore={navigate}
             />
           )}

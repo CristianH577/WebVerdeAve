@@ -12,7 +12,9 @@ import { Tabs, Tab, Textarea, CircularProgress, ScrollShadow } from "@nextui-org
 
 import { LoremIpsum } from 'react-lorem-ipsum';
 
-import { Musica, Pintura, Literatura, Cine } from '../../../../assets/icons.js';
+import { IoMusicalNotesSharp } from "react-icons/io5";
+import { BsPalette, BsBook, BsFilm } from "react-icons/bs";
+
 
 
 function FormTabs({ form_class, handleSubmitForm, ButtonReset }) {
@@ -23,11 +25,12 @@ function FormTabs({ form_class, handleSubmitForm, ButtonReset }) {
     }
 
 
+    const size = 20
     const icons = {
-        music: <Musica size={20} />,
-        paint: <Pintura size={20} />,
-        literature: <Literatura size={20} />,
-        cinema: <Cine size={20} />,
+        music: <IoMusicalNotesSharp size={size} />,
+        paint: <BsPalette size={size} />,
+        literature: <BsBook size={size} />,
+        cinema: <BsFilm size={size} />,
     }
 
 
@@ -57,10 +60,9 @@ function FormTabs({ form_class, handleSubmitForm, ButtonReset }) {
     }
 
 
-
     return (
         <section className='flex flex-col items-center w-full' id='tabs'>
-            <div className='text-5xl mb-8'>{langText.title}</div>
+            <h2 className='text-5xl mb-8'>{langText.title}</h2>
 
             <Formik
                 initialValues={initialValues}
@@ -73,7 +75,7 @@ function FormTabs({ form_class, handleSubmitForm, ButtonReset }) {
                 }}
             >
                 {({ handleChange, errors, values, isSubmitting, isValid, handleBlur }) => (
-                    <Form className={form_class + ' max-w-[400px] md:max-w-[800px] '} >
+                    <Form className={form_class + ' max-w-[400px] md:max-w-[650px] '} >
                         <Tabs
                             aria-label={langText.title}
                             color='primary'
@@ -81,7 +83,7 @@ function FormTabs({ form_class, handleSubmitForm, ButtonReset }) {
                             selectedKey={tab}
                             classNames={{
                                 base: 'block',
-                                tabList: 'p-2 flex-col w-full md:flex-row sm:w-auto max-xs:rounded-none max-xs:px-0 ',
+                                tabList: 'max-md:flex-col max-xs:rounded-none max-xs:px-0',
                                 tab: ' max-xs:rounded-none ',
                                 cursor: ' max-xs:rounded-none',
                                 panel: 'max-xs:px-0'
@@ -170,7 +172,7 @@ function FormTabs({ form_class, handleSubmitForm, ButtonReset }) {
 
                             <Tab
                                 key='progress'
-                                className='mt-2 p-0'
+                                className='my-2 '
                                 title={
                                     <CircularProgress
                                         aria-label={langText.loading}
@@ -178,7 +180,6 @@ function FormTabs({ form_class, handleSubmitForm, ButtonReset }) {
                                         value={values.cinema.length > 19 ? 100 : tabProgressDicc[tab]}
                                         color={values.cinema.length > 19 ? 'success' : 'warning'}
                                         showValueLabel={true}
-                                        className='mb-2'
                                     />
                                 }
                             >

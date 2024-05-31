@@ -9,7 +9,8 @@ import * as yup from 'yup';
 
 import { Input, Button, Switch, Link } from "@nextui-org/react";
 
-import { Eye, EyeSlash } from '../../../../assets/icons.js';
+import { BsEye, BsEyeSlash } from "react-icons/bs";
+
 
 
 function FormLogin({ form_class, handleSubmitForm, ButtonReset }) {
@@ -92,8 +93,8 @@ function FormLogin({ form_class, handleSubmitForm, ButtonReset }) {
                                     })}
                                 >
                                     {login.show_pass
-                                        ? <EyeSlash size={24} className='text-default-400 ' />
-                                        : <Eye size={24} className='text-default-400 ' />
+                                        ? <BsEyeSlash size={24} className='text-default-400 ' />
+                                        : <BsEye size={24} className='text-default-400 ' />
                                     }
                                 </button>
                             }
@@ -118,7 +119,7 @@ function FormLogin({ form_class, handleSubmitForm, ButtonReset }) {
                             </Switch>
 
                             <div className='text-center'>
-                                <Link color="primary" href="#" size="sm">
+                                <Link color="primary" size="sm" className="cursor-pointer">
                                     {langText.forgot}?
                                 </Link>
                             </div>

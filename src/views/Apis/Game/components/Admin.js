@@ -1,5 +1,5 @@
 
-import { getFAPI } from '../../../../libs/fastapi';
+import { getFAPI } from '../../../../libs/fastapi.js';
 
 import { Button } from "@nextui-org/react";
 

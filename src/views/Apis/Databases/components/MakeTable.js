@@ -48,7 +48,7 @@ function MakeTable({ table, isLoading, makeCell, updateTable, setEdit }) {
 
             {isLoading === table.key
                 ? <Spinner className='mt-4' />
-                : <ErrorBoundary>
+                : <ErrorBoundary lang={context.lang}>
                     <CustomTable
                         data={table}
                         preferences={{

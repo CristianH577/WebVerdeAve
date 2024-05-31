@@ -3,11 +3,11 @@ import { useState } from 'react';
 import addLangText from '../../../../lang/Apis/Analyze/components/GraphsSection.json'
 import { useOutletContext } from 'react-router-dom';
 
-import { postFAPIgraph } from '../../../../libs/fastapi';
+import { postFAPIgraph } from '../../../../libs/fastapi.js';
 
 import { Button, ButtonGroup, Image, Select, SelectItem } from "@nextui-org/react";
 
-import { Reset } from '../../../../assets/icons'
+import { Reset } from '../../../../assets/icons.js'
 
 
 function GraphsSection({ data }) {

@@ -4,8 +4,8 @@ import { useOutletContext } from 'react-router-dom';
 
 import { Button, Input } from "@nextui-org/react";
 
-import ErrorBoundary from '../../../../../../components/ErrorBoundary'
-import CustomTable from '../../../../../../components/CustomTable'
+import ErrorBoundary from '../../../../../../components/ErrorBoundary.js'
+import CustomTable from '../../../../../../components/CustomTable.js'
 
 
 function FormEditRows({ onSubmit, isLoading, onCancel, data, newRowsValues }) {
@@ -46,7 +46,7 @@ function FormEditRows({ onSubmit, isLoading, onCancel, data, newRowsValues }) {
         <form className='mt-6 bg-success-50 p-4 rounded-lg form-xs w-full' onSubmit={onSubmit}>
             <div className='text-xl mb-2 break-all text-center'>{langText.editRows}</div>
 
-            <ErrorBoundary>
+            <ErrorBoundary lang={context.lang}>
                 <CustomTable
                     aria-label={langText.tableAriaEdit}
                     data={data}

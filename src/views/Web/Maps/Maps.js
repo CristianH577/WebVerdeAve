@@ -1,10 +1,8 @@
 
 
-
-import ShowModelsMain from '../../../components/ShowModelsMain';
-import LeafletMap from './components/LeafletMap';
-import SvgMap from './components/SvgMap';
-
+import ShowModelsMain from '../../../components/ShowModelsMain.js';
+import LeafletMap from './components/LeafletMap.js';
+import SvgMap from './components/SvgMap.js';
 
 
 function Maps() {

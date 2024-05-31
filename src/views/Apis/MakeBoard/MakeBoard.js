@@ -2,14 +2,14 @@
 import { useState } from 'react'
 import { useOutletContext } from 'react-router-dom';
 
-import { postFAPI } from '../../../libs/fastapi'
+import { postFAPI } from '../../../libs/fastapi.js'
 
 import { Button } from '@nextui-org/react'
 
-import ErrorBoundary from '../../../components/ErrorBoundary'
-import FormBoardBase from './components/FormBoardBase';
-import BoardTest from './components/BoardTest';
-import BoardBase from './components/BoardBase';
+import ErrorBoundary from '../../../components/ErrorBoundary.js'
+import FormBoardBase from './components/FormBoardBase.js';
+import BoardTest from './components/BoardTest.js';
+import BoardBase from './components/BoardBase.js';
 
 
 function MakeBoard() {
@@ -164,7 +164,7 @@ function MakeBoard() {
 
             <section className='flex gap-6 flex-wrap justify-center'>
                 {boardBaseData && (
-                    <ErrorBoundary>
+                    <ErrorBoundary lang={context.lang}>
                         <BoardBase
                             cells_types={cells_types}
                             handleCell={handleCellBase}
@@ -177,7 +177,7 @@ function MakeBoard() {
                 )}
 
                 {boardTestData && (
-                    <ErrorBoundary>
+                    <ErrorBoundary lang={context.lang}>
                         <BoardTest
                             cells_types={cells_types}
                             handleCell={handleCellTest}

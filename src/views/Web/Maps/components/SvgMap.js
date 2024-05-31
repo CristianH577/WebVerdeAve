@@ -5,13 +5,12 @@ import { useOutletContext } from 'react-router-dom';
 
 import { ButtonGroup, Button } from "@nextui-org/react";
 
-import mapTuc from '../../../../assets/files/map_tuc'
+import MapTuc from './MapTuc.js';
 
 
 function SvgMap() {
     const context = useOutletContext()
     const langText = {
-        // ...context.langText[context.lang],
         ...addLangText[context.lang]
     }
 
@@ -49,8 +48,8 @@ function SvgMap() {
 
 
     return (
-        <section className='center'>
-            <ButtonGroup variant='shadow' className='buttongroup-xs '>
+        <section className='flex flex-col items-start xs:items-center overflow-x-auto max-w-screen xs:ps-2'>
+            <ButtonGroup variant='shadow' >
                 {mapSvgButtons.map(button =>
                     <Button
                         key={button}
@@ -67,8 +66,8 @@ function SvgMap() {
                 )}
             </ButtonGroup>
 
-            <div className='mt-4 overflow-auto max-w-full max-h-[600px]'>
-                {mapTuc(mapSvg)}
+            <div className='mt-4 bg-danger-50 ms-auto '>
+                <MapTuc {...mapSvg} />
             </div>
         </section>
     );

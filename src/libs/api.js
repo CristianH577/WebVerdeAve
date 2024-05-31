@@ -5,7 +5,7 @@ import { toast, Flip } from 'react-toastify';
 
 
 const client = axios.create({
-  baseURL: 'http://localhost:50/api-php-own-page/'
+  baseURL: 'http://localhost:50/api-php-verde-ave/'
 })
 
 var lang = 'es'

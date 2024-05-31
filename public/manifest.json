@@ -3,22 +3,22 @@
   "name": "Create React App Sample",
   "icons": [
     {
-      "src": "ave.ico",
+      "src": "assets/ave.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "ave-circle.ico",
+      "src": "assets/ave-circle.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo.png",
+      "src": "assets/logo.png",
       "type": "image/png",
-      "sizes": "500x500"
+      "sizes": "57x57 64x64 72x72 144x144 180x180"
     },
     {
-      "src": "buho-circle.ico",
+      "src": "assets/buho-circle.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     }

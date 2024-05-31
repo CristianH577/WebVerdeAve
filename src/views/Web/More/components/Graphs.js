@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './Graphs.css'
 
-import addLangText from '../../../../lang/Web/More/components/Graphs.json'
+import addLangText from '../../../../lang/Web/More/Graphs.json'
 import { useOutletContext } from 'react-router-dom';
 
 import { Button, Radio, RadioGroup } from '@nextui-org/react';

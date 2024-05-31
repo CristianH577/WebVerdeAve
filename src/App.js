@@ -1,41 +1,39 @@
 import { NextUIProvider } from "@nextui-org/react";
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 
-import Layout from "./views/Layout/Layout";
-import Home from "./views/Home/Home";
-import NotFound from "./views/NotFound/NotFound";
+// views----------------------------------------------------------------------
+import Layout from "./views/Layout/Layout.js";
+import Home from "./views/Home/Home.js";
+import NotFound from "./views/NotFound/NotFound.js";
 
-import Web from "./views/Web/Web";
-import Cards from "./views/Web/Cards/Cards";
-import Sliders from "./views/Web/Sliders/Sliders";
-import Forms from "./views/Web/Forms/Forms";
-import Galeries from "./views/Web/Galeries/Galeries";
-import Showroom from "./views/Web/Showroom/Showroom";
-import Tables from "./views/Web/Tables";
-import Maps from "./views/Web/Maps/Maps";
-import More from "./views/Web/More/More";
+import Web from "./views/Web/Web.js";
+import Cards from "./views/Web/Cards/Cards.js";
+import Sliders from "./views/Web/Sliders/Sliders.js";
+import Forms from "./views/Web/Forms/Forms.js";
+import Galeries from "./views/Web/Galeries/Galeries.js";
+import Showroom from "./views/Web/Showroom/Showroom.js";
+import Tables from "./views/Web/Tables.js";
+import Maps from "./views/Web/Maps/Maps.js";
+import More from "./views/Web/More/More.js";
 
-import APIs from "./views/Apis/Apis";
-import Analyze from "./views/Apis/Analyze/Analyze";
-import Databases from "./views/Apis/Databases/Databases";
-import Game from "./views/Apis/Game/Game";
-import MakeBoard from "./views/Apis/MakeBoard/MakeBoard";
+import APIs from "./views/Apis/Apis.js";
+import Analyze from "./views/Apis/Analyze/Analyze.js";
+import Databases from "./views/Apis/Databases/Databases.js";
+import Game from "./views/Apis/Game/Game.js";
+import MakeBoard from "./views/Apis/MakeBoard/MakeBoard.js";
 
-import Design from "./views/Design/Design"
+import Design from "./views/Design/Design.js"
 
-// import Prices from "./views/Prices/Prices"
+import Test from "./views/Plantilla/Test.js";
 
-import Test from "./views/Plantilla/Test";
-
-
-// usuario----------------------------------------------------------------------
+// usuario ----------------------------------------------------------------------
 import { useState } from "react";
-import { getAPI } from '../src/libs/api';
+import { getAPI } from '../src/libs/api.js';
 import { useBeforeUnload } from "react-router-dom";
+
+
 // ----------------------------------------------------------------------
-
-
 function App() {
 
   // usuario----------------------------------------------------------------------
@@ -47,9 +45,9 @@ function App() {
     }
   }
   useBeforeUnload(deleteUser)
+
+  
   // ----------------------------------------------------------------------
-
-
   const routes = [
     {
       path: 'home',
@@ -118,12 +116,6 @@ function App() {
       path: 'design',
       content: <Design />,
     },
-
-    // {
-    //   path: 'prices',
-    //   content: <Prices />,
-    // },
-
     {
       path: 'test',
       content: <Test />,

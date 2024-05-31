@@ -5,7 +5,7 @@ import { useOutletContext } from 'react-router-dom';
 import { Button, ButtonGroup, Input, Select, SelectItem } from "@nextui-org/react";
 
 
-import { Search, Reset } from '../../../../../../assets/icons';
+import { Search, Reset } from '../../../../../../assets/icons.js';
 
 
 function BarSearch({ filters, setFilters, isLoading, cols, onSearch, onReset }) {

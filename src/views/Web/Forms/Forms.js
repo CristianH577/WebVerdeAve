@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button } from "@nextui-org/react";
 import { useDisclosure } from "@nextui-org/react";
 
-import ShowModelsMain from '../../../components/ShowModelsMain';
+import ShowModelsMain from '../../../components/ShowModelsMain.js';
 
 import FormLogin from './components/FormLogin.js';
 import FormData from './components/FormData.js';

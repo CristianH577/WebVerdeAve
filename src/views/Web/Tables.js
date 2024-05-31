@@ -1,17 +1,17 @@
 import { useState } from 'react';
-
 import addLangText from '../../lang/Web/Tables.json'
 import { useOutletContext } from 'react-router-dom';
 
-import { Button, Input } from "@nextui-org/react";
+import { Button, ButtonGroup, Input } from "@nextui-org/react";
 import { CheckboxGroup } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/react";
 
-import { CustomCheckbox } from "../../components/CustomCheckbox";
-import CustomTable from '../../components/CustomTable'
+import { CustomCheckbox } from "../../components/CustomCheckbox.js";
+import CustomTable from '../../components/CustomTable.js'
 
-import { Reset } from '../../assets/icons';
+import { BsArrowRepeat } from "react-icons/bs";
 import data_example from '../../assets/files/tables.json'
+
 
 
 function Tables() {
@@ -30,11 +30,7 @@ function Tables() {
     }
     const [preferences, setPreferences] = useState(defaultPreferences)
     const [content, setContent] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
 
-    const iconst = {
-        Reset: <Reset />
-    }
     const selectsModel = ["none", "pages", "solicitude", "infinite"]
     const selectsColor = ["default", "primary", "secondary", "danger", "warning", "success"]
 
@@ -46,7 +42,6 @@ function Tables() {
 
     const uploadTable = () => {
         if (preferences.results <= 100) {
-            setIsLoading(true)
 
             let data = {
                 ...data_example,
@@ -58,11 +53,6 @@ function Tables() {
                 preferences={preferences}
                 ariaLabel={langText.tablaAria}
             />)
-
-            setTimeout(() => {
-                setIsLoading(false)
-            }, 2000)
-
         }
     }
 
@@ -70,13 +60,13 @@ function Tables() {
     return (
         <main className={context.mainClass}>
 
-            <div className={context.titleClass}>
+            <h1 className={context.titleClass}>
                 {langText.sections_titles.tables}
-            </div>
+            </h1>
 
             <section className='flex flex-col gap-4 items-center'>
 
-                <div className='bg-content1 rounded-lg py-4 min-[360px]:px-4 flex flex-col gap-4 shadow-medium form-xs'>
+                <div className='bg-content1 rounded-lg py-4 min-[360px]:px-4 flex flex-col gap-4 shadow-medium form-xs max-w-[600px]'>
                     <div className='text-center'>{langText.form.prefs}</div>
 
                     <div className="flex max-sm:flex-col gap-1 w-full max-sm:items-center">
@@ -147,7 +137,7 @@ function Tables() {
                     </CheckboxGroup>
                 </div>
 
-                <div className='flex gap-4 max-sm:flex-col-reverse justify-center w-full'>
+                <ButtonGroup>
                     <Button
                         isIconOnly
                         variant='shadow'
@@ -155,27 +145,24 @@ function Tables() {
                             setPreferences(defaultPreferences)
                             setContent(false)
                         }}
-                        className='max-sm:w-full button-xs'
                     >
-                        {iconst.Reset}
+                        <BsArrowRepeat size={20} />
                     </Button>
 
                     <Button
                         color='secondary'
                         variant='shadow'
-                        className='button-xs'
                         isDisabled={!(preferences.results <= 100)}
-                        isLoading={isLoading}
                         onClick={uploadTable}
                     >
                         {langText.loadTable}
                     </Button>
-                </div>
+                </ButtonGroup>
 
             </section>
 
             <section className='mt-6'>
-                {!isLoading && content}
+                {content}
             </section>
 
         </main>

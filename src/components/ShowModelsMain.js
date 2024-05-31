@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import addLangText from '../lang/Web/components/ShowModelsMain.json'
+import addLangText from '../lang/components/ShowModelsMain.json'
 import { useOutletContext } from 'react-router-dom';
 
 import { Button, Divider } from "@nextui-org/react";
@@ -8,7 +8,7 @@ import AOS from 'aos'
 import 'aos/dist/aos.css';
 
 
-function ShowModelsMain({ id, models }) {
+function ShowModelsMain({ id, models, className }) {
     const context = useOutletContext()
     const langText = {
         ...context.langText[context.lang],
@@ -41,7 +41,7 @@ function ShowModelsMain({ id, models }) {
 
     const onObeserve = (i) => {
         const new_model = {}
-        for (let k = 0; k < i; k++) {
+        for (let k = 0; k < i + 2; k++) {
             new_model[k] = true
         }
 
@@ -52,7 +52,7 @@ function ShowModelsMain({ id, models }) {
     useEffect(() => {
         AOS.init({
             duration: 200,
-            delay: 200
+            delay: 300
         })
 
         window.scrollTo(0, height_nav)
@@ -61,7 +61,7 @@ function ShowModelsMain({ id, models }) {
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 // if (entry.intersectionRatio >= 0.6) onObeserve(entry.target.dataset.i)
-                if (entry.isIntersecting) onObeserve(entry.target.dataset.i)
+                if (entry.isIntersecting) onObeserve(parseInt(entry.target.dataset.i))
 
             });
         }, {
@@ -72,9 +72,8 @@ function ShowModelsMain({ id, models }) {
     }, [])
 
 
-
     return (
-        <main className={context.mainClass + ' mt-0'}>
+        <main className={context.mainClass + className}>
             <div className={' to-obrserve min-h-[100vh] flex flex-col justify-center items-center !mb-0 '} data-i={0} id={0} data-aos='zoom-in'>
 
                 <h1 className={context.titleClass}>
@@ -86,19 +85,19 @@ function ShowModelsMain({ id, models }) {
                 </Button>
             </div>
 
-            <section className='flex flex-col items-center'>
+            <div className='flex flex-col items-center w-full'>
                 {models.map((e, i) =>
-                    < article key={(i + 1)} className='to-obrserve w-full flex flex-col items-center justify-center min-h-[100vh]  ' data-aos='fade-up' data-i={i + 1} id={i + 1} >
+                    < article key={(i + 1)} className='to-obrserve w-full flex flex-col items-center justify-between min-h-[100vh] ' data-aos='fade-up' data-i={i + 1} id={i + 1} >
                         <Divider className='w-3/4 max-w-[1200px] my-8' />
                         {modelShow[i] && e}
                         <Divider className='w-3/4 max-w-[1200px] my-8' />
 
-                        <Button className={' bg-amber-600  text-white '} data-i={i + 1} onPress={handleExplore}>
+                        <Button className={' bg-amber-600  text-white mb-4'} data-i={i + 1} onPress={handleExplore}>
                             {i + 1 === models.length ? langText.back : langText.next}
                         </Button>
                     </article>
                 )}
-            </section>
+            </div>
 
         </main >
     );

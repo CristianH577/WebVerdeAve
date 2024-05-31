@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import './Notifications.css'
 
-import addLangText from '../../../../lang/Web/More/components/Notifications.json'
+import addLangText from '../../../../lang/Web/More/Notifications.json'
 import { useOutletContext } from 'react-router-dom';
 
 import { Button, Checkbox, CheckboxGroup, Input, Radio, RadioGroup } from '@nextui-org/react';
@@ -73,79 +73,80 @@ function Notifications() {
 
 
     return (
-        <section className='flex flex-col gap-2'>
-            <div className='text-center font-semibold text-lg'>
+        <section className='flex flex-col gap-2 items-center'>
+            <h2 className='text-center font-semibold text-lg'>
                 {langText.title}
+            </h2>
+
+            <div className='flex flex-col gap-2 px-2'>
+                <RadioGroup
+                    label='Color'
+                    name='color'
+                    orientation="horizontal"
+                    defaultValue={notify.color}
+                    onValueChange={e => notify.color = e}
+                >
+                    {['default', 'info', 'success', 'warning', 'error'].map(color =>
+                        <Radio key={color} value={color}>{langText.colors[color]}</Radio>
+                    )}
+                </RadioGroup>
+
+                <RadioGroup
+                    label={langText.transition.label}
+                    name='transition'
+                    orientation="horizontal"
+                    defaultValue={notify.transition}
+                    onValueChange={e => notify.transition = e}
+                >
+                    {Object.keys(transitions).map(transition =>
+                        <Radio key={transition} value={transition}>
+                            {langText.transition.items[transition]}
+                        </Radio>
+                    )}
+                </RadioGroup>
+
+
+                <RadioGroup
+                    label={langText.position.label}
+                    name='position'
+                    orientation="horizontal"
+                    defaultValue={notify.position}
+                    onValueChange={e => notify.position = e}
+                >
+                    {['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'].map(position =>
+                        <Radio key={position} value={position}>
+                            {langText.position.items[position]}
+                        </Radio>
+                    )}
+                </RadioGroup>
+
+
+                <CheckboxGroup
+                    label="Preferencias"
+                    orientation="horizontal"
+                    defaultValue={notify.checks}
+                    onValueChange={e => notify.checks = e}
+                >
+                    <Checkbox value="accumulate">Acumular</Checkbox>
+                    <Checkbox value="time">Temporal</Checkbox>
+                </CheckboxGroup>
             </div>
 
-            <RadioGroup
-                label='Color'
-                name='color'
-                orientation="horizontal"
-                defaultValue={notify.color}
-                onValueChange={e => notify.color = e}
-            >
-                {['default', 'info', 'success', 'warning', 'error'].map(color =>
-                    <Radio key={color} value={color}>{langText.colors[color]}</Radio>
-                )}
-            </RadioGroup>
+            <div className='flex flex-col items-center w-full'>
+                <Input
+                    type='text'
+                    name='msg'
+                    className='input-xs mt-2 max-w-[350px]'
+                    maxLength={50}
+                    placeholder={notify.msg}
+                    value={notify.msg}
+                    max={50}
+                    onValueChange={e => setNotify({ ...notify, msg: e })}
 
-            <RadioGroup
-                label={langText.transition.label}
-                name='transition'
-                orientation="horizontal"
-                defaultValue={notify.transition}
-                onValueChange={e => notify.transition = e}
-            >
-                {Object.keys(transitions).map(transition =>
-                    <Radio key={transition} value={transition}>
-                        {langText.transition.items[transition]}
-                    </Radio>
-                )}
-            </RadioGroup>
+                    isClearable
+                    onClear={() => setNotify({ ...notify, msg: '' })}
+                />
 
-
-            <RadioGroup
-                label={langText.position.label}
-                name='position'
-                orientation="horizontal"
-                defaultValue={notify.position}
-                onValueChange={e => notify.position = e}
-            >
-                {['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'].map(position =>
-                    <Radio key={position} value={position}>
-                        {langText.position.items[position]}
-                    </Radio>
-                )}
-            </RadioGroup>
-
-
-            <CheckboxGroup
-                label="Preferencias"
-                orientation="horizontal"
-                defaultValue={notify.checks}
-                onValueChange={e => notify.checks = e}
-            >
-                <Checkbox value="accumulate">Acumular</Checkbox>
-                <Checkbox value="time">Temporal</Checkbox>
-            </CheckboxGroup>
-
-
-            <Input
-                type='text'
-                name='msg'
-                className='input-xs mt-2 max-w-sm'
-                maxLength={50}
-                placeholder={notify.msg}
-                value={notify.msg}
-                max={50}
-                onValueChange={e => setNotify({ ...notify, msg: e })}
-
-                isClearable
-                onClear={() => setNotify({ ...notify, msg: '' })}
-            />
-
-            <div className='text-end'>
                 <Button
                     color='primary'
                     className='mt-2 button-xs'

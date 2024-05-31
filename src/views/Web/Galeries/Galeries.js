@@ -75,7 +75,9 @@ function Galeries() {
     const NewGalery = () => {
         setLoadingContent(true)
         setContent(<MakeGalery data={data} model={modelo} />)
-        setLoadingContent(false)
+        setTimeout(() => {
+            setLoadingContent(false)
+        }, 200);
     }
 
 

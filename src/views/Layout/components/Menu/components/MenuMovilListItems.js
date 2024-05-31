@@ -1,18 +1,15 @@
-import { createRef, useState } from 'react';
-import './MenuMovilListItems.css'
-import addLangText from '../../../../../lang/Layout/components/Menu/Menu.json'
-import addLangText2 from '../../../../../lang/Layout/components/Menu/components/MenuMovilListItems.json'
 
-import { Button, Listbox, ListboxItem} from "@nextui-org/react";
+import './MenuMovilListItems.css'
+import { createRef, useState } from 'react';
+
+import { Button, Listbox, ListboxItem } from "@nextui-org/react";
 
 import { CSSTransition } from 'react-transition-group'
 
+import { CgPushChevronRight, CgPushChevronLeft } from "react-icons/cg";
 
-function MenuMovilListItems({ items, sub_menus, icons, lang, navigate, location }) {
-    const langText = {
-        ...addLangText[lang],
-        ...addLangText2[lang]
-    }
+
+function MenuMovilListItems({ items, sub_menus, icons, navigate, location, langText }) {
 
 
     const list_item_class = 'rounded-none border-x-0 w-full p-0 last:border-b border-b-divider ps-4 hover:!bg-neutral-200'
@@ -33,7 +30,7 @@ function MenuMovilListItems({ items, sub_menus, icons, lang, navigate, location 
             >
                 <Listbox
                     ref={menuRef}
-                    aria-label={langText.menu_list}
+                    aria-label='Menú Móvil'
                     variant='faded'
                     className=' p-0 '
                     classNames={{
@@ -47,10 +44,10 @@ function MenuMovilListItems({ items, sub_menus, icons, lang, navigate, location 
                                 <Button
                                     isIconOnly
                                     radius='none'
-                                    className='w-1/6 h-auto bg-transparent hover:text-danger'
+                                    className='w-1/6 h-full bg-transparent hover:text-danger  '
                                     onClick={() => setShowSubmenu(item)}
                                 >
-                                    {icons.ChevronRight}
+                                    <CgPushChevronRight size={30} />
                                 </Button>
                             )}
                             description={langText.menu_items[item]?.desc || ' '}
@@ -87,18 +84,12 @@ function MenuMovilListItems({ items, sub_menus, icons, lang, navigate, location 
                             list: 'gap-0',
                         }}
                     >
-                        {/* back */}
                         <ListboxItem
                             onClick={() => setShowSubmenu(false)}
                             textValue='Salir'
                             className={list_item_class + ' py-2 hover:!text-danger'}
                         >
-                            <Button
-                                isIconOnly
-                                color='transparent'
-                            >
-                                {icons.ChevronLeft}
-                            </Button>
+                            <CgPushChevronLeft size={30} />
                         </ListboxItem>
 
                         {sub_menus[item].map(sub =>

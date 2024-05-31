@@ -34,10 +34,10 @@ function Layout() {
       {document.readyState === 'complete'
         ? <Outlet
           context={{
-            dark: darkMode.value,
+            dark: darkMode.value, 
             lang: lang,
             langText: langText,
-            mainClass: 'sm:mx-8 my-8 flex flex-col items-center',
+            mainClass: 'flex flex-col items-center py-8 ',
             titleClass: 'custom-title text-9xl mb-8 break-all text-center capitalize',
           }}
         />

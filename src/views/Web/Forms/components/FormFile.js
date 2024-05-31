@@ -42,7 +42,7 @@ function FormFile({ form_class, handleSubmitForm, ButtonReset }) {
 
 
     return (
-        <section className='flex flex-col items-center w-full' id='file'>
+        <section className='flex flex-col items-center w-full max-w-[500px]' id='file'>
             <div className='text-5xl mb-8'>{langText.title}</div>
 
             <Formik

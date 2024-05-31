@@ -12,9 +12,9 @@ import ErrorBoundary from '../../../components/ErrorBoundary.js'
 import FormAddTable from './components/FormAddTable.js';
 import FormAddRow from './components/FormAddRow.js';
 import FormEditRow from './components/FormEditRow.js';
+import MakeTable from './components/MakeTable.js';
 
 import { Delete, Check, Edit, Reset } from '../../../assets/icons.js';
-import MakeTable from './components/MakeTable.js';
 
 
 
@@ -328,8 +328,9 @@ function Databases({ user, setUser }) {
 
 
             {tables.map(table =>
-                <ErrorBoundary>
+                <ErrorBoundary lang={context.lang}>
                     <MakeTable
+                        key={table.key}
                         table={table}
                         isLoading={isLoading}
                         makeCell={makeCell}

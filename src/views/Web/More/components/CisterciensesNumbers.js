@@ -1,10 +1,18 @@
 
 import { useState } from "react";
 
+import addLangText from '../../../../lang/Web/More/CisterciensesNumbers.json'
+import { useOutletContext } from 'react-router-dom';
+
 import { Input } from "@nextui-org/react";
 
 
 function CisterciensesNumbers() {
+    const context = useOutletContext()
+    const langText = {
+        ...addLangText[context.lang]
+    }
+
     const [num, setNum] = useState('')
     const [digitos, setDigitos] = useState({})
 
@@ -101,13 +109,13 @@ function CisterciensesNumbers() {
         <section className="flex flex-col items-center gap-4">
 
             <div className='text-center font-semibold text-lg'>
-                Traducto a numero cistercienses
+                {langText.title}
             </div>
 
             <Input
                 type="number"
                 value={num}
-                placeholder="Numero"
+                placeholder={langText.placeholder}
                 className="max-w-32"
                 onValueChange={handleNum}
 
@@ -119,7 +127,6 @@ function CisterciensesNumbers() {
                 stroke="currentColor"
                 className="bg-content2 rounded-lg "
                 viewBox="0 0 12 12"
-                id="numero"
             >
                 {Object.keys(digitos).length !== 0 &&
                     <path d="M 6,1 6,11" strokeLinecap="round"></path>

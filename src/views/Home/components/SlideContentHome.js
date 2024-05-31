@@ -1,17 +1,8 @@
 
-import addLangText from '../../../lang/Home/components/SlideContentHome.json'
-import { useOutletContext } from "react-router-dom";
-
 import { Button, Image } from "@nextui-org/react";
 
 
-function SlideContentHome(props) {
-    const context = useOutletContext()
-    const langText = {
-        ...addLangText[context.lang],
-        iconOf: context.langText[context.lang].iconOf,
-        imgOf: context.langText[context.lang].imgOf,
-    }
+function SlideContentHome({ langText, id, ...props }) {
 
     return (
         <div
@@ -21,24 +12,20 @@ function SlideContentHome(props) {
             }
         >
             <div className="max-w-[900px] flex justify-evenly items-center gap-2 max-sm:flex-col ">
-                <div className=' flex flex-col items-center sm:w-2/3 gap-2'>
+                <div className=' flex flex-col items-center sm:w-2/3 gap-4'>
                     <h1 className='text-3xl flex flex-wrap justify-center gap-2 uppercase text-white'>
-                        {props.title && (
-                            <p className='p-2 max-sm:break-all'>
-                                {props.title}
-                            </p>
-                        )}
+                        <p className='p-2 max-sm:break-all'>
+                            {langText.slides[id].title}
+                        </p>
 
-                        {props.title_span && (
-                            <span className={'bg-background p-2 rounded-md font-bold transition ' + (props.span_text_class && props.span_text_class)}>
-                                {props.title_span}
-                            </span>
-                        )}
+                        <span className={'bg-background p-2 rounded-md font-bold transition ' + props?.span_text_class}>
+                            {langText.slides[id].title_span}
+                        </span>
 
                     </h1>
 
                     <p className='text-center text-white'>
-                        {props.desc}
+                        {langText.slides[id].desc}
                     </p>
 
                     {props.icons && (
@@ -46,7 +33,7 @@ function SlideContentHome(props) {
                             {props.icons.map((icon, i) =>
                                 <Image
                                     key={'icon_' + i}
-                                    alt={langText.iconOf + (props.title || props.span)}
+                                    alt={langText.icon_of + langText.slides[id].title}
                                     src={icon}
                                     removeWrapper
                                     className='h-full '
@@ -65,7 +52,7 @@ function SlideContentHome(props) {
                 <div className='sm:w-1/3 flex items-center flex-col'>
                     <Image
                         src={props.img}
-                        alt={langText.imgOf + (props.title || props.span)}
+                        alt={langText.img_of + langText.slides[id].title}
                         className=' object-contain'
                     />
                 </div>

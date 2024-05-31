@@ -21,11 +21,15 @@ function ModalSubmit({ modalContent, onOpenChange, isOpen }) {
         <Modal
             isOpen={isOpen}
             onOpenChange={onOpenChange}
+            size='sm'
             className={
-                'max-xs:rounded-none max-xs:w-full max-xs:m-0 max-xs:h-full '
+                'max-xs:rounded-none max-xs:w-full max-xs:m-0 max-xs:min-h-full xs:max-w-[800px] h- '
                 + (context.dark ? 'dark text-foreground' : '')
             }
             placement='center'
+            classNames={{
+                wrapper:'items-start'
+            }}
         >
             <ModalContent>
                 {(onclose) =>

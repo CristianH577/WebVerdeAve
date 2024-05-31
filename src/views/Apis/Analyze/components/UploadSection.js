@@ -5,11 +5,11 @@ import { useOutletContext } from 'react-router-dom';
 
 import { Button } from "@nextui-org/react";
 
-import { postFAPI } from '../../../../libs/fastapi';
+import { postFAPI } from '../../../../libs/fastapi.js';
 
 import file_example from '../../../../assets/files/analyze.json'
 
-import { Reset } from '../../../../assets/icons';
+import { Reset } from '../../../../assets/icons.js';
 
 
 function UploadSection({ setData }) {

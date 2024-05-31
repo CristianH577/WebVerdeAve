@@ -2,14 +2,9 @@
 
 function BannerModel1() {
 
-    // const title_color = "text-" + (color || "rose-800")
-    // const span_bg = "bg-" + (color || "rose-800")
-
     function SvgBanner({ className, size, width, height, fill, stroke, ...props }) {
 
         const panels_fill = "fill-content1/60"
-        // const line_color = "stroke-" + color
-        // const rose800 = "#9F1239"
 
         return <svg
             stroke="currentColor"
@@ -19,14 +14,8 @@ function BannerModel1() {
             height={size || height || 16}
             strokeWidth={.1}
         >
-            {/* <linearGradient id="gradient-gray">
-                <stop offset="0%" style={{ stopColor: 'transparent' }} />
-                <stop offset="100%" style={{ stopColor: 'gray' }} />
-            </linearGradient> */}
-
             <polyline
                 points="4,-1 8,4 0,18"
-                // fill="url(#gradient-gray)"
                 className={panels_fill}
             />
 
@@ -47,7 +36,6 @@ function BannerModel1() {
 
             <polyline
                 points="-1,-1 4,-1 .3,17 0,17"
-                // className={['stroke-1 ', fill || "fill-transparent"].join(' ')}
                 className='stroke-1 fill-content1 stroke-rose-800'
             />
         </svg>
@@ -55,7 +43,7 @@ function BannerModel1() {
 
 
     return (
-        <div className={"flex w-screen max-w-[800px] relative max-sm:flex-col max-sm:max-w-[360px] max-sm:h-[600px] bg-content3 min-[800px]:rounded-lg xs:rounded-lg sm:rounded-none"}>
+        <div className={"flex w-screen max-w-[800px] relative max-sm:flex-col max-sm:max-w-[360px] max-sm:h-[600px] bg-content3 min-[800px]:rounded-lg xs:rounded-lg sm:rounded-none border border-divider"}>
             <div className="flex gap-8 py-2 px-4 w-2/3 bg-content1 max-sm:flex-col max-sm:items-center max-sm:w-full max-sm:justify-center max-sm:h-1/2">
                 <div className="uppercase text-5xl">
                     <h1 className={"font-bold text-rose-800"}>
@@ -77,7 +65,7 @@ function BannerModel1() {
                 Contenido
             </div>
 
-            <span className={"absolute right-0 bottom-0 m-2 rounded-md px-2 w-16 text-center shadow-md shadow-content3 text-sm bg-rose-800"}>
+            <span className={"absolute right-0 bottom-0 m-2 rounded-md px-2 w-16 text-center shadow-md shadow-content3 text-sm bg-rose-400 dark:bg-rose-800"}>
                 Span
             </span>
         </div>

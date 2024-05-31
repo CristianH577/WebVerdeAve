@@ -1,6 +1,7 @@
-.swiper-scrollbar-drag{
+.swiper-scrollbar-drag {
     cursor: grab;
 }
-body.dark-mode .swiper-scrollbar-drag{
+
+body.dark-mode .swiper-scrollbar-drag {
     background-color: white;
 }
