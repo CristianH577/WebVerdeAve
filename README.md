@@ -8,7 +8,7 @@ https://github.com/CristianH577/WebVerdeAve-ApiPHP
 Api Python:
 https://github.com/CristianH577/WebVerdeAve-ApiPython
 
-Version ejecutable: Sin APIs. Solo descargar y entrar al acceso directo.
+Version ejecutable: Sin APIs. Solo descargar, descomprimir y entrar al acceso directo.
 https://drive.google.com/file/d/1FAkfMmcOHpVwOwBQO3SROWyxhLuUs2Zn/view?usp=sharing()
 
 
