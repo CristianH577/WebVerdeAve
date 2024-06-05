@@ -6,9 +6,20 @@ import { Image } from "@nextui-org/react";
 
 function Design3D({ title_class }) {
 
-    const context3D = require.context('../../../assets/imgs/design/3d', true)
+    const images = require.context('../../../assets/imgs/design/3d', true);
+    const videos = require.context('../../../assets/videos', true);
 
     const [show3D, setShow3D] = useState(false)
+
+    const items = images.keys().map(image => {
+        const id = image.replace(/^.*[\\/]/, '').replace(/\.[^/.]+$/, '')
+        const src = images(image)
+
+        return {
+            id: id,
+            src: src
+        }
+    })
 
     return (
         <section>
@@ -19,19 +30,16 @@ function Design3D({ title_class }) {
             </span>
 
             <article className='flex flex-wrap justify-center gap-8 p-2'>
-                {['dino', 'rex', 'broochH', 'broochM'].map((e, i) => {
-                    const img = context3D(`./${e}.webp`) || null
-                    const video = null || context3D(`./${e}.mp4`)
-                    // const webm = context3D(`./${e}.webm`) || null
+                {items.map((item, i) => {
+                    const video = null || videos(`./${item.id}.mp4`)
                     return <div key={`3d-${i + 1}`}>
                         <Image
                             alt={`3d-${i + 1}`}
-                            src={img}
+                            src={item.src}
                             removeWrapper
                             className='w-full xs:max-w-[250px] max-xs:rounded-none cursor-pointer'
                             onClick={() => setShow3D(i + 1)}
                             hidden={show3D && show3D === i + 1}
-                        // onClick={e => e.target.src = webm}
                         />
 
                         {show3D === i + 1 &&
@@ -42,13 +50,14 @@ function Design3D({ title_class }) {
                                 autoPlay loop
                                 preload="metadata"
                                 className="w-full xs:rounded-xl xs:max-w-[250px]"
-                            // hidden={show3D !== i + 1}
                             >
                                 <source src={video} type="video/mp4" />
                             </video>
                         }
                     </div>
-                })}
+
+                }
+                )}
             </article>
         </section>
     );

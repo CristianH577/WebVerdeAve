@@ -22,7 +22,7 @@ function DropdownCustom({ item, icons, location, langText, navigate, isDropdownO
             <DropdownTrigger className=" min-w-unit-1 !w-[24px] hover:text-warning">
                 <Button
                     disableRipple
-                    className="p-0 !bg-transparent  "
+                    className="p-0 min-w-0 ps-2 bg-transparent"
                     isIconOnly
                 >
                     <BsCaretDownFill size={16} className={(isDropdownOpen === item ? '-rotate-180 transition-all' : '')} />

@@ -1,4 +1,5 @@
-import GalerieFramerMotion from "../../../components/GalerieFramerMotion.js";
+import GalerieFramerMotion from "../../../../components/GalerieFramerMotion.js";
+import CatalogSlider from "./comopnents/CatalogSlider.js";
 
 
 function Catalogos({ title_class, dark, langText }) {
@@ -8,7 +9,7 @@ function Catalogos({ title_class, dark, langText }) {
             <h1 className={title_class}>{langText.catalogs}</h1>
 
             <GalerieFramerMotion
-                contextImgs={require.context('../../../assets/imgs/design/catalogos', true)}
+                contextImgs={require.context('../../../../assets/imgs/design/catalogos', true)}
                 dark={dark}
                 items={[
                     {
@@ -25,6 +26,8 @@ function Catalogos({ title_class, dark, langText }) {
                     },
                 ]}
             />
+
+            <CatalogSlider />
         </div>
     );
 }

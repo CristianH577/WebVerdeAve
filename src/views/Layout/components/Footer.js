@@ -177,7 +177,7 @@ function Footer({ dark, lang }) {
             </div>
 
             {!loading &&
-                <ButtonGroup variant='ghost' className=' opacity-25 hover:opacity-100 fixed bottom-[10px] right-[10px] z-10' >
+                <ButtonGroup id='footer_btn' variant='ghost' className=' opacity-25 hover:opacity-100 fixed bottom-[10px] right-[10px] z-10' >
                     <Button isIconOnly color='primary' onClick={movePage}>
                         <BsArrowDownUp size={24} />
                     </Button>

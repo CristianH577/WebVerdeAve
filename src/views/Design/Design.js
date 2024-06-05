@@ -8,7 +8,7 @@ import Design3D from './components/Design3D.js';
 import Logos from './components/Logos.js';
 import Banners from './components/Banners/Banners.js';
 import Tarjetas from './components/Tarjetas.js';
-import Catalogos from './components/Catalogos.js';
+import Catalogos from './components/Catalogos/Catalogos.js';
 import Menus from './components/Menus.js';
 
 

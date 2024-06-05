@@ -14,14 +14,16 @@ function GalerieFramerMotion({ items, dark, contextImgs }) {
 
     useEffect(() => {
         if (selectedId) {
+            document.querySelector('#footer_btn').style.display = 'none'
             document.documentElement.style.overflowY = 'hidden'
             document.querySelector('#modal-gfm').scrollIntoView()
         } else {
             document.documentElement.style.overflowY = 'scroll'
+            document.querySelector('#footer_btn').style.display = 'inline-flex'
         }
     }, [selectedId])
 
-    
+
     return (
         <motion.div className="flex flex-wrap gap-4 p-4 justify-center items-center">
             {items.map((item) => {
@@ -38,6 +40,7 @@ function GalerieFramerMotion({ items, dark, contextImgs }) {
                     <Image
                         removeWrapper
                         radius='none'
+                        className="bg-transparent "
                         src={contextImgs(`./previews${(dark && item.dark) ? '/dark' : ''}/${item.id}.webp`)}
                     />
                 </motion.div>
@@ -56,21 +59,19 @@ function GalerieFramerMotion({ items, dark, contextImgs }) {
                         {items.map((item) => (
                             item.id === selectedId && (
                                 <motion.div
-                                    className="bg-content1 shadow-lg"
+                                    className="m-auto"
                                     layoutId={`card-container-${item.id}`}
                                     key={item.id}
                                     initial={{ scale: 0.8, opacity: 0 }}
                                     animate={{ scale: 1, opacity: 1 }}
                                     exit={{ scale: 0.8, opacity: 0 }}
                                 >
-                                    <motion.div className="relative">
-                                        <Image
-                                            removeWrapper
-                                            radius='none'
-                                            src={contextImgs(`.${(dark && item.dark) ? '/dark' : ''}/${item.id}.webp`)}
-                                            className="bg-black/50 "
-                                        />
-                                    </motion.div>
+                                    <Image
+                                        removeWrapper
+                                        radius='none'
+                                        src={contextImgs(`.${(dark && item.dark) ? '/dark' : ''}/${item.id}.webp`)}
+                                        className="transparent "
+                                    />
                                 </motion.div>
                             )
                         ))}

@@ -170,7 +170,7 @@ function Showroom() {
             {/* articulos */}
             <ErrorBoundary lang={context.lang}>
                 <section className='mt-4 flex flex-col items-center w-full '>
-                    <div className={' gap-6 ' + (preferences.list ? 'center items-center ' : 'grid grid-cols-1 sm:grid-cols-2 min-[932px]:grid-cols-3 2xl:grid-cols-4')}>
+                    <div className={' gap-6 md:px-2 ' + (preferences.list ? 'center items-center ' : 'grid grid-cols-1 sm:grid-cols-2 min-[932px]:grid-cols-3 2xl:grid-cols-4')}>
                         {listPages.map(art =>
                             <Card
                                 key={art.name + art.key}
