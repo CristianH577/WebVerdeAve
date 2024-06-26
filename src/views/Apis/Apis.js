@@ -7,7 +7,7 @@ import SectionsButtons from "../../components/SectionsButtons.js";
 function APIs() {
     const context = useOutletContext()
 
-    const images = require.context('../../assets/imgs/apis', true);
+    const images = require.context('../../assets/imgs/apis', true)
     const sections = images.keys().map(image => {
         const id = image.replace(/^.*[\\/]/, '').replace(/\.[^/.]+$/, '')
         const src = images(image)
